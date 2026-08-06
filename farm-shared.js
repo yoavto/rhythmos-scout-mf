@@ -112,11 +112,11 @@ function showFarmBadge() {
     wrap.id = 'farm-strip';
     wrap.style.cssText = 'display:flex;align-items:center;gap:6px;flex-shrink:0;padding:0 4px;';
     wrap.innerHTML =
-      '<span id="farm-name-label" style="color:white;font-size:12px;font-weight:700;' +
-      'max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>' +
+      '<span id="farm-name-label" style="color:var(--teal,#134F5C);font-size:24px;font-weight:700;' +
+      'max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>' +
       '<button type="button" onclick="switchFarm()" style="background:rgba(255,255,255,0.2);' +
-      'border:1px solid rgba(255,255,255,0.5);color:white;border-radius:7px;padding:6px 10px;' +
-      'font-family:Arial,sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">' +
+      'border:1px solid rgba(255,255,255,0.5);color:white;border-radius:14px;padding:12px 20px;' +
+      'font-family:Arial,sans-serif;font-size:22px;font-weight:700;cursor:pointer;white-space:nowrap;">' +
       '🔀 החלף חווה</button>';
     gtb.appendChild(wrap);
   }

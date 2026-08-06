@@ -413,7 +413,7 @@ async function renderPlotOverlaysOnMap() {
       if (!plot.polygon || plot.polygon.length < 3) return;
       new google.maps.Polygon({
         paths: plot.polygon, map,
-        strokeColor: '#890a0a', strokeWeight: 2, fillColor: '#890a0a', fillOpacity: 0.12,
+        strokeColor: '#ffe14d', strokeWeight: 2, fillColor: '#ffe14d', fillOpacity: 0.15,
         clickable: false,
       });
       if (plot.name) {
@@ -421,7 +421,7 @@ async function renderPlotOverlaysOnMap() {
         plot.polygon.forEach(pt => bounds.extend(pt));
         new google.maps.Marker({
           position: bounds.getCenter(), map,
-          label: { text: plot.name, color: '#ffe14d', fontSize: '12px', fontWeight: '800' },
+          label: { text: plot.name, color: '#890a0a', fontSize: '12px', fontWeight: '800' },
           icon: { path: 0, scale: 0 }, // invisible icon — label only
           clickable: false,
         });

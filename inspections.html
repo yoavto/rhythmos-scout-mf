@@ -947,7 +947,7 @@ async function togglePlotMap() {
   });
   new google.maps.Polygon({
     paths: curPlotFormPolygon, map,
-    strokeColor: '#890a0a', strokeWeight: 2, fillColor: '#890a0a', fillOpacity: 0.25,
+    strokeColor: '#ffe14d', strokeWeight: 2, fillColor: '#ffe14d', fillOpacity: 0.25,
   });
   const bounds = new google.maps.LatLngBounds();
   curPlotFormPolygon.forEach(pt => bounds.extend(pt));
