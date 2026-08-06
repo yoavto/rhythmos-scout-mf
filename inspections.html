@@ -407,7 +407,12 @@
         📁 ייבא קואורדינטות מ-Excel
         <input type="file" id="pf-poly-file" accept=".xlsx,.xls" style="display:none" onchange="importPlotPolygon(event)"/>
       </label>
-      <div style="font-size:11px;color:var(--text-muted);">פורמט: עמודות Lat, Lng בגיליון הראשון</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">פורמט: עמודות Lat, Lng בגיליון הראשון</div>
+      <button type="button" id="pf-map-toggle-btn" class="obs-loc-btn" onclick="togglePlotMap()" style="display:none;">🗺️ הצג פוליגון על מפה</button>
+      <div id="plot-map-panel" style="display:none;">
+        <div id="plot-map-canvas" style="width:100%;height:260px;border-radius:10px;overflow:hidden;margin:8px 0;background:#e0e0e0;"></div>
+        <button type="button" class="btn-sec" style="width:100%;" onclick="closePlotMap()">סגור מפה</button>
+      </div>
     </div>
     <div id="pf-del-wrap" style="display:none;padding:0 0 8px;">
       <button class="btn-del" style="width:100%;" onclick="deletePlot()">מחק חלקה</button>
@@ -758,6 +763,7 @@ function navTo(v) {
   if(v==='export')    renderExportPests();
   if(v==='obs-list')  renderObsList();
   if(v==='obs-export') renderObsExportPests();
+  if(typeof showFarmBadge==='function' && currentFarmId) showFarmBadge();
 }
 
 function goBack() {
@@ -855,6 +861,8 @@ function renderPlots() {
     </div>`).join('') + fab;
 }
 
+let curPlotFormPolygon = null;
+
 function openPlotForm(id) {
   document.getElementById('pf-id').value = id || '';
   document.getElementById('pf-name').value = '';
@@ -864,6 +872,9 @@ function openPlotForm(id) {
   document.getElementById('pf-area').value = '';
   document.getElementById('pf-poly-display').textContent = '';
   document.getElementById('pf-del-wrap').style.display = id ? 'block' : 'none';
+  curPlotFormPolygon = null;
+  document.getElementById('pf-map-toggle-btn').style.display = 'none';
+  document.getElementById('plot-map-panel').style.display = 'none';
   if(id) {
     const p = plots.find(x => x.id===id);
     if(p) {
@@ -872,11 +883,47 @@ function openPlotForm(id) {
       document.getElementById('pf-variety').value = p.variety||'';
       document.getElementById('pf-year').value = p.plantYear||'';
       document.getElementById('pf-area').value = p.area||'';
-      if(p.polygon?.length)
+      if(p.polygon?.length) {
         document.getElementById('pf-poly-display').textContent = `פוליגון: ${p.polygon.length} נקודות`;
+        curPlotFormPolygon = p.polygon;
+        document.getElementById('pf-map-toggle-btn').style.display = 'inline-flex';
+      }
     }
   }
   navTo('plot-form');
+}
+
+async function togglePlotMap() {
+  const panel = document.getElementById('plot-map-panel');
+  if(panel.style.display === 'block') { panel.style.display = 'none'; return; }
+  if(!curPlotFormPolygon || !curPlotFormPolygon.length) { showToast('אין פוליגון להצגה'); return; }
+
+  panel.style.display = 'block';
+  try {
+    await loadGoogleMapsScript();
+  } catch(e) {
+    showToast('שגיאה בטעינת המפה');
+    panel.style.display = 'none';
+    return;
+  }
+
+  const canvas = document.getElementById('plot-map-canvas');
+  const map = new google.maps.Map(canvas, {
+    mapTypeId: 'hybrid', streetViewControl: false, mapTypeControl: false, fullscreenControl: false,
+  });
+  new google.maps.Polygon({
+    paths: curPlotFormPolygon, map,
+    strokeColor: '#890a0a', strokeWeight: 2, fillColor: '#890a0a', fillOpacity: 0.25,
+  });
+  const bounds = new google.maps.LatLngBounds();
+  curPlotFormPolygon.forEach(pt => bounds.extend(pt));
+  map.fitBounds(bounds);
+  google.maps.event.trigger(map, 'resize'); // canvas was just made visible
+}
+
+function closePlotMap() {
+  const panel = document.getElementById('plot-map-panel');
+  if(panel) panel.style.display = 'none';
 }
 
 function importPlotPolygon(e) {
@@ -895,6 +942,8 @@ function importPlotPolygon(e) {
       }
       if(!polygon.length) { showToast('לא נמצאו קואורדינטות תקינות'); return; }
       window._importedPolygon = polygon;
+      curPlotFormPolygon = polygon;
+      document.getElementById('pf-map-toggle-btn').style.display = 'inline-flex';
       document.getElementById('pf-poly-display').textContent = `פוליגון יובא: ${polygon.length} נקודות ✓`;
       showToast(`יובאו ${polygon.length} נקודות`);
     } catch(err) { showToast('שגיאה בקריאת הקובץ'); }

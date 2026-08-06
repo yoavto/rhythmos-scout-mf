@@ -395,6 +395,34 @@ function initMap(){
   map.addListener('click',e=>{ if(!mapPickMode)return; /* location set via center pin */ });
 
   renderMarkers();
+  renderPlotOverlaysOnMap();
+}
+
+// Plots (from the Samples module's insp_plots, read-only) shown as a reference
+// layer on the Traps map, so trap placement can be seen relative to plot boundaries.
+async function renderPlotOverlaysOnMap() {
+  try {
+    const snap = await db.collection(farmCol('insp_plots')).get();
+    snap.docs.forEach(doc => {
+      const plot = doc.data();
+      if (!plot.polygon || plot.polygon.length < 3) return;
+      new google.maps.Polygon({
+        paths: plot.polygon, map,
+        strokeColor: '#134F5C', strokeWeight: 2, fillColor: '#134F5C', fillOpacity: 0.08,
+        clickable: false,
+      });
+      if (plot.name) {
+        const bounds = new google.maps.LatLngBounds();
+        plot.polygon.forEach(pt => bounds.extend(pt));
+        new google.maps.Marker({
+          position: bounds.getCenter(), map,
+          label: { text: plot.name, color: '#134F5C', fontSize: '11px', fontWeight: '700' },
+          icon: { path: 0, scale: 0 }, // invisible icon — label only
+          clickable: false,
+        });
+      }
+    });
+  } catch (e) { console.error('Failed to load plot overlays', e); }
 }
 function toggleMapType(){mapType=mapType==='hybrid'?'roadmap':'hybrid';map.setMapTypeId(mapType);document.querySelector('.map-type-btn').textContent=mapType==='hybrid'?'🛰️ לוויין':'🗺️ מפה';}
 function locateMe(){if(!navigator.geolocation){showToast('GPS לא זמין');return;}navigator.geolocation.getCurrentPosition(p=>{map.panTo({lat:p.coords.latitude,lng:p.coords.longitude});map.setZoom(17);updateLocationDot(p);},()=>showToast('לא ניתן לקבל מיקום'));}
@@ -550,6 +578,7 @@ function navTo(s){
   if(s==='export')prepExport();
   if(s==='map'&&map)setTimeout(()=>google.maps.event.trigger(map,'resize'),50);
   updateTopBar(s);
+  if(typeof showFarmBadge==='function' && currentFarmId) showFarmBadge();
 }
 function showV(n){curView=n;document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active');v.style.display='';});const el=document.getElementById('view-'+n);if(el){el.classList.add('active');el.style.display='flex';if(n!=='login'){el.style.top=GTB_H+'px';el.style.bottom=BAR_H+'px';}else{el.style.top='0';el.style.bottom='0';}}updateTopBar(n);}
 function updateTopBar(v){
