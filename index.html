@@ -342,7 +342,12 @@ let selColor='#c0392b',dynFields=[],selTrapIns=null;
 let mapPickMode=false,mapPickMarker=null,curView='map';
 const BACK={'insects':'map','insect-form':'insects','traps':'map','trap-form':'traps','inspection':'map','export':'map'};
 const COLORS=['#c0392b','#e67e22','#f1c40f','#27ae60','#2980b9','#8e44ad','#16a085','#2c3e50','#e91e63','#795548'];
-const GTB_H=70,BAR_H=56;
+let GTB_H=70,BAR_H=56;
+window.__setGtbHeight = function(px){
+  GTB_H = px;
+  const active = document.querySelector('.view.active');
+  if(active && active.id !== 'view-login'){ active.style.top = GTB_H+'px'; }
+};
 
 auth.onAuthStateChanged(u=>{
   const gtb=document.getElementById('gtb'),bar=document.getElementById('bottom-bar');
@@ -408,7 +413,7 @@ async function renderPlotOverlaysOnMap() {
       if (!plot.polygon || plot.polygon.length < 3) return;
       new google.maps.Polygon({
         paths: plot.polygon, map,
-        strokeColor: '#134F5C', strokeWeight: 2, fillColor: '#134F5C', fillOpacity: 0.08,
+        strokeColor: '#890a0a', strokeWeight: 2, fillColor: '#890a0a', fillOpacity: 0.12,
         clickable: false,
       });
       if (plot.name) {
@@ -416,7 +421,7 @@ async function renderPlotOverlaysOnMap() {
         plot.polygon.forEach(pt => bounds.extend(pt));
         new google.maps.Marker({
           position: bounds.getCenter(), map,
-          label: { text: plot.name, color: '#134F5C', fontSize: '11px', fontWeight: '700' },
+          label: { text: plot.name, color: '#ffe14d', fontSize: '12px', fontWeight: '800' },
           icon: { path: 0, scale: 0 }, // invisible icon — label only
           clickable: false,
         });

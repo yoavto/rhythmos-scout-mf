@@ -101,22 +101,35 @@ function switchFarm() {
   location.reload();
 }
 
-// ── Top-bar farm badge ──────────────────────────────────────────────────────
+// ── Top-bar farm name row ───────────────────────────────────────────────────
+const FARM_STRIP_H = 28;
+let __farmStripHeightApplied = false;
+
 function showFarmBadge() {
-  let badge = document.getElementById('farm-badge');
-  if (!badge) {
-    badge = document.createElement('button');
-    badge.id = 'farm-badge';
-    badge.onclick = switchFarm;
-    badge.style.cssText = 'background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.5);' +
-      'color:white;border-radius:9px;padding:9px 14px;font-family:Arial,sans-serif;font-size:14px;' +
-      'font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
-      'max-width:200px;overflow:hidden;text-overflow:ellipsis;margin-left:8px;';
-    const gtb = document.getElementById('gtb');
-    if (gtb) gtb.insertBefore(badge, gtb.firstChild);
+  const gtb = document.getElementById('gtb');
+  if (!gtb) return;
+
+  let strip = document.getElementById('farm-strip');
+  if (!strip) {
+    gtb.style.flexWrap = 'wrap';
+    strip = document.createElement('div');
+    strip.id = 'farm-strip';
+    strip.style.cssText = 'width:100%;order:-1;text-align:center;color:#ffe14d;' +
+      'font-family:Arial,sans-serif;font-size:14px;font-weight:800;letter-spacing:0.2px;' +
+      'padding:5px 0 7px;cursor:pointer;';
+    strip.onclick = switchFarm;
+    gtb.insertBefore(strip, gtb.firstChild);
   }
-  badge.innerHTML = '🔀 ' + (currentFarmName || 'חווה');
-  badge.title = 'לחץ להחלפת חווה';
+  strip.innerHTML = '🔀 ' + (currentFarmName || 'חווה');
+
+  // Grow the reserved top-bar space once, so this new row doesn't overlap page content
+  if (!__farmStripHeightApplied) {
+    __farmStripHeightApplied = true;
+    const cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gtb')) || 70;
+    const next = cur + FARM_STRIP_H;
+    document.documentElement.style.setProperty('--gtb', next + 'px');
+    if (typeof window.__setGtbHeight === 'function') window.__setGtbHeight(next); // index.html's JS-driven layout
+  }
 }
 
 // ── Manual farm picker — full-screen overlay, built dynamically so it
@@ -154,21 +167,49 @@ async function renderFarmList() {
   let farms = [];
   try {
     const snap = await db.collection('farms').orderBy('name').get();
-    farms = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    farms = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(f => !f.archived);
   } catch (e) {}
 
   overlay.innerHTML = fpHeader('בחר חווה') + `
     <div style="padding:16px;flex:1;">
       ${farms.length ? farms.map(f => `
-        <div onclick="pickFarm('${f.id}','${fpEsc(f.name)}')"
-          style="background:white;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:pointer;font-size:15px;font-weight:600;">
-          ${f.name || '(ללא שם)'}
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <div onclick="pickFarm('${f.id}','${fpEsc(f.name)}')"
+            style="flex:1;background:white;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:pointer;font-size:15px;font-weight:600;">
+            ${f.name || '(ללא שם)'}
+          </div>
+          <button onclick="event.stopPropagation();confirmArchiveFarm('${f.id}','${fpEsc(f.name)}')"
+            style="background:white;border:1.5px solid #ccc;color:#888;border-radius:8px;width:40px;height:40px;font-size:16px;cursor:pointer;flex-shrink:0;" title="העבר לארכיון">🗄</button>
         </div>`).join('') : '<p style="color:#888;text-align:center;margin-bottom:16px;">אין חוות עדיין</p>'}
       <button onclick="showAddFarmForm()"
         style="width:100%;padding:12px;background:white;border:1.5px dashed #999;border-radius:10px;font-size:14px;font-weight:600;color:#555;cursor:pointer;margin-top:6px;">
         + הוסף חווה
       </button>
     </div>`;
+}
+
+function confirmArchiveFarm(farmId, farmName) {
+  const overlay = document.getElementById('farm-picker-overlay');
+  overlay.innerHTML = fpHeader('העברה לארכיון') + `
+    <div style="padding:16px;">
+      <p style="font-size:14px;color:#444;line-height:1.6;">
+        להעביר את "<b>${fpEsc(farmName)}</b>" לארכיון? החווה תיעלם מרשימת הבחירה, אבל <b>הנתונים שלה לא יימחקו</b> — חלקות, מדגמים, מלכודות ותצפיות יישארו שמורים.
+      </p>
+      <button onclick="doArchiveFarm('${farmId}')" style="width:100%;padding:12px;background:var(--red,#890a0a);color:white;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;">העבר לארכיון</button>
+      <button onclick="renderFarmList()" style="width:100%;padding:10px;background:none;border:none;font-size:13px;color:#888;cursor:pointer;margin-top:8px;">ביטול</button>
+    </div>`;
+}
+
+async function doArchiveFarm(farmId) {
+  try {
+    await db.collection('farms').doc(farmId).update({ archived: true });
+    // If the farm currently in use just got archived, force re-selection
+    if (farmId === currentFarmId) {
+      localStorage.removeItem('rhythmos_mf_farm');
+      currentFarmId = null; currentFarmName = '';
+    }
+    renderFarmList();
+  } catch (e) { alert('שגיאה: ' + e.message); }
 }
 
 function pickFarm(farmId, farmName) {

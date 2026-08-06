@@ -841,9 +841,40 @@ async function loadPests() {
 // ════════════════════════════════════════════════════════════════════
 // PLOTS
 // ════════════════════════════════════════════════════════════════════
+let plotsSelectMode = false;
+let plotsSelectedIds = new Set();
+
+function togglePlotsSelectMode() {
+  plotsSelectMode = !plotsSelectMode;
+  plotsSelectedIds.clear();
+  renderPlots();
+}
+function togglePlotSelected(id) {
+  if (plotsSelectedIds.has(id)) plotsSelectedIds.delete(id);
+  else plotsSelectedIds.add(id);
+  renderPlots();
+}
+function deleteSelectedPlots() {
+  if (!plotsSelectedIds.size) return;
+  const n = plotsSelectedIds.size;
+  showConfirm('מחיקת חלקות', `האם למחוק ${n} חלקות? פעולה זו אינה ניתנת לביטול.`, async () => {
+    const ids = [...plotsSelectedIds];
+    const batch = db.batch();
+    ids.forEach(id => batch.delete(db.collection(farmCol('insp_plots')).doc(id)));
+    await batch.commit();
+    plotsSelectMode = false;
+    plotsSelectedIds.clear();
+    await loadPlots();
+    showToast(`${n} חלקות נמחקו`);
+    navTo('plots');
+  });
+}
+
 function renderPlots() {
   const el = document.getElementById('plots-list');
+  const selectBtn = `<button onclick="togglePlotsSelectMode()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:50%;width:50px;height:50px;font-size:18px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" title="${plotsSelectMode?'ביטול בחירה':'בחר חלקות למחיקה'}">${plotsSelectMode?'✕':'🗑'}</button>`;
   const fab = `<div class="fab-wrap">
+    ${selectBtn}
     <button onclick="openImportPlots()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:50%;width:50px;height:50px;font-size:20px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">📥</button>
     <button class="fab" onclick="openPlotForm(null)">+</button>
   </div>`;
@@ -851,14 +882,22 @@ function renderPlots() {
     el.innerHTML = fab + `<div class="empty"><div class="eico">🌿</div><p>אין חלקות מוגדרות.<br/>לחץ + להוספה או 📥 לייבוא.</p></div>`;
     return;
   }
-  el.innerHTML = fab + plots.map(p => `
-    <div class="card" onclick="openPlotForm('${p.id}')">
+  const selectBar = plotsSelectMode ? `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;position:sticky;top:0;z-index:5;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+      <span style="flex:1;font-size:13px;color:var(--text-muted);">${plotsSelectedIds.size} נבחרו</span>
+      <button onclick="deleteSelectedPlots()" ${plotsSelectedIds.size?'':'disabled'} style="padding:8px 18px;background:${plotsSelectedIds.size?'var(--red)':'#ccc'};color:white;border:none;border-radius:8px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;cursor:${plotsSelectedIds.size?'pointer':'default'};">מחק</button>
+    </div>` : '';
+  el.innerHTML = selectBar + fab + plots.map(p => {
+    const selected = plotsSelectedIds.has(p.id);
+    return `
+    <div class="card" onclick="${plotsSelectMode?`togglePlotSelected('${p.id}')`:`openPlotForm('${p.id}')`}"${plotsSelectMode&&selected?' style="outline:2px solid var(--red);"':''}>
       <div class="card-body">
-        <div class="card-title">${p.name}</div>
+        <div class="card-title">${plotsSelectMode?`<input type="checkbox" ${selected?'checked':''} style="margin-left:8px;pointer-events:none;"/>`:''}${p.name}</div>
         <div class="card-sub">${p.crop||'—'}${p.variety?' · '+p.variety:''}${p.plantYear?' · '+p.plantYear:''}${p.area?' · '+p.area+' ד':''}${p.polygon?.length?' · 🗺️ פוליגון':''}</div>
       </div>
-      <div class="card-actions"><button class="ia" onclick="event.stopPropagation();openPlotForm('${p.id}')">✏️</button></div>
-    </div>`).join('') + fab;
+      ${plotsSelectMode?'':`<div class="card-actions"><button class="ia" onclick="event.stopPropagation();openPlotForm('${p.id}')">✏️</button></div>`}
+    </div>`;
+  }).join('') + fab;
 }
 
 let curPlotFormPolygon = null;
