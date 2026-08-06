@@ -101,35 +101,27 @@ function switchFarm() {
   location.reload();
 }
 
-// ── Top-bar farm name row ───────────────────────────────────────────────────
-const FARM_STRIP_H = 28;
-let __farmStripHeightApplied = false;
-
+// ── Top-bar farm name + switch button (inline, same height as other bar buttons) ──
 function showFarmBadge() {
   const gtb = document.getElementById('gtb');
   if (!gtb) return;
 
-  let strip = document.getElementById('farm-strip');
-  if (!strip) {
-    gtb.style.flexWrap = 'wrap';
-    strip = document.createElement('div');
-    strip.id = 'farm-strip';
-    strip.style.cssText = 'width:100%;order:-1;text-align:center;color:#ffe14d;' +
-      'font-family:Arial,sans-serif;font-size:14px;font-weight:800;letter-spacing:0.2px;' +
-      'padding:5px 0 7px;cursor:pointer;';
-    strip.onclick = switchFarm;
-    gtb.insertBefore(strip, gtb.firstChild);
+  let wrap = document.getElementById('farm-strip');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'farm-strip';
+    wrap.style.cssText = 'display:flex;align-items:center;gap:6px;flex-shrink:0;padding:0 4px;';
+    wrap.innerHTML =
+      '<span id="farm-name-label" style="color:white;font-size:12px;font-weight:700;' +
+      'max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>' +
+      '<button type="button" onclick="switchFarm()" style="background:rgba(255,255,255,0.2);' +
+      'border:1px solid rgba(255,255,255,0.5);color:white;border-radius:7px;padding:6px 10px;' +
+      'font-family:Arial,sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">' +
+      '🔀 החלף חווה</button>';
+    gtb.appendChild(wrap);
   }
-  strip.innerHTML = '🔀 ' + (currentFarmName || 'חווה');
-
-  // Grow the reserved top-bar space once, so this new row doesn't overlap page content
-  if (!__farmStripHeightApplied) {
-    __farmStripHeightApplied = true;
-    const cur = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gtb')) || 70;
-    const next = cur + FARM_STRIP_H;
-    document.documentElement.style.setProperty('--gtb', next + 'px');
-    if (typeof window.__setGtbHeight === 'function') window.__setGtbHeight(next); // index.html's JS-driven layout
-  }
+  const label = document.getElementById('farm-name-label');
+  if (label) label.textContent = currentFarmName || 'חווה';
 }
 
 // ── Manual farm picker — full-screen overlay, built dynamically so it
@@ -179,7 +171,7 @@ async function renderFarmList() {
             ${f.name || '(ללא שם)'}
           </div>
           <button onclick="event.stopPropagation();confirmArchiveFarm('${f.id}','${fpEsc(f.name)}')"
-            style="background:white;border:1.5px solid #ccc;color:#888;border-radius:8px;width:40px;height:40px;font-size:16px;cursor:pointer;flex-shrink:0;" title="העבר לארכיון">🗄</button>
+            style="background:white;border:2px solid var(--red,#890a0a);color:var(--red,#890a0a);border-radius:9px;width:48px;height:48px;font-size:22px;cursor:pointer;flex-shrink:0;" title="העבר לארכיון">🗄</button>
         </div>`).join('') : '<p style="color:#888;text-align:center;margin-bottom:16px;">אין חוות עדיין</p>'}
       <button onclick="showAddFarmForm()"
         style="width:100%;padding:12px;background:white;border:1.5px dashed #999;border-radius:10px;font-size:14px;font-weight:600;color:#555;cursor:pointer;margin-top:6px;">
