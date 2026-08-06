@@ -108,10 +108,10 @@ function showFarmBadge() {
     badge = document.createElement('button');
     badge.id = 'farm-badge';
     badge.onclick = switchFarm;
-    badge.style.cssText = 'background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.4);' +
-      'color:white;border-radius:8px;padding:5px 10px;font-family:Arial,sans-serif;font-size:11px;' +
-      'font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;' +
-      'max-width:130px;overflow:hidden;text-overflow:ellipsis;margin-left:8px;';
+    badge.style.cssText = 'background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.5);' +
+      'color:white;border-radius:9px;padding:9px 14px;font-family:Arial,sans-serif;font-size:14px;' +
+      'font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
+      'max-width:200px;overflow:hidden;text-overflow:ellipsis;margin-left:8px;';
     const gtb = document.getElementById('gtb');
     if (gtb) gtb.insertBefore(badge, gtb.firstChild);
   }
@@ -136,7 +136,15 @@ function showFarmPicker(onDone) {
 }
 
 function fpHeader(title) {
-  return '<div style="background:var(--red,#890a0a);color:white;padding:20px 16px;font-size:18px;font-weight:700;">' + title + '</div>';
+  return '<div style="background:var(--red,#890a0a);color:white;padding:20px 16px;font-size:18px;font-weight:700;display:flex;justify-content:space-between;align-items:center;">' +
+    '<span>' + title + '</span>' +
+    '<button onclick="logoutFromPicker()" style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);color:white;border-radius:7px;padding:6px 12px;font-family:Arial,sans-serif;font-size:12px;font-weight:600;cursor:pointer;">יציאה</button>' +
+    '</div>';
+}
+function logoutFromPicker() {
+  const overlay = document.getElementById('farm-picker-overlay');
+  if (overlay) overlay.remove();
+  if (typeof doLogout === 'function') doLogout();
 }
 function fpEsc(s) { return String(s || '').replace(/'/g, "\\'"); }
 

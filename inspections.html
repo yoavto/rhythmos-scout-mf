@@ -338,7 +338,11 @@
     </div>
     <div class="fg">
       <label class="fl">סיסמה</label>
-      <input class="fi" id="l-pw" type="password" placeholder="••••••••"/>
+      <div style="position:relative;">
+        <input class="fi" id="l-pw" type="password" placeholder="••••••••" style="padding-left:38px;"/>
+        <button type="button" id="pw-toggle-btn" onclick="togglePwVisibility()" aria-label="הצג סיסמה"
+          style="position:absolute;left:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:4px;font-size:16px;color:var(--text-muted);">👁</button>
+      </div>
     </div>
     <div class="err" id="auth-err"></div>
     <button class="btn-p" onclick="doLogin()">התחבר</button>
@@ -777,6 +781,11 @@ async function doLogin() {
 
 function doLogout() {
   auth.signOut();
+}
+function togglePwVisibility(){
+  const inp=document.getElementById('l-pw'), btn=document.getElementById('pw-toggle-btn');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','הסתר סיסמה');}
+  else{inp.type='password';btn.textContent='👁';btn.setAttribute('aria-label','הצג סיסמה');}
 }
 
 auth.onAuthStateChanged(user => {

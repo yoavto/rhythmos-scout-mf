@@ -220,7 +220,13 @@
     
     <div id="form-login">
       <div class="fg"><label class="fl">אימייל</label><input class="fi" id="l-email" type="email" placeholder="your@email.com"/></div>
-      <div class="fg"><label class="fl">סיסמה</label><input class="fi" id="l-pw" type="password" placeholder="••••••••"/></div>
+      <div class="fg"><label class="fl">סיסמה</label>
+        <div style="position:relative;">
+          <input class="fi" id="l-pw" type="password" placeholder="••••••••" style="padding-left:38px;"/>
+          <button type="button" id="pw-toggle-btn" onclick="togglePwVisibility()" aria-label="הצג סיסמה"
+            style="position:absolute;left:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:4px;font-size:16px;color:var(--text-muted);">👁</button>
+        </div>
+      </div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><input type="checkbox" id="remember-me" style="width:16px;height:16px;accent-color:var(--red);cursor:pointer;"/><label for="remember-me" style="font-size:13px;color:var(--text-muted);cursor:pointer;">זכור אותי</label></div>
       <button class="btn-p" onclick="doLogin()">התחבר</button>
     </div>
@@ -354,6 +360,11 @@ window.addEventListener('load',()=>{
 async function doLogin(){const email=document.getElementById('l-email').value.trim(),remember=document.getElementById('remember-me').checked;try{await auth.setPersistence(remember?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);await auth.signInWithEmailAndPassword(email,document.getElementById('l-pw').value);if(remember)localStorage.setItem('r_saved_email',email);else localStorage.removeItem('r_saved_email');}catch(e){document.getElementById('auth-err').textContent=authMsg(e.code);}}
 
 async function doLogout(){await auth.signOut();}
+function togglePwVisibility(){
+  const inp=document.getElementById('l-pw'), btn=document.getElementById('pw-toggle-btn');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','הסתר סיסמה');}
+  else{inp.type='password';btn.textContent='👁';btn.setAttribute('aria-label','הצג סיסמה');}
+}
 function authMsg(c){return({'auth/invalid-email':'אימייל לא תקין','auth/user-not-found':'משתמש לא נמצא','auth/wrong-password':'סיסמה שגויה','auth/invalid-credential':'אימייל או סיסמה שגויים','auth/email-already-in-use':'אימייל כבר רשום','auth/weak-password':'סיסמה חלשה מדי'})[c]||'שגיאת התחברות';}
 function checkMapsKey(){loadMaps();}
 function loadMaps(){
