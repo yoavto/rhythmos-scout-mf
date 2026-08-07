@@ -94,11 +94,15 @@ function setFarm(farmId, farmName) {
   showFarmBadge();
 }
 
-// "החלף חווה" — clears the saved farm and reloads, which re-runs resolveFarm()
-// from a clean slate (simplest way to guarantee every screen re-reads the new farm's data).
+// "החלף חווה" — the user is explicitly choosing manually, so skip the GPS
+// auto-detect step (which the normal resolveFarm() flow would try first, costing
+// up to 6 seconds) and open the picker immediately. Reload only happens after a
+// farm is actually picked, to cleanly reset all in-memory app state under it.
 function switchFarm() {
   localStorage.removeItem('rhythmos_mf_farm');
-  location.reload();
+  currentFarmId = null;
+  currentFarmName = '';
+  showFarmPicker(() => location.reload());
 }
 
 // ── Top-bar farm name + switch button (inline, same height as other bar buttons) ──
