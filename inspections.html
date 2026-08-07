@@ -13,9 +13,9 @@
   <script src="/farm-shared.js"></script>
   <style>
     :root{
-      --red:rgb(137,10,10);--purple:rgb(122,54,166);--teal:var(--purple);--teal-dark:#4a1f66;--text:rgb(69,71,74);
-      --text-muted:rgba(69,71,74,0.6);--border:rgba(137,10,10,0.18);
-      --white:#ffffff;--cream:rgb(255,255,255);--input-bg:rgb(235,235,236);
+      --red:rgb(137,10,10);--dusty-rose:rgb(195,132,132);--obs-blue:rgb(88,172,249);--obs-blue-dark:rgb(30,110,190);--text:rgb(69,71,74);
+      --text-muted:rgba(69,71,74,0.6);--border:rgb(146,148,156);
+      --white:#ffffff;--cream:rgb(255,255,255);--input-bg:rgb(244,245,248);
       --shadow:0 4px 20px rgba(137,10,10,0.1);--radius:12px;
       --gtb:70px;--bnav:56px;--farmbg:url('data:image/jpeg;base64,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');
     }
@@ -36,8 +36,8 @@
       display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s;white-space:nowrap;}
     .gnav .gi{font-size:21px;}
     .gnav.active{background:rgba(137,10,10,0.08);color:var(--red);font-weight:700;}
-    #gtb-nav-obs .gnav{background:rgba(122,54,166,0.14);color:var(--teal);}
-    #gtb-nav-obs .gnav.active{background:var(--teal);color:white;}
+    #gtb-nav-obs .gnav{background:rgba(88,172,249,0.14);color:var(--obs-blue);}
+    #gtb-nav-obs .gnav.active{background:var(--obs-blue);color:white;}
     #exit-btn{background:none;border:none;cursor:pointer;padding:6px;color:rgba(69,71,74,0.5);
       width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;}
     #exit-btn svg{width:20px;height:20px;transform:scaleX(-1);}
@@ -62,7 +62,7 @@
       transition:all 0.15s;
     }
     .bnav-btn.active{color:var(--red);font-weight:700;background:rgba(137,10,10,0.08);}
-    #bnav-obs.active{color:var(--teal);background:rgba(122,54,166,0.08);}
+    #bnav-obs.active{color:var(--obs-blue);background:rgba(88,172,249,0.08);}
     .bnav-icon{font-size:22px;line-height:1;}
     
     /* ── BOTTOM BAR ── */
@@ -85,7 +85,7 @@
       font-size:14px;font-family:Arial,sans-serif;color:var(--text);background:var(--input-bg);
       outline:none;direction:ltr;text-align:right;}
     .fi:focus{border-color:var(--red);}
-    .btn-p{width:100%;padding:13px;background:var(--red);color:white;border:none;border-radius:22px;
+    .btn-p{width:100%;padding:13px;background:var(--red);color:white;border:none;border-radius:10px;
       font-size:15px;font-weight:600;font-family:Arial,sans-serif;cursor:pointer;margin-top:6px;}
     .err{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height:18px;}
 
@@ -93,7 +93,7 @@
     .sc{flex:1;overflow-y:auto;padding:14px;}
     .fv{flex:1;overflow-y:auto;padding:14px;}
     .section{background:white;border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.05);}
-    .sec-title{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;
+    .sec-title{font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;
       letter-spacing:0.07em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
     .card{background:white;border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;
       box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;cursor:pointer;}
@@ -103,8 +103,8 @@
     .card-actions{display:flex;gap:6px;flex-shrink:0;}
     .ia{background:none;border:none;font-size:18px;cursor:pointer;padding:4px;border-radius:6px;}
     .fab-wrap{display:flex;justify-content:flex-end;padding:8px 14px 18px;}
-    .fab{background:var(--teal);color:white;border:none;border-radius:50%;width:50px;height:50px;
-      font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(122,54,166,0.4);line-height:50px;text-align:center;}
+    .fab{background:var(--red);color:white;border:none;border-radius:50%;width:50px;height:50px;
+      font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(137,10,10,0.4);line-height:50px;text-align:center;}
     .empty{text-align:center;padding:50px 20px;color:var(--text-muted);}
     .eico{font-size:48px;margin-bottom:12px;}
     .empty p{font-size:14px;line-height:1.7;}
@@ -120,14 +120,14 @@
     select.fin{appearance:none;-webkit-appearance:none;cursor:pointer;}
     .ffoot{display:flex;flex-direction:row;gap:8px;padding:10px 14px;background:white;
       border-top:1px solid var(--border);flex-shrink:0;justify-content:center;align-items:stretch;}
-    .btn-sav{padding:10px 0;width:90px;background:var(--red);color:white;border:none;border-radius:20px;
+    .btn-sav{padding:10px 0;width:90px;background:var(--red);color:white;border:none;border-radius:8px;
       font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;
       display:inline-flex;align-items:center;justify-content:center;gap:5px;box-sizing:border-box;}
     .btn-sec{padding:10px 0;width:90px;background:rgb(69,71,74);color:white;border:none;
-      border-radius:20px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;
+      border-radius:8px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;
       display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;}
     .btn-del{padding:10px 0;width:90px;background:white;color:var(--red);border:1.5px solid var(--red);
-      border-radius:20px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;
+      border-radius:8px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;
       display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;}
 
     /* ── DYNAMIC FIELDS ── */
@@ -138,14 +138,14 @@
     .rmf{background:none;border:none;color:#c0392b;font-size:20px;cursor:pointer;flex-shrink:0;padding:2px 4px;}
     .addf{display:flex;align-items:center;gap:6px;background:none;border:1.5px dashed var(--border);
       border-radius:8px;padding:9px 12px;font-size:13px;font-family:Arial,sans-serif;
-      color:var(--teal);cursor:pointer;width:100%;font-weight:500;margin-top:4px;}
+      color:var(--text);cursor:pointer;width:100%;font-weight:500;margin-top:4px;}
 
     /* ── CROP CHIPS ── */
     .crop-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
     .crop-chip{padding:5px 12px;border-radius:16px;border:1.5px solid var(--border);
       background:white;color:var(--text);font-size:12px;font-weight:500;cursor:pointer;
       transition:all 0.15s;font-family:Arial,sans-serif;}
-    .crop-chip.sel{background:var(--teal);border-color:var(--teal);color:white;}
+    .crop-chip.sel{background:var(--red);border-color:var(--red);color:white;}
 
     /* ── EXPORT CHECKBOXES ── */
     .chk-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--input-bg);
@@ -156,7 +156,7 @@
     .date-row .fr{flex:1;}
 
     /* ── TOAST ── */
-    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--teal);
+    #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgb(69,71,74);
       color:white;padding:10px 20px;border-radius:20px;font-size:14px;font-family:Arial,sans-serif;
       z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
     #toast.show{opacity:1;}
@@ -170,17 +170,17 @@
     .mtitle{font-size:16px;font-weight:700;color:var(--red);margin-bottom:8px;}
     .mmsg{font-size:14px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;}
     .mfoot{display:flex;gap:10px;}
-    .btn-mcan{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:20px;
+    .btn-mcan{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:10px;
       background:white;font-family:Arial,sans-serif;font-size:14px;cursor:pointer;color:var(--text-muted);}
     .btn-mok{flex:1;padding:12px;background:var(--red);color:white;border:none;
       border-radius:20px;font-family:Arial,sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
 
     /* ── IMPORT ZONE ── */
-    .import-zone{border:2px dashed var(--teal);border-radius:12px;padding:24px;text-align:center;
-      color:var(--teal);font-size:14px;cursor:pointer;background:rgba(122,54,166,0.04);margin-bottom:12px;}
-    .import-zone:hover{background:rgba(122,54,166,0.08);}
+    .import-zone{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;
+      color:var(--text);font-size:14px;cursor:pointer;background:rgba(146,148,156,0.06);margin-bottom:12px;}
+    .import-zone:hover{background:rgba(146,148,156,0.12);}
     .tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;
-      font-size:12px;background:rgba(122,54,166,0.1);color:var(--teal);margin:2px;}
+      font-size:12px;background:rgba(146,148,156,0.15);color:var(--text);margin:2px;}
   
     /* ── SURVEY ── */
     .survey-card{background:white;border-radius:var(--radius);padding:12px 14px;margin-bottom:8px;
@@ -206,21 +206,21 @@
       font-size:24px;font-weight:400;cursor:pointer;color:var(--text);
       display:flex;align-items:center;justify-content:center;font-family:Arial;}
     .counter-btn.minus{border-radius:8px 0 0 8px;}
-    .counter-btn.plus{border-radius:0 8px 8px 0;background:var(--teal);color:white;border-color:var(--teal);}
+    .counter-btn.plus{border-radius:0 8px 8px 0;background:var(--red);color:white;border-color:var(--red);}
     .counter-val{width:56px;height:44px;border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);
       border-left:none;border-right:none;text-align:center;font-size:18px;font-weight:600;
       font-family:Arial;color:var(--text);background:var(--input-bg);outline:none;}
     .survey-hdr-section{background:white;border-radius:var(--radius);padding:13px 14px;margin-bottom:10px;
       box-shadow:0 1px 6px rgba(0,0,0,0.05);}
     .survey-footer{display:flex;gap:8px;padding:10px 14px 14px;flex-shrink:0;background:#f0f0f0;}
-    .btn-complete{flex:1;padding:12px;background:var(--teal);color:white;border:none;border-radius:8px;
+    .btn-complete{flex:1;padding:12px;background:#27ae60;color:white;border:none;border-radius:8px;
       font-family:Arial;font-size:13px;font-weight:600;cursor:pointer;}
-    .btn-pending{flex:1;padding:12px;background:white;color:var(--teal);border:1.5px solid var(--teal);
+    .btn-pending{flex:1;padding:12px;background:white;color:#e6a817;border:1.5px solid #e6a817;
       border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;cursor:pointer;}
     .zone-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
     .zone-btn{padding:7px 4px;border:1.5px solid var(--border);border-radius:8px;background:white;
       font-family:Arial;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--text);}
-    .zone-btn.sel{background:var(--teal);border-color:var(--teal);color:white;font-weight:700;}
+    .zone-btn.sel{background:var(--red);border-color:var(--red);color:white;font-weight:700;}
 
   
     /* ── SEVERITY ── */
@@ -287,41 +287,49 @@
     .obs-report-hdr b{color:var(--text);}
     .obs-note{width:100%;min-height:160px;padding:12px;border:1.5px solid var(--border);border-radius:10px;
       font-size:14px;font-family:Arial,sans-serif;background:var(--input-bg);outline:none;resize:vertical;}
-    .obs-note:focus{border-color:var(--teal);}
+    .obs-note:focus{border-color:var(--red);}
     .obs-reco{width:100%;min-height:90px;padding:12px;border:1.5px solid var(--border);border-radius:10px;
       font-size:14px;font-family:Arial,sans-serif;background:var(--input-bg);outline:none;resize:vertical;}
-    .obs-reco:focus{border-color:var(--teal);}
+    .obs-reco:focus{border-color:var(--red);}
     .req-mark{color:var(--red);margin-right:3px;}
     .obs-loc-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:none;
-      color:var(--teal);font-family:Arial,sans-serif;font-size:12px;font-weight:600;cursor:pointer;
+      color:var(--red);font-family:Arial,sans-serif;font-size:12px;font-weight:600;cursor:pointer;
       padding:4px 0;margin-top:2px;}
 
     /* ── OBSERVATIONS REPORTS (דוחות) ── */
-    .obs-preview-hdr{font-size:13px;font-weight:700;color:var(--teal);margin-bottom:10px;}
+    .obs-preview-hdr{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;}
     .obs-tab-row{display:flex;gap:8px;margin-bottom:10px;}
-    .obs-tab-btn{flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--teal);background:white;
-      color:var(--teal);font-family:Arial,sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
-    .obs-tab-btn.sel{background:var(--teal);color:white;}
+    .obs-tab-btn{flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--obs-blue);background:white;
+      color:var(--obs-blue);font-family:Arial,sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+    .obs-tab-btn.sel{background:var(--obs-blue);color:white;}
     .obs-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border);background:white;}
     .obs-preview-table{border-collapse:collapse;width:100%;font-size:12px;font-family:Arial,sans-serif;}
     .obs-preview-table th,.obs-preview-table td{border:1px solid var(--border);padding:8px;
       text-align:right;vertical-align:top;white-space:pre-line;min-width:120px;}
-    .obs-preview-table th{background:rgba(122,54,166,0.08);font-weight:700;position:sticky;top:0;}
+    .obs-preview-table th{background:rgb(240,240,240);font-weight:700;position:sticky;top:0;}
     .obs-th-sub{font-weight:400;font-size:11px;color:var(--text-muted);}
-    .obs-td-pest{font-weight:700;background:rgba(122,54,166,0.04);white-space:nowrap;min-width:auto;}
+    .obs-td-pest{font-weight:700;background:rgb(248,248,248);white-space:nowrap;min-width:auto;}
 
-    /* ── OBSERVATIONS MODE THEME — scoped to body.mode-obs so Samples/Traps are untouched ── */
-    body.mode-obs{--border:rgba(122,54,166,0.18);--shadow:0 4px 20px rgba(122,54,166,0.1);}
-    body.mode-obs .view.active{background:#f2ecf7;}
-    body.mode-obs .fin:focus,
-    body.mode-obs .fi:focus{border-color:var(--teal);}
-    body.mode-obs input[type="checkbox"]{accent-color:var(--teal);}
-    body.mode-obs .chk-item input[type=checkbox]{accent-color:var(--teal) !important;}
-    body.mode-obs .btn-sav{background:var(--teal);}
+    /* ── OBSERVATIONS MODE — nav highlighting only (see #gtb-nav-obs / #bnav-obs above). ──
+       Buttons, modals, and form focus states intentionally stay identical to the rest of
+       the app; only the section nav itself signals "you're in Observations." ── */
     body.mode-obs .chk-item{background:white;}
-    body.mode-obs .mtitle{color:var(--teal-dark);}
-    body.mode-obs .btn-mok{background:var(--teal-dark);}
 
+
+    /* ── PLOT POLYGON EDITOR ── */
+    .map-tab-btn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:white;
+      color:var(--text-muted);font-family:Arial,sans-serif;font-size:13px;font-weight:600;cursor:pointer;}
+    .map-tab-btn.active{background:var(--red);border-color:var(--red);color:white;}
+    .plot-map-toolbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px;}
+    .map-tool-btn{padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:white;
+      color:var(--text);font-family:Arial,sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
+    .map-tool-btn.active{background:var(--red);border-color:var(--red);color:white;}
+    .map-tool-btn.danger{border-color:var(--red);color:var(--red);}
+    .plot-point-count{font-size:12px;color:var(--text-muted);margin-right:auto;}
+    .plot-map-container{width:100%;height:280px;border-radius:10px;overflow:hidden;background:#e0e0e0;}
+    .coord-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
+      font-size:13px;font-family:monospace;direction:ltr;text-align:left;color:var(--text);
+      background:var(--input-bg);outline:none;resize:vertical;}
   </style>
 </head>
 <body>
@@ -353,7 +361,7 @@
   <div class="gtb-nav" id="gtb-nav">
     <button class="gnav active" id="gnav-survey" onclick="navTo('survey')"><span class="gi">📋</span>מדגמים</button>
     <button class="gnav"        id="gnav-pests"  onclick="navTo('pests')"><span class="gi">🐛</span>מזיקים</button>
-    <button class="gnav"        id="gnav-plots"  onclick="navTo('plots')"><span class="gi">📍</span>חלקות</button>
+    <button class="gnav"        id="gnav-plots"  onclick="navTo('plots')"><span class="gi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span>חלקות</button>
     <button class="gnav"        id="gnav-export" onclick="navTo('export')"><span class="gi">📊</span>דוחות</button>
   </div>
   <div class="gtb-nav" id="gtb-nav-obs" style="display:none;">
@@ -401,11 +409,25 @@
     </div>
     <div class="section">
       <div class="sec-title">פוליגון (אופציונלי)</div>
-      <div id="pf-poly-display" style="font-size:12px;color:var(--text-muted);margin-bottom:8px;"></div>
-      <button type="button" id="pf-map-toggle-btn" onclick="togglePlotMap()" style="display:none;width:100%;padding:12px;background:white;border:1.5px solid var(--teal);border-radius:8px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;color:var(--teal);cursor:pointer;">🗺️ הצג פוליגון על מפה</button>
-      <div id="plot-map-panel" style="display:none;">
-        <div id="plot-map-canvas" style="width:100%;height:260px;border-radius:10px;overflow:hidden;margin:8px 0;background:#e0e0e0;"></div>
-        <button type="button" class="btn-sec" style="width:100%;" onclick="closePlotMap()">סגור מפה</button>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <button type="button" class="map-tab-btn active" id="pf-tab-map" onclick="switchPlotMapTab('map')">🖊 ציור</button>
+        <button type="button" class="map-tab-btn" id="pf-tab-coords" onclick="switchPlotMapTab('coords')">🧭 קואורדינטות</button>
+      </div>
+      <div id="pf-map-panel">
+        <div class="plot-map-toolbar">
+          <button type="button" class="map-tool-btn active" id="pf-btn-draw" onclick="setPlotDrawMode(true)">✏️ ציור</button>
+          <button type="button" class="map-tool-btn" onclick="undoLastPlotPoint()">↩ בטל נקודה</button>
+          <button type="button" class="map-tool-btn danger" onclick="clearPlotPolygon()">🗑 נקה</button>
+          <button type="button" class="map-tool-btn" onclick="centerPlotMapGPS()">📍 מיקום</button>
+          <button type="button" class="map-tool-btn" id="pf-btn-maptype" onclick="togglePlotMapType()">🛰 לוויין</button>
+          <span class="plot-point-count" id="pf-point-count"></span>
+        </div>
+        <div id="plot-map-canvas" class="plot-map-container"></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">לחץ על המפה להוספת נקודה. לחץ על נקודה קיימת למחיקתה. גרור נקודה להזזתה.</div>
+      </div>
+      <div id="pf-coords-panel" style="display:none;">
+        <textarea id="pf-polygon-coords" class="coord-textarea" rows="10" placeholder="32.192507,34.923707&#10;32.192709,34.923881&#10;..."></textarea>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">שורה אחת לכל נקודה, בפורמט lat,lng</div>
       </div>
     </div>
     <div id="pf-del-wrap" style="display:none;padding:0 0 8px;">
@@ -431,7 +453,7 @@
         כל שורה היא נקודת פוליגון — שורות עם אותו שם חלקה נאספות לפוליגון אחד.
       </p>
       <input type="file" id="plots-import-file" accept=".xlsx,.xls" style="display:none" onchange="importPlotsFromExcel(event)"/>
-      <button onclick="document.getElementById('plots-import-file').click()" style="width:100%;padding:14px;background:white;border:2px dashed var(--teal);border-radius:12px;font-family:Arial,sans-serif;font-size:14px;color:var(--teal);cursor:pointer;font-weight:600;">
+      <button onclick="document.getElementById('plots-import-file').click()" style="width:100%;padding:14px;background:white;border:2px dashed var(--dusty-rose);border-radius:12px;font-family:Arial,sans-serif;font-size:14px;color:var(--dusty-rose);cursor:pointer;font-weight:600;">
         📁 בחר קובץ Excel לייבוא
       </button>
       <div id="import-preview" style="display:none;">
@@ -583,11 +605,11 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ייצא לאקסל
       </button>
-      <button onclick="exportFullBackup()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--teal);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--teal);cursor:pointer;margin-bottom:8px;">
+      <button onclick="exportFullBackup()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--dusty-rose);cursor:pointer;margin-bottom:8px;">
         💾 ייצא גיבוי מלא (JSON)
       </button>
       <input type="file" id="restore-file" accept=".json" style="display:none" onchange="onRestoreFileChosen(event)"/>
-      <button onclick="document.getElementById('restore-file').click()" style="width:100%;padding:10px;background:white;border:1.5px solid rgba(137,10,10,0.4);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--red);cursor:pointer;">
+      <button onclick="document.getElementById('restore-file').click()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--dusty-rose);cursor:pointer;">
         📂 העלה קובץ גיבוי
       </button>
       <div id="restore-preview" style="display:none;margin-top:10px;">
@@ -780,7 +802,7 @@ async function doLogin() {
 }
 
 function doLogout() {
-  auth.signOut();
+  showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',()=>{auth.signOut();});
 }
 function togglePwVisibility(){
   const inp=document.getElementById('l-pw'), btn=document.getElementById('pw-toggle-btn');
@@ -866,10 +888,10 @@ function deleteSelectedPlots() {
 
 function renderPlots() {
   const el = document.getElementById('plots-list');
-  const selectBtn = `<button onclick="togglePlotsSelectMode()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:50%;width:50px;height:50px;font-size:18px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" title="${plotsSelectMode?'ביטול בחירה':'בחר חלקות למחיקה'}">${plotsSelectMode?'✕':'🗑'}</button>`;
+  const selectBtn = `<button onclick="togglePlotsSelectMode()" style="background:white;border:1.5px solid var(--dusty-rose);color:var(--dusty-rose);border-radius:50%;width:50px;height:50px;font-size:18px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" title="${plotsSelectMode?'ביטול בחירה':'בחר חלקות למחיקה'}">${plotsSelectMode?'✕':'🗑'}</button>`;
   const fab = `<div class="fab-wrap">
     ${selectBtn}
-    <button onclick="openImportPlots()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:50%;width:50px;height:50px;font-size:20px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">📥</button>
+    <button onclick="openImportPlots()" style="background:white;border:1.5px solid var(--dusty-rose);color:var(--dusty-rose);border-radius:50%;width:50px;height:50px;font-size:20px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">📥</button>
     <button class="fab" onclick="openPlotForm(null)">+</button>
   </div>`;
   if(!plots.length) {
@@ -894,7 +916,7 @@ function renderPlots() {
   }).join('') + fab;
 }
 
-let curPlotFormPolygon = null;
+let _plotMap = null, _plotPolygonOverlay = null, _plotMarkers = [], _plotMapTabMode = 'map';
 
 function openPlotForm(id) {
   document.getElementById('pf-id').value = id || '';
@@ -903,11 +925,11 @@ function openPlotForm(id) {
   document.getElementById('pf-variety').value = '';
   document.getElementById('pf-year').value = '';
   document.getElementById('pf-area').value = '';
-  document.getElementById('pf-poly-display').textContent = '';
   document.getElementById('pf-del-wrap').style.display = id ? 'block' : 'none';
-  curPlotFormPolygon = null;
-  document.getElementById('pf-map-toggle-btn').style.display = 'none';
-  document.getElementById('plot-map-panel').style.display = 'none';
+  document.getElementById('pf-polygon-coords').value = '';
+  _plotMarkers = [];
+  _plotMapTabMode = 'map';
+  let existingPolygon = [];
   if(id) {
     const p = plots.find(x => x.id===id);
     if(p) {
@@ -916,47 +938,116 @@ function openPlotForm(id) {
       document.getElementById('pf-variety').value = p.variety||'';
       document.getElementById('pf-year').value = p.plantYear||'';
       document.getElementById('pf-area').value = p.area||'';
-      if(p.polygon?.length) {
-        document.getElementById('pf-poly-display').textContent = `פוליגון: ${p.polygon.length} נקודות`;
-        curPlotFormPolygon = p.polygon;
-        document.getElementById('pf-map-toggle-btn').style.display = 'block';
-      }
+      if(p.polygon?.length) existingPolygon = p.polygon;
     }
   }
+  if(window._importedPolygon?.length) { existingPolygon = window._importedPolygon; window._importedPolygon = null; }
+  switchPlotMapTab('map');
   navTo('plot-form');
+  setTimeout(() => initPlotMap(existingPolygon), 150);
 }
 
-async function togglePlotMap() {
-  const panel = document.getElementById('plot-map-panel');
-  if(panel.style.display === 'block') { panel.style.display = 'none'; return; }
-  if(!curPlotFormPolygon || !curPlotFormPolygon.length) { showToast('אין פוליגון להצגה'); return; }
-
-  panel.style.display = 'block';
-  try {
-    await loadGoogleMapsScript();
-  } catch(e) {
-    showToast('שגיאה בטעינת המפה');
-    panel.style.display = 'none';
-    return;
+function switchPlotMapTab(tab) {
+  _plotMapTabMode = tab;
+  document.getElementById('pf-map-panel').style.display    = tab==='map'    ? '' : 'none';
+  document.getElementById('pf-coords-panel').style.display = tab==='coords' ? '' : 'none';
+  document.getElementById('pf-tab-map').className    = 'map-tab-btn' + (tab==='map'    ? ' active' : '');
+  document.getElementById('pf-tab-coords').className = 'map-tab-btn' + (tab==='coords' ? ' active' : '');
+  if(tab==='map') { setTimeout(() => { if(_plotMap) google.maps.event.trigger(_plotMap, 'resize'); }, 100); }
+  else {
+    const pts = _plotMarkers.map(m => `${m.getPosition().lat().toFixed(6)},${m.getPosition().lng().toFixed(6)}`).join('\n');
+    if(pts) document.getElementById('pf-polygon-coords').value = pts;
   }
-
-  const canvas = document.getElementById('plot-map-canvas');
-  const map = new google.maps.Map(canvas, {
-    mapTypeId: 'hybrid', streetViewControl: false, mapTypeControl: false, fullscreenControl: false,
-  });
-  new google.maps.Polygon({
-    paths: curPlotFormPolygon, map,
-    strokeColor: '#ffe14d', strokeWeight: 2, fillColor: '#ffe14d', fillOpacity: 0.25,
-  });
-  const bounds = new google.maps.LatLngBounds();
-  curPlotFormPolygon.forEach(pt => bounds.extend(pt));
-  map.fitBounds(bounds);
-  google.maps.event.trigger(map, 'resize'); // canvas was just made visible
 }
 
-function closePlotMap() {
-  const panel = document.getElementById('plot-map-panel');
-  if(panel) panel.style.display = 'none';
+async function initPlotMap(existingPolygon) {
+  const mapEl = document.getElementById('plot-map-canvas');
+  if(!mapEl) return;
+  try { await loadGoogleMapsScript(); } catch(e) { showToast('שגיאה בטעינת המפה'); return; }
+
+  const center = existingPolygon?.[0] || {lat:31.55, lng:34.85};
+  _plotMap = new google.maps.Map(mapEl, {
+    zoom:16, center, mapTypeId:'roadmap',
+    disableDefaultUI:true, zoomControl:true, gestureHandling:'greedy',
+  });
+  _plotPolygonOverlay = new google.maps.Polygon({
+    map:_plotMap, strokeColor:'#890a0a', strokeWeight:2, fillColor:'#890a0a', fillOpacity:0.15,
+    editable:false, clickable:false,
+  });
+  _plotMarkers = [];
+  updatePlotPointCount();
+
+  if(existingPolygon?.length >= 2) {
+    existingPolygon.forEach(p => {
+      const lat = Array.isArray(p) ? p[0] : p.lat, lng = Array.isArray(p) ? p[1] : p.lng;
+      addPlotMapPoint(new google.maps.LatLng(lat, lng));
+    });
+    google.maps.event.addListenerOnce(_plotMap, 'idle', () => {
+      google.maps.event.trigger(_plotMap, 'resize');
+      const bounds = new google.maps.LatLngBounds();
+      existingPolygon.forEach(p => bounds.extend({lat:Array.isArray(p)?p[0]:p.lat, lng:Array.isArray(p)?p[1]:p.lng}));
+      _plotMap.fitBounds(bounds, 40);
+    });
+  }
+  _plotMap.addListener('click', e => {
+    const btn = document.getElementById('pf-btn-draw');
+    if(!btn || !btn.classList.contains('active')) return;
+    addPlotMapPoint(e.latLng);
+  });
+}
+
+function addPlotMapPoint(latLng) {
+  const marker = new google.maps.Marker({
+    position: latLng, map: _plotMap, draggable: true,
+    icon:{ path: google.maps.SymbolPath.CIRCLE, scale:6, fillColor:'#890a0a', fillOpacity:1, strokeColor:'#fff', strokeWeight:1.5 },
+  });
+  marker.addListener('click', () => {
+    const idx = _plotMarkers.indexOf(marker);
+    if(idx >= 0) { _plotMarkers.splice(idx,1); marker.setMap(null); redrawPlotPolygon(); }
+  });
+  marker.addListener('drag', () => redrawPlotPolygon());
+  _plotMarkers.push(marker);
+  redrawPlotPolygon();
+}
+
+function redrawPlotPolygon() {
+  _plotPolygonOverlay.setPath(_plotMarkers.map(m => m.getPosition()));
+  updatePlotPointCount();
+}
+
+function undoLastPlotPoint() {
+  const m = _plotMarkers.pop();
+  if(m) { m.setMap(null); redrawPlotPolygon(); }
+}
+
+function clearPlotPolygon() {
+  _plotMarkers.forEach(m => m.setMap(null));
+  _plotMarkers = [];
+  redrawPlotPolygon();
+}
+
+function setPlotDrawMode(active) {
+  const btn = document.getElementById('pf-btn-draw');
+  if(btn) btn.className = 'map-tool-btn' + (active ? ' active' : '');
+}
+
+function updatePlotPointCount() {
+  const el = document.getElementById('pf-point-count');
+  if(el) el.textContent = _plotMarkers.length ? `${_plotMarkers.length} נקודות` : '';
+}
+
+function centerPlotMapGPS() {
+  if(!navigator.geolocation || !_plotMap) return;
+  navigator.geolocation.getCurrentPosition(pos => {
+    _plotMap.setCenter({lat:pos.coords.latitude, lng:pos.coords.longitude});
+    _plotMap.setZoom(17);
+  }, () => showToast('לא ניתן לאתר מיקום'));
+}
+
+function togglePlotMapType() {
+  if(!_plotMap) return;
+  const isHybrid = _plotMap.getMapTypeId() === 'hybrid';
+  _plotMap.setMapTypeId(isHybrid ? 'roadmap' : 'hybrid');
 }
 
 async function savePlot() {
@@ -970,7 +1061,15 @@ async function savePlot() {
     area    : document.getElementById('pf-area').value ? parseFloat(document.getElementById('pf-area').value) : null,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   };
-  if(window._importedPolygon) { data.polygon = window._importedPolygon; window._importedPolygon = null; }
+  if(_plotMapTabMode === 'map' && _plotMarkers.length >= 3) {
+    data.polygon = _plotMarkers.map(m => ({lat:m.getPosition().lat(), lng:m.getPosition().lng()}));
+  } else {
+    const raw = document.getElementById('pf-polygon-coords').value || '';
+    const parsed = raw.trim().split('\n').map(l=>l.trim()).filter(l=>l.includes(','))
+      .map(l => { const [a,b] = l.split(',').map(Number); return {lat:a,lng:b}; })
+      .filter(p => !isNaN(p.lat) && !isNaN(p.lng));
+    if(parsed.length) data.polygon = parsed;
+  }
   try {
     const id = document.getElementById('pf-id').value;
     if(id) await db.collection(farmCol('insp_plots')).doc(id).update(data);
@@ -2234,7 +2333,7 @@ if('serviceWorker' in navigator){
 
     <div class="section">
       <div class="sec-title">תצוגה מקדימה</div>
-      <button onclick="buildObsPreview()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--teal);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--teal);cursor:pointer;margin-bottom:10px;">
+      <button onclick="buildObsPreview()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--dusty-rose);cursor:pointer;margin-bottom:10px;">
         🔍 הצג תצוגה מקדימה
       </button>
       <div id="oex-preview"></div>
@@ -2242,23 +2341,23 @@ if('serviceWorker' in navigator){
 
     <div class="section">
       <div class="sec-title">ייצוא</div>
-      <button style="width:100%;padding:12px;background:var(--teal);color:white;border:none;border-radius:8px;font-family:Arial;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;" onclick="exportObsExcel()">
+      <button style="width:100%;padding:12px;background:var(--red);color:white;border:none;border-radius:8px;font-family:Arial;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;" onclick="exportObsExcel()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         ייצא לאקסל
       </button>
-      <button onclick="exportObsFullBackup()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--teal);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--teal);cursor:pointer;margin-bottom:8px;">
+      <button onclick="exportObsFullBackup()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--dusty-rose);cursor:pointer;margin-bottom:8px;">
         💾 ייצא גיבוי מלא (JSON)
       </button>
       <input type="file" id="obs-restore-file" accept=".json" style="display:none" onchange="onObsRestoreFileChosen(event)"/>
-      <button onclick="document.getElementById('obs-restore-file').click()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--teal);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--teal);cursor:pointer;">
+      <button onclick="document.getElementById('obs-restore-file').click()" style="width:100%;padding:10px;background:white;border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial;font-size:13px;font-weight:600;color:var(--dusty-rose);cursor:pointer;">
         📂 העלה קובץ גיבוי
       </button>
       <div id="obs-restore-preview" style="display:none;margin-top:10px;">
         <div style="background:var(--input-bg);border-radius:8px;padding:12px;font-size:13px;margin-bottom:8px;" id="obs-restore-summary"></div>
-        <div style="background:rgba(122,54,166,0.08);border:1.5px solid var(--teal);border-radius:8px;padding:10px;font-size:12px;color:var(--teal-dark);margin-bottom:8px;">
+        <div style="background:#fff3cd;border:1.5px solid #e6a817;border-radius:8px;padding:10px;font-size:12px;color:#7a4f00;margin-bottom:8px;">
           ⚠️ שחזור ימחק את כל נתוני התצפיות הקיימים (obs_records). גיבוי אוטומטי יישמר לפני הפעולה.
         </div>
-        <button style="width:100%;padding:11px;background:var(--teal-dark);color:white;border:none;border-radius:8px;font-family:Arial;font-size:14px;font-weight:700;cursor:pointer;" onclick="doObsRestore()">⚠️ שחזר</button>
+        <button style="width:100%;padding:11px;background:var(--red);color:white;border:none;border-radius:8px;font-family:Arial;font-size:14px;font-weight:700;cursor:pointer;" onclick="doObsRestore()">⚠️ שחזר</button>
         <button class="btn-sec" style="width:100%;margin-top:6px;" onclick="cancelObsRestore()">ביטול</button>
       </div>
     </div>
