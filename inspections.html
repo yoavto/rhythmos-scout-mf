@@ -152,8 +152,6 @@
     #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgb(69,71,74);
       color:white;padding:10px 20px;border-radius:20px;font-size:14px;font-family:Arial,sans-serif;
       z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
-    #toast
-
     /* ── MODAL ── */
     .mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:2000;
       align-items:flex-end;justify-content:center;padding-bottom:0;}
@@ -392,11 +390,6 @@
       <div class="sec-title">תחזוקה</div>
       <div class="card" onclick="navTo('migration')">
         <div class="card-body"><div class="card-title">🔀 שדרוג מבנה נתונים</div><div class="card-sub">איחוד סוגי מלכודות ומזיקים למבנה משותף</div></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="card" onclick="doLogout()" style="border:1.5px solid var(--red);">
-        <div class="card-body"><div class="card-title" style="color:var(--red);">🚪 התנתקות</div></div>
       </div>
     </div>
   </div>
@@ -855,15 +848,7 @@ function goBack() {
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 function doLogout() {
-  showToast('שלב 1: הכפתור נלחץ');
-  setTimeout(()=>{
-    showToast('שלב 2: קורא לאישור');
-    showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',()=>{
-      showToast('שלב 4: אישרת, מתנתק...');
-      auth.signOut();
-    });
-    showToast('שלב 3: האישור נקרא, החלון אמור להיפתח');
-  }, 800);
+  showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',()=>{auth.signOut();});
 }
 
 auth.onAuthStateChanged(user => {
