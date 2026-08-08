@@ -330,7 +330,7 @@
 <div class="view" id="view-export">
   <div class="sc">
     <div class="fs"><div class="fst">טווח תאריכים</div><div class="dpair"><div class="fr"><label class="frl">מתאריך</label><input class="fin" type="date" id="ex-from"/></div><div class="fr"><label class="frl">עד תאריך</label><input class="fin" type="date" id="ex-to"/></div></div></div>
-    <div class="fs"><div class="fst">סינון</div><div class="fr"><label class="frl">שם המזיק</label><select class="fin" id="ex-ins"><option value="">כל המזיקים</option></select></div></div>
+    <div class="fs"><div class="fst">סינון</div><label class="frl">מזיקים (ריק = הכל)</label><div class="crop-chips" id="ex-ins-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div></div>
     <button class="btn-sav" style="width:100%;margin-top:4px;justify-content:center;" onclick="exportCSV()">⬇️ ייצא לקובץ Excel</button>
     <button class="btn-sec" style="width:100%;margin-top:8px;" onclick="exportBackup()">💾 ייצא גיבוי מלא (JSON)</button>
 
@@ -978,20 +978,35 @@ async function saveInspection(){const trap=traps.find(t=>t.id===curTrapId);const
     showToast('הדיווח נשמר');
   }
   curInspectionId=null;if(phR&&phD){await db.collection(farmCol('traps')).doc(curTrapId).update({pheromoneDate:phD});await loadTraps();renderMarkers();}showToast('הסקר נשמר');navTo('map');}catch(e){showToast('שגיאה: '+e.message);}}
-function prepExport(){const now=new Date(),from=new Date(now.getFullYear(),now.getMonth(),1);document.getElementById('ex-from').value=di(from);document.getElementById('ex-to').value=di(now);const sel=document.getElementById('ex-ins');sel.innerHTML='<option value="">כל המזיקים</option>'+insects.map(i=>`<option value="${i.id}">${i.name}</option>`).join('');}
+let exSelectedInsects = new Set();
+function prepExport(){
+  const now=new Date(),from=new Date(now.getFullYear(),now.getMonth(),1);
+  document.getElementById('ex-from').value=di(from);
+  document.getElementById('ex-to').value=di(now);
+  exSelectedInsects = new Set();
+  renderExInsChips();
+}
+function renderExInsChips(){
+  const el=document.getElementById('ex-ins-chips');
+  el.innerHTML=insects.map(i=>`<button type="button" class="crop-chip${exSelectedInsects.has(i.id)?' sel':''}" onclick="toggleExIns('${i.id}')">${i.name}</button>`).join('');
+}
+function toggleExIns(id){
+  if(exSelectedInsects.has(id))exSelectedInsects.delete(id);
+  else exSelectedInsects.add(id);
+  renderExInsChips();
+}
 async function exportCSV(){
   const from=document.getElementById('ex-from').value,
-        to=document.getElementById('ex-to').value,
-        inf=document.getElementById('ex-ins').value;
+        to=document.getElementById('ex-to').value;
   if(!from||!to){showToast('נא לבחור תאריכים');return;}
   showToast('מייצא...');
-  let q=db.collection(farmCol('inspections'));
-  if(inf)q=q.where('insectId','==',inf);
-  const snap=await q.get();
-  const docsSorted=snap.docs.slice().sort((a,b)=>{
-    const ta=a.data().inspectedAt?.toMillis?.()||0, tb=b.data().inspectedAt?.toMillis?.()||0;
-    return ta-tb;
-  });
+  const snap=await db.collection(farmCol('inspections')).get();
+  const docsSorted=snap.docs.slice()
+    .filter(d=>!exSelectedInsects.size||exSelectedInsects.has(d.data().insectId))
+    .sort((a,b)=>{
+      const ta=a.data().inspectedAt?.toMillis?.()||0, tb=b.data().inspectedAt?.toMillis?.()||0;
+      return ta-tb;
+    });
   const byInsect={};
   docsSorted.forEach(d=>{
     const rec=d.data();
