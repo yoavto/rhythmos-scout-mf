@@ -40,6 +40,24 @@ function togglePwVisibility(){
   else{inp.type='password';btn.textContent='👁';btn.setAttribute('aria-label','הצג סיסמה');}
 }
 
+function authMsg(c){return({'auth/invalid-email':'אימייל לא תקין','auth/user-not-found':'משתמש לא נמצא','auth/wrong-password':'סיסמה שגויה','auth/invalid-credential':'אימייל או סיסמה שגויים','auth/email-already-in-use':'אימייל כבר רשום','auth/weak-password':'סיסמה חלשה מדי'})[c]||'שגיאת התחברות';}
+
+async function doLogin(){
+  const email=document.getElementById('l-email').value.trim(), remember=document.getElementById('remember-me').checked;
+  document.getElementById('auth-err').textContent='';
+  try{
+    await auth.setPersistence(remember?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);
+    await auth.signInWithEmailAndPassword(email,document.getElementById('l-pw').value);
+    if(remember)localStorage.setItem('r_saved_email',email);
+    else localStorage.removeItem('r_saved_email');
+  }catch(e){document.getElementById('auth-err').textContent=authMsg(e.code);}
+}
+
+window.addEventListener('load',()=>{
+  const s=localStorage.getItem('r_saved_email');
+  if(s){document.getElementById('l-email').value=s;document.getElementById('remember-me').checked=true;}
+});
+
 // Turns a bare collection name into this farm's nested path.
 // Call ONLY for farm-scoped collections (plots/surveys/traps/inspections/obs_records) —
 // insp_pests, insects, and obs_meta stay global and must NOT go through this.

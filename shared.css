@@ -1,0 +1,47 @@
+/* Shared between index.html (Traps) and inspections.html (Samples/Observations).
+   Only rules confirmed byte-identical between both files as of this extraction are
+   here. Each file keeps its own :root block for tokens that only it uses
+   (index.html: --red-dark, --gold; inspections.html: --obs-blue, --obs-blue-dark),
+   and keeps its own copies of any rule that had genuine, deliberate per-file
+   differences (padding/sizing tuned separately during earlier work), rather than
+   forcing those to match and silently changing either app's appearance. */
+:root{
+  --red:rgb(137,10,10);
+  --dusty-rose:rgb(195,132,132);
+  --text:rgb(69,71,74);
+  --text-muted:rgba(69,71,74,0.6);
+  --border:rgb(146,148,156);
+  --white:#ffffff;
+  --cream:rgb(255,255,255);
+  --input-bg:rgb(244,245,248);
+  --shadow:0 4px 20px rgba(137,10,10,0.12);
+  --radius:12px;
+  --gtb:70px;
+  --bnav:56px;
+  --farmbg:url('/farm-bg.jpg');
+}
+#bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bnav);
+      background:var(--farmbg) center/cover;
+      border-top:1.5px solid rgba(0,0,0,0.12);z-index:1000;
+      flex-direction:row;align-items:center;justify-content:space-around;padding:0;}
+.bnav-icon{font-size:22px;line-height:1;}
+.btn-p{width:100%;padding:13px;background:var(--red);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;font-family:Arial,sans-serif;cursor:pointer;margin-top:6px;}
+.card-actions{display:flex;gap:6px;flex-shrink:0;}
+.card-body{flex:1;min-width:0;}
+.card-sub{font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-title{font-size:14px;font-weight:600;margin-bottom:2px;}
+.crop-chip{padding:5px 12px;border-radius:16px;border:1.5px solid var(--border);background:white;color:var(--text);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:Arial,sans-serif;}
+.eico{font-size:48px;margin-bottom:12px;}
+.empty{text-align:center;padding:50px 20px;color:var(--text-muted);}
+.err{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height:18px;}
+.fab{background:var(--red);color:white;border:none;border-radius:50%;width:50px;height:50px;font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(137,10,10,0.4);line-height:50px;text-align:center;}
+.fg{margin-bottom:13px;}
+.fl{font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:5px;display:block;}
+.frl{display:block;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:5px;}
+.ia{background:none;border:none;font-size:18px;cursor:pointer;padding:4px;border-radius:6px;}
+.mfoot{display:flex;gap:10px;}
+.mmsg{font-size:14px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;}
+.open{display:flex;}
+.pest-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-left:7px;
+      vertical-align:middle;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;}
+.show{opacity:1;}
