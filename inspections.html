@@ -2216,32 +2216,32 @@ function renderSurveyForm(dateVal, timeVal, plotId, zone) {
               return `<div class="check-row">
                 <div class="check-label">${check}</div>
                 <div class="counter">
-                  <button class="counter-btn minus" onclick="adjustCount('${pest.id}','${check}',-1)">−</button>
+                  <button class="counter-btn plus" onclick="adjustCount('${pest.id}','${check}',1)">+</button>
                   <input class="counter-val" type="number" min="0" value="${val}"
                     id="cnt-${pest.id}-${check.replace(/[^a-zA-Zא-ת0-9]/g,'_')}"
                     onchange="setCount('${pest.id}','${check}',this.value)"/>
-                  <button class="counter-btn plus" onclick="adjustCount('${pest.id}','${check}',1)">+</button>
+                  <button class="counter-btn minus" onclick="adjustCount('${pest.id}','${check}',-1)">−</button>
                 </div>
               </div>`;
             }).join('')}
             <div class="inf-row">
               <div class="inf-label">🌳 עצים נגועים</div>
               <div class="counter">
-                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infTrees',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
+                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infTrees',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
                 <input class="counter-val" type="number" min="0" value="${findings._infTrees||0}"
                   id="inf-trees-${pest.id}"
                   onchange="setInf('${pest.id}','_infTrees',this.value,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})"/>
-                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infTrees',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
+                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infTrees',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
               </div>
             </div>
             <div class="inf-row">
               <div class="inf-label">🍊 פירות נגועים</div>
               <div class="counter">
-                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infFruits',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
+                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infFruits',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
                 <input class="counter-val" type="number" min="0" value="${findings._infFruits||0}"
                   id="inf-fruits-${pest.id}"
                   onchange="setInf('${pest.id}','_infFruits',this.value,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})"/>
-                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infFruits',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
+                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infFruits',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
               </div>
             </div>
             <div class="inc-row">
@@ -2282,17 +2282,17 @@ function renderSurveyForm(dateVal, timeVal, plotId, zone) {
     <div class="survey-hdr-section">
       <div style="display:flex;gap:10px;align-items:flex-end;">
         <div class="fr" style="flex:1;">
-          <label class="frl">גידול</label>
-          <select class="fin" id="sv-crop" onchange="onSurveyCropChange(this.value)">
-            <option value="">בחר גידול...</option>
-            ${[...new Set(plots.map(p=>p.crop).filter(Boolean))].sort().map(c=>`<option value="${c}" ${c===_preCrop?'selected':''}>${c}</option>`).join('')}
+          <label class="frl">חלקה</label>
+          <select class="fin" id="sv-plot" onchange="onSurveyPlotChange(this.value)">
+            <option value="">בחר חלקה...</option>
+            ${plots.map(p=>`<option value="${p.id}" ${p.id===plotId?'selected':''}>${p.name}</option>`).join('')}
           </select>
         </div>
         <div class="fr" style="flex:1;">
-          <label class="frl">חלקה</label>
-          <select class="fin" id="sv-plot" onchange="onSurveyPlotChange(this.value)" ${_preCrop?'':'disabled'}>
-            <option value="">בחר חלקה...</option>
-            ${_preCrop ? plots.filter(p=>p.crop===_preCrop).map(p=>`<option value="${p.id}" ${p.id===plotId?'selected':''}>${p.name}</option>`).join('') : ''}
+          <label class="frl">גידול</label>
+          <select class="fin" id="sv-crop" onchange="onSurveyCropChange(this.value)">
+            <option value="">—</option>
+            ${[...new Set(plots.map(p=>p.crop).filter(Boolean))].sort().map(c=>`<option value="${c}" ${c===_preCrop?'selected':''}>${c}</option>`).join('')}
           </select>
         </div>
         <div class="fr" style="flex:1;">
@@ -2435,14 +2435,10 @@ function selectZone(zone) {
 }
 
 function onSurveyCropChange(crop) {
-  const plotSel = document.getElementById('sv-plot');
-  if(!plotSel) return;
-  const filtered = plots.filter(p => p.crop === crop);
-  plotSel.innerHTML = `<option value="">בחר חלקה...</option>` +
-    filtered.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
-  plotSel.disabled = filtered.length === 0;
-  // Reset plot and pests
-  curSurveyPlotId = '';
+  // Crop is normally derived from the chosen plot (see onSurveyPlotChange below).
+  // This only fires on a manual override, plot stays independently selectable,
+  // its own list is never filtered by crop.
+  surveyCropPests = pests.filter(p => !p.crops?.length || p.crops.includes(crop));
   surveyPestData = {};
   const container = document.getElementById('pest-cards-container');
   if(container) container.innerHTML = '';
@@ -2452,6 +2448,8 @@ function onSurveyPlotChange(plotId) {
   curSurveyPlotId = plotId;
   const plot = plots.find(p=>p.id===plotId);
   const crop = plot?.crop || '';
+  const cropSel = document.getElementById('sv-crop');
+  if(cropSel) cropSel.value = crop;
   surveyCropPests = pests.filter(p => !p.crops?.length || p.crops.includes(crop));
   // Re-render pest cards only
   const container = document.getElementById('pest-cards-container');
@@ -2472,29 +2470,29 @@ function onSurveyPlotChange(plotId) {
             ${(pest.checks||[]).map(check => `<div class="check-row">
               <div class="check-label">${check}</div>
               <div class="counter">
-                <button class="counter-btn minus" onclick="adjustCount('${pest.id}','${check}',-1)">−</button>
+                <button class="counter-btn plus" onclick="adjustCount('${pest.id}','${check}',1)">+</button>
                 <input class="counter-val" type="number" min="0" value="0"
                   id="cnt-${pest.id}-${check.replace(/[^a-zA-Zא-ת0-9]/g,'_')}"
                   onchange="setCount('${pest.id}','${check}',this.value)"/>
-                <button class="counter-btn plus" onclick="adjustCount('${pest.id}','${check}',1)">+</button>
+                <button class="counter-btn minus" onclick="adjustCount('${pest.id}','${check}',-1)">−</button>
               </div>
             </div>`).join('')}
             <div class="inf-row">
               <div class="inf-label">🌳 עצים נגועים</div>
               <div class="counter">
-                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infTrees',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
+                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infTrees',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
                 <input class="counter-val" type="number" min="0" value="0" id="inf-trees-${pest.id}"
                   onchange="setInf('${pest.id}','_infTrees',this.value,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})"/>
-                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infTrees',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
+                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infTrees',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
               </div>
             </div>
             <div class="inf-row">
               <div class="inf-label">🍊 פירות נגועים</div>
               <div class="counter">
-                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infFruits',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
+                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infFruits',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
                 <input class="counter-val" type="number" min="0" value="0" id="inf-fruits-${pest.id}"
                   onchange="setInf('${pest.id}','_infFruits',this.value,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})"/>
-                <button class="counter-btn plus" onclick="adjustInf('${pest.id}','_infFruits',1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">+</button>
+                <button class="counter-btn minus" onclick="adjustInf('${pest.id}','_infFruits',-1,${pest.sampleRows||0},${pest.sampleTrees||0},${pest.sampleFruits||0})">−</button>
               </div>
             </div>
             <div class="inc-row">

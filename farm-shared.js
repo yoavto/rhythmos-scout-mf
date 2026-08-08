@@ -61,6 +61,17 @@ function ptInPoly(lat, lng, polygon) {
   return inside;
 }
 
+// Shared GPS-to-plot lookup (plot only, no zone sub-division — that's a
+// Samples-specific extra layer that stays local to inspections.html).
+// Pass whichever plots array the calling app already has loaded.
+function findPlotByGPS(lat, lng, plotsArr) {
+  for (const plot of (plotsArr || [])) {
+    if (!plot.polygon?.length) continue;
+    if (ptInPoly(lat, lng, plot.polygon)) return plot;
+  }
+  return null;
+}
+
 // Resolves current farm: saved localStorage choice → GPS + polygon match
 // across every farm's plots → manual picker. Always ends with a farm selected.
 function resolveFarm() {
