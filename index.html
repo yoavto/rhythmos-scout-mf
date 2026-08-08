@@ -382,7 +382,17 @@ auth.onAuthStateChanged(u=>{
   }
 });
 
-async function doLogout(){showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',async()=>{await auth.signOut();});}
+async function doLogout(){
+  showToast('שלב 1: הכפתור נלחץ');
+  setTimeout(()=>{
+    showToast('שלב 2: קורא לאישור');
+    showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',async()=>{
+      showToast('שלב 4: אישרת, מתנתק...');
+      await auth.signOut();
+    });
+    showToast('שלב 3: האישור נקרא, החלון אמור להיפתח');
+  }, 800);
+}
 function checkMapsKey(){loadMaps();}
 function loadMaps(){
   if(window.google?.maps){initApp();return;}

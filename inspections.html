@@ -850,7 +850,15 @@ function goBack() {
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 function doLogout() {
-  showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',()=>{auth.signOut();});
+  showToast('שלב 1: הכפתור נלחץ');
+  setTimeout(()=>{
+    showToast('שלב 2: קורא לאישור');
+    showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',()=>{
+      showToast('שלב 4: אישרת, מתנתק...');
+      auth.signOut();
+    });
+    showToast('שלב 3: האישור נקרא, החלון אמור להיפתח');
+  }, 800);
 }
 
 auth.onAuthStateChanged(user => {
