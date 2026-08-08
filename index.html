@@ -258,7 +258,18 @@
     <div class="fs"><div class="fst">פרטי מזיק</div><div class="fr"><label class="frl">שם המזיק</label><input class="fin" type="text" id="if-name" placeholder="לדוגמה: זבוב הים התיכון"/></div></div>
     <div class="fs"><div class="fst">גידולים רלוונטיים</div><p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">בחר את הגידולים שבהם יש לחפש מזיק זה. השאר ריק כדי לכלול את כל הגידולים.</p><div class="crop-chips" id="if-crop-chips" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
     <div class="fs"><div class="fst">צבע מזיק</div><p style="font-size:12px;color:var(--text-muted);margin-bottom:2px;">משמש לזיהוי המזיק על גבי סמני מפה, בדיווחי מדגם ובכפתורי תצפיות</p><div class="crow" id="color-row"></div></div>
-    <div class="fs"><div class="fst">סוגי ממצאים</div><div id="dynf-container"></div><button class="addf" onclick="addDynF()">＋ הוסף שדה</button></div>
+    <div class="fs"><div class="fst">מדגמים</div>
+      <div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">בדיקות (מה לספור)</div>
+      <div id="if-checks"></div>
+      <button class="addf" onclick="addInsectCheck()">+ הוסף בדיקה</button>
+      <div style="font-size:12px;color:var(--text-muted);font-weight:600;margin:16px 0 8px;">גודל מדגם</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div class="fr"><label class="frl">שורות</label><input class="fin" id="if-rows" type="number" placeholder="5" min="1"/></div>
+        <div class="fr"><label class="frl">עצים/שורה</label><input class="fin" id="if-trees" type="number" placeholder="3" min="1"/></div>
+        <div class="fr"><label class="frl">פירות/עץ</label><input class="fin" id="if-fruits" type="number" placeholder="10" min="1"/></div>
+      </div>
+    </div>
+    <div class="fs"><div class="fst">ממצאי מלכודות</div><div id="dynf-container"></div><button class="addf" onclick="addDynF()">＋ הוסף שדה</button></div>
     <div id="if-del-wrap" style="display:none;"><button class="btn-del" onclick="confirmDelInsect()">🗑️ מחק מזיק</button></div>
   </div>
   <div class="ffoot"><button class="btn-sec" onclick="navTo('insects')">ביטול</button><button class="btn-sav" onclick="saveInsect()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div>
@@ -663,7 +674,7 @@ function updateTopBar(v){
   if(eb)eb.style.display=isMain?'flex':'none';
 }
 function goBack(){navTo(BACK[curView]||'map');}
-async function loadInsects(){const s=await db.collection('pest_types').get();insects=s.docs.map(d=>{const v=d.data();return{id:d.id,name:v.name,color:v.color,fields:v.trapFields||[],crops:v.crops||[],sortOrder:v.sortOrder};}).sort((a,b)=>(a.sortOrder??999)-(b.sortOrder??999)||a.name.localeCompare(b.name,'he'));}
+async function loadInsects(){const s=await db.collection('pest_types').get();insects=s.docs.map(d=>{const v=d.data();return{id:d.id,name:v.name,color:v.color,fields:v.trapFields||[],crops:v.crops||[],sortOrder:v.sortOrder,checks:v.checks||[],sampleRows:v.sampleRows,sampleTrees:v.sampleTrees,sampleFruits:v.sampleFruits};}).sort((a,b)=>(a.sortOrder??999)-(b.sortOrder??999)||a.name.localeCompare(b.name,'he'));}
 async function moveInsect(id, direction){
   const idx = insects.findIndex(i => i.id === id);
   if(idx < 0) return;
@@ -699,15 +710,74 @@ function renderInsects(){
       </div>
     </div>`).join('')+fab;
 }
-function openInsectForm(id){selColor='#c0392b';dynFields=[];selInsCrops=new Set();document.getElementById('if-id').value=id||'';document.getElementById('if-name').value='';document.getElementById('if-del-wrap').style.display=id?'block':'none';if(id){const i=insects.find(x=>x.id===id);if(i){document.getElementById('if-name').value=i.name;selColor=i.color;dynFields=i.fields.map(f=>({...f}));selInsCrops=new Set(i.crops||[]);}}else dynFields.push({label:''});renderColorRow();renderDynF();renderInsectCropChips();showV('insect-form');updateTopBar('insect-form');}
+function openInsectForm(id){
+  selColor='#c0392b';dynFields=[];selInsCrops=new Set();
+  document.getElementById('if-id').value=id||'';
+  document.getElementById('if-name').value='';
+  document.getElementById('if-rows').value='';
+  document.getElementById('if-trees').value='';
+  document.getElementById('if-fruits').value='';
+  document.getElementById('if-checks').innerHTML='';
+  document.getElementById('if-del-wrap').style.display=id?'block':'none';
+  if(id){
+    const i=insects.find(x=>x.id===id);
+    if(i){
+      document.getElementById('if-name').value=i.name;
+      selColor=i.color;
+      dynFields=i.fields.map(f=>({...f}));
+      selInsCrops=new Set(i.crops||[]);
+      document.getElementById('if-rows').value=i.sampleRows||'';
+      document.getElementById('if-trees').value=i.sampleTrees||'';
+      document.getElementById('if-fruits').value=i.sampleFruits||'';
+      (i.checks||[]).forEach(c=>addInsectCheckRow(c));
+    }
+  } else {
+    dynFields.push({label:''});
+    addInsectCheckRow('');
+  }
+  renderColorRow();renderDynF();renderInsectCropChips();
+  showV('insect-form');updateTopBar('insect-form');
+}
 function renderInsectCropChips(){const el=document.getElementById('if-crop-chips');const uniqueCrops=cropsCache.map(c=>c.name).sort();if(!uniqueCrops.length){el.innerHTML='<span style="font-size:12px;color:var(--text-muted);">אין גידולים מוגדרים עדיין (מנוהל באפליקציית המדגמים, בהגדרות)</span>';return;}el.innerHTML=uniqueCrops.map(c=>`<button type="button" class="crop-chip${selInsCrops.has(c)?' sel':''}" onclick="toggleInsectCrop('${c}',this)">${c}</button>`).join('');}
 function toggleInsectCrop(c,el){if(selInsCrops.has(c))selInsCrops.delete(c);else selInsCrops.add(c);el.classList.toggle('sel');}
 function renderColorRow(){document.getElementById('color-row').innerHTML=COLORS.map(c=>`<div class="copt ${c===selColor?'sel':''}" style="background:${c}" onclick="pickCol('${c}',this)"></div>`).join('');}
 function pickCol(c,el){selColor=c;document.querySelectorAll('.copt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');}
 function addDynF(){dynFields.push({label:''});renderDynF();}
+function addInsectCheck(){ addInsectCheckRow(''); }
+function addInsectCheckRow(val){
+  const el=document.getElementById('if-checks');
+  const row=document.createElement('div');
+  row.className='dfrow';
+  row.innerHTML=`<input type="text" placeholder="לדוגמה: ביצים, זחלים, פגיעות" value="${val}"/><button class="rmf" onclick="this.parentElement.remove()" type="button">✕</button>`;
+  el.appendChild(row);
+}
 function renderDynF(){document.getElementById('dynf-container').innerHTML=dynFields.map((f,i)=>`<div class="dfrow"><input type="text" value="${f.label}" placeholder="שם שדה, למשל: זכרים" oninput="dynFields[${i}].label=this.value"/><button class="rmf" onclick="rmDynF(${i})">✕</button></div>`).join('');}
 function rmDynF(i){dynFields.splice(i,1);renderDynF();}
-async function saveInsect(){const name=document.getElementById('if-name').value.trim();if(!name){showToast('נא להזין שם מזיק');return;}const fields=dynFields.filter(f=>f.label.trim());if(!fields.length){showToast('נא להוסיף לפחות שדה ממצא אחד');return;}const id=document.getElementById('if-id').value;const data={name,color:selColor,trapFields:fields.map(f=>({label:f.label.trim(),type:'number'})),crops:[...selInsCrops],updatedAt:firebase.firestore.FieldValue.serverTimestamp()};try{if(id)await db.collection('pest_types').doc(id).update(data);else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('pest_types').add(data);}await loadInsects();renderMarkers();showToast('המזיק נשמר');navTo('insects');}catch(e){showToast('שגיאה: '+e.message);}}
+async function saveInsect(){
+  const name=document.getElementById('if-name').value.trim();
+  if(!name){showToast('נא להזין שם מזיק');return;}
+  const fields=dynFields.filter(f=>f.label.trim());
+  const checks=[...document.querySelectorAll('#if-checks input')].map(i=>i.value.trim()).filter(Boolean);
+  const rowsVal=parseInt(document.getElementById('if-rows').value);
+  const treesVal=parseInt(document.getElementById('if-trees').value);
+  const fruitsVal=parseInt(document.getElementById('if-fruits').value);
+  const id=document.getElementById('if-id').value;
+  const data={
+    name,color:selColor,
+    trapFields:fields.map(f=>({label:f.label.trim(),type:'number'})),
+    crops:[...selInsCrops],
+    checks,
+    sampleRows:isNaN(rowsVal)?0:rowsVal,
+    sampleTrees:isNaN(treesVal)?0:treesVal,
+    sampleFruits:isNaN(fruitsVal)?0:fruitsVal,
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  };
+  try{
+    if(id) await db.collection('pest_types').doc(id).update(data);
+    else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();data.sortOrder=insects.length;await db.collection('pest_types').add(data);}
+    await loadInsects();renderMarkers();showToast('המזיק נשמר');navTo('insects');
+  }catch(e){showToast('שגיאה: '+e.message);}
+}
 function confirmDelInsect(){const id=document.getElementById('if-id').value;const ins=insects.find(i=>i.id===id);showConfirm('מחיקת מזיק',`האם למחוק את "${ins?.name}"? אם הסוג הזה גם משמש למדגמים/תצפיות, רק חלק המלכודות שלו יימחק.`,async()=>{const ref=db.collection('pest_types').doc(id);const doc=await ref.get();const hasSampling=(doc.data()?.samplingChecks||[]).length>0;if(hasSampling){await ref.update({trapFields:[],crops:doc.data().crops||[]});}else{await ref.delete();}await loadInsects();renderInsects();renderMarkers();showToast('המזיק נמחק');navTo('insects');});}
 async function loadTraps(){const s=await db.collection(farmCol('traps')).orderBy('createdAt').get();traps=s.docs.map(d=>({id:d.id,...d.data()}));}
 function renderTraps(){

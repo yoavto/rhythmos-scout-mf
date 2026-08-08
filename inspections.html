@@ -565,13 +565,11 @@
     </div>
 
     <div class="section">
-      <div class="sec-title">בדיקות (מה לספור)</div>
+      <div class="sec-title">מדגמים</div>
+      <div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">בדיקות (מה לספור)</div>
       <div id="pestf-checks"></div>
       <button class="addf" onclick="addPestCheck()">+ הוסף בדיקה</button>
-    </div>
-
-    <div class="section">
-      <div class="sec-title">גודל מדגם</div>
+      <div style="font-size:12px;color:var(--text-muted);font-weight:600;margin:16px 0 8px;">גודל מדגם</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
         <div class="fr">
           <label class="frl">שורות</label>
@@ -586,6 +584,12 @@
           <input class="fin" id="pestf-fruits" type="number" placeholder="10" min="1"/>
         </div>
       </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title">ממצאי מלכודות</div>
+      <div id="pestf-trapfields"></div>
+      <button class="addf" onclick="addPestTrapField()">+ הוסף שדה</button>
     </div>
 
     <div id="pestf-del-wrap" style="display:none;padding:0 0 8px;">
@@ -1561,6 +1565,7 @@ function openPestForm(id) {
   document.getElementById('pestf-fruits').value = '';
   document.getElementById('pestf-del-wrap').style.display = id ? 'block' : 'none';
   document.getElementById('pestf-checks').innerHTML = '';
+  pestTrapFields = [];
 
   // Populate crop chips from the canonical crops list (assignment context, not a filter,
   // so it should offer the managed list, not whatever free text happens to exist on plots)
@@ -1577,10 +1582,13 @@ function openPestForm(id) {
       selCrops = new Set(pest.crops||[]);
       curColor = pest.color || '';
       (pest.checks||[]).forEach(c => addPestCheckRow(c));
+      pestTrapFields = (pest.trapFields||[]).map(f=>({...f}));
     }
   } else {
     addPestCheckRow('');
+    pestTrapFields = [{label:''}];
   }
+  renderPestTrapFields();
   renderCropChips(uniqueCrops, selCrops);
   renderPestColorSwatches(curColor);
   navTo('pest-form');
@@ -1627,6 +1635,17 @@ function addPestCheckRow(val) {
   el.appendChild(row);
 }
 
+// Trap-findings fields, ported from index.html's dynFields/addDynF/renderDynF/rmDynF
+// so a pest edited here shows the same trap-count fields Traps itself would show.
+let pestTrapFields = [];
+function addPestTrapField(){ pestTrapFields.push({label:''}); renderPestTrapFields(); }
+function renderPestTrapFields(){
+  document.getElementById('pestf-trapfields').innerHTML = pestTrapFields.map((f,i)=>
+    `<div class="dfrow"><input type="text" value="${f.label}" placeholder="שם שדה, למשל: זכרים" oninput="pestTrapFields[${i}].label=this.value"/><button class="rmf" onclick="rmPestTrapField(${i})">✕</button></div>`
+  ).join('');
+}
+function rmPestTrapField(i){ pestTrapFields.splice(i,1); renderPestTrapFields(); }
+
 async function savePest() {
   const name = document.getElementById('pestf-name').value.trim();
   if(!name) { showToast('נא להזין שם מזיק'); return; }
@@ -1636,8 +1655,9 @@ async function savePest() {
   const treesVal = parseInt(document.getElementById('pestf-trees').value);
   const fruitsVal= parseInt(document.getElementById('pestf-fruits').value);
   const color = document.getElementById('pestf-color').value || '';
+  const trapFields = pestTrapFields.filter(f=>f.label.trim()).map(f=>({label:f.label.trim(),type:'number'}));
   const data = {
-    name, crops, checks, color,
+    name, crops, checks, color, trapFields,
     sampleRows  : isNaN(rowsVal)  ? 0 : rowsVal,
     sampleTrees : isNaN(treesVal) ? 0 : treesVal,
     sampleFruits: isNaN(fruitsVal)? 0 : fruitsVal,
