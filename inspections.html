@@ -718,7 +718,7 @@ let plots   = [];   // {id, name, crop, variety, plantYear, area, polygon[]}
 let pests   = [];   // {id, name, crops[], checks[], sampleRows, sampleTrees, sampleFruits}
 let curView = 'login';
 let importPlotsData = [];
-let curSurveyId=null,surveyPestData={},curSurveyPlotId=null,curSurveyZone='',surveyCropPests=[];
+let curSurveyId=null,surveyPestData={},curSurveyPlotId=null,curSurveyZone='',curSurveyCrop='',surveyCropPests=[];
 let savedPestSel = {};  // saved pest checkbox state for export
 
 // Rich color palette offered when defining a pest's identifying color
@@ -2097,6 +2097,7 @@ async function startNewSurvey() {
   surveyPestData = {};
   curSurveyPlotId = null;
   curSurveyZone = '';
+  curSurveyCrop = '';
   await buildSurveyForm(null);
 }
 
@@ -2109,6 +2110,10 @@ async function openSurvey(id) {
   surveyPestData = data.findings ? JSON.parse(JSON.stringify(data.findings)) : {};
   curSurveyPlotId = data.plotId || null;
   curSurveyZone = data.zone || '';
+  // Legacy records saved before crop became its own field never stored one;
+  // fall back to the linked plot's crop just this once so old surveys don't
+  // open with an empty crop, going forward crop is saved independently.
+  curSurveyCrop = data.crop || plots.find(p=>p.id===curSurveyPlotId)?.crop || '';
   await buildSurveyForm(data);
 }
 
@@ -2119,7 +2124,8 @@ async function buildSurveyForm(existing) {
   const dateVal = existing?.date || di(now);
   const timeVal = existing?.time || now.toTimeString().slice(0,5);
 
-  // Detect plot from GPS
+  // Detect plot from GPS. When a plot is found (here or picked manually),
+  // its own crop field is the single source of truth, never independently set.
   let detectedPlotId = curSurveyPlotId;
   let detectedZone = curSurveyZone;
 
@@ -2135,11 +2141,12 @@ async function buildSurveyForm(existing) {
         detectedZone = found.zone;
         curSurveyPlotId = detectedPlotId;
         curSurveyZone = detectedZone;
+        curSurveyCrop = plots.find(p=>p.id===detectedPlotId)?.crop || curSurveyCrop;
       }
     } catch(e) { /* GPS failed — user picks manually */ }
   }
 
-  renderSurveyForm(dateVal, timeVal, detectedPlotId, detectedZone);
+  renderSurveyForm(dateVal, timeVal, detectedPlotId, detectedZone, curSurveyCrop);
   navTo('survey-form');
 }
 
@@ -2189,12 +2196,8 @@ function calcZoneInPolygon(lat, lng, polygon) {
 
 const ZONES = ['צפון','צפון מזרח','מזרח','דרום מזרח','דרום','דרום מערב','מערב','צפון מערב','מרכז'];
 
-function renderSurveyForm(dateVal, timeVal, plotId, zone) {
-  const _prePlot = plots.find(p=>p.id===plotId);
-  const _preCrop = _prePlot?.crop || '';
-  const plot = plots.find(p=>p.id===plotId);
-  const crop = plot?.crop || '';
-  surveyCropPests = pests.filter(p => !p.crops?.length || p.crops.includes(crop));
+function renderSurveyForm(dateVal, timeVal, plotId, zone, crop) {
+  surveyCropPests = pests.filter(p => !p.crops?.length || p.crops.includes(crop||''));
 
   // Build pest cards HTML
   const pestCardsHtml = surveyCropPests.length === 0
@@ -2290,9 +2293,9 @@ function renderSurveyForm(dateVal, timeVal, plotId, zone) {
         </div>
         <div class="fr" style="flex:1;">
           <label class="frl">גידול</label>
-          <select class="fin" id="sv-crop" onchange="onSurveyCropChange(this.value)">
+          <select class="fin" id="sv-crop" onchange="onSurveyCropChange(this.value)" ${crop?'disabled':''}>
             <option value="">—</option>
-            ${[...new Set(plots.map(p=>p.crop).filter(Boolean))].sort().map(c=>`<option value="${c}" ${c===_preCrop?'selected':''}>${c}</option>`).join('')}
+            ${crops.map(c=>c.name).map(c=>`<option value="${c}" ${c===crop?'selected':''}>${c}</option>`).join('')}
           </select>
         </div>
         <div class="fr" style="flex:1;">
@@ -2435,26 +2438,11 @@ function selectZone(zone) {
 }
 
 function onSurveyCropChange(crop) {
-  // Crop is normally derived from the chosen plot (see onSurveyPlotChange below).
-  // This only fires on a manual override, plot stays independently selectable,
-  // its own list is never filtered by crop.
+  curSurveyCrop = crop;
   surveyCropPests = pests.filter(p => !p.crops?.length || p.crops.includes(crop));
   surveyPestData = {};
-  const container = document.getElementById('pest-cards-container');
-  if(container) container.innerHTML = '';
-}
-
-function onSurveyPlotChange(plotId) {
-  curSurveyPlotId = plotId;
-  const plot = plots.find(p=>p.id===plotId);
-  const crop = plot?.crop || '';
-  const cropSel = document.getElementById('sv-crop');
-  if(cropSel) cropSel.value = crop;
-  surveyCropPests = pests.filter(p => !p.crops?.length || p.crops.includes(crop));
-  // Re-render pest cards only
   const container = document.getElementById('pest-cards-container');
   if(!container) return;
-  surveyPestData = {};
   container.innerHTML = surveyCropPests.length === 0
     ? `<div class="empty"><div class="eico">🐛</div><p>אין מזיקים מוגדרים לגידול זה.</p></div>`
     : surveyCropPests.map(pest => {
@@ -2524,6 +2512,21 @@ function onSurveyPlotChange(plotId) {
       }).join('');
 }
 
+function onSurveyPlotChange(plotId) {
+  curSurveyPlotId = plotId;
+  const plot = plots.find(p=>p.id===plotId);
+  const crop = plot?.crop || '';
+  const cropSel = document.getElementById('sv-crop');
+  if(cropSel) {
+    cropSel.value = crop;
+    // A plot with a defined crop is the single source of truth for it, this
+    // can never be recorded differently on the survey than on the plot itself.
+    // Only when a plot has no crop set at all does manual entry make sense.
+    cropSel.disabled = !!crop;
+  }
+  onSurveyCropChange(crop);
+}
+
 
 async function deleteSurvey(id) {
   showConfirm('מחיקת מדגם', 'האם למחוק את המדגם? פעולה זו אינה ניתנת לביטול.', async () => {
@@ -2562,6 +2565,7 @@ async function saveSurvey(status) {
   }
   const data = {
     plotId, plotName: plot?.name||'', zone: curSurveyZone,
+    crop: document.getElementById('sv-crop')?.value || curSurveyCrop || '',
     date, time, status,
     findings,
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
