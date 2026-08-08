@@ -502,15 +502,19 @@ async function openTrapBubble(trapId, marker) {
   try {
     const snap = await db.collection(farmCol('inspections'))
       .where('trapId', '==', trapId)
-      .orderBy('inspectedAt', 'desc')
-      .limit(1)
       .get();
     if (!snap.empty) {
-      const data = snap.docs[0].data();
-      const dt = data.inspectedAt?.toDate?.() || null;
-      if (dt) lastInspLabel = dt.toLocaleDateString('he-IL');
-      const c = (data.comments || '').trim();
-      if (c) lastInspComment = c.length > 60 ? c.substring(0, 60) + '...' : c;
+      const sorted = snap.docs
+        .map(d => d.data())
+        .filter(d => d.inspectedAt)
+        .sort((a, b) => b.inspectedAt.toMillis() - a.inspectedAt.toMillis());
+      if (sorted.length) {
+        const data = sorted[0];
+        const dt = data.inspectedAt?.toDate?.() || null;
+        if (dt) lastInspLabel = dt.toLocaleDateString('he-IL');
+        const c = (data.comments || '').trim();
+        if (c) lastInspComment = c.length > 60 ? c.substring(0, 60) + '...' : c;
+      }
     }
   } catch(e) { lastInspLabel = '—'; }
 
@@ -554,11 +558,13 @@ async function openLastInspection(trapId) {
   try {
     const snap = await db.collection(farmCol('inspections'))
       .where('trapId', '==', trapId)
-      .orderBy('inspectedAt', 'desc')
-      .limit(1)
       .get();
     if (snap.empty) { showToast('אין דיווחים קודמים למלכודת זו'); return; }
-    const rec = snap.docs[0];
+    const sorted = snap.docs
+      .filter(d => d.data().inspectedAt)
+      .sort((a, b) => b.data().inspectedAt.toMillis() - a.data().inspectedAt.toMillis());
+    if (!sorted.length) { showToast('אין דיווחים קודמים למלכודת זו'); return; }
+    const rec = sorted[0];
     openInspection(trapId, rec.id, rec.data());
   } catch(e) { showToast('שגיאה בטעינת דיווח: ' + e.message); }
 }
@@ -979,11 +985,15 @@ async function exportCSV(){
         inf=document.getElementById('ex-ins').value;
   if(!from||!to){showToast('נא לבחור תאריכים');return;}
   showToast('מייצא...');
-  let q=db.collection(farmCol('inspections')).orderBy('inspectedAt');
+  let q=db.collection(farmCol('inspections'));
   if(inf)q=q.where('insectId','==',inf);
   const snap=await q.get();
+  const docsSorted=snap.docs.slice().sort((a,b)=>{
+    const ta=a.data().inspectedAt?.toMillis?.()||0, tb=b.data().inspectedAt?.toMillis?.()||0;
+    return ta-tb;
+  });
   const byInsect={};
-  snap.docs.forEach(d=>{
+  docsSorted.forEach(d=>{
     const rec=d.data();
     const dt=rec.inspectedAt?.toDate?rec.inspectedAt.toDate():new Date();
     const dateOnly=di(dt);
