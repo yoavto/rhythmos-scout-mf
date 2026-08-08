@@ -21,17 +21,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--cream:rgb(255,255,255);--red:rgb(137,10,10);--red-dark:rgb(100,5,5);--dusty-rose:rgb(195,132,132);--gold:rgb(255,209,63);--text:rgb(69,71,74);--text-muted:rgba(69,71,74,0.6);--border:rgb(146,148,156);--white:#ffffff;--shadow:0 4px 20px rgba(137,10,10,0.12);--radius:12px;--gtb:70px;--bnav:56px;--farmbg:url('data:image/jpeg;base64,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');}
+    :root{--cream:rgb(255,255,255);--red:rgb(137,10,10);--red-dark:rgb(100,5,5);--dusty-rose:rgb(195,132,132);--gold:rgb(255,209,63);--text:rgb(69,71,74);--text-muted:rgba(69,71,74,0.6);--border:rgb(146,148,156);--white:#ffffff;--shadow:0 4px 20px rgba(137,10,10,0.12);--radius:12px;--gtb:70px;--bnav:56px;--farmbg:url('/farm-bg.jpg');}
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:Arial,sans-serif;background:var(--cream);color:var(--text);direction:rtl;}
-    
-    
-    
-    
-    .gnav{background:none;border:none;font-family:Arial,sans-serif;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;padding:4px 10px;border-radius:8px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s;white-space:nowrap;}
-    .gnav .gi{font-size:20px;}
-    .gnav.active{background:rgba(137,10,10,0.1);color:var(--red);font-weight:700;}
-    
     
     
     
@@ -124,18 +116,6 @@
       align-items:center;
     }
     #gtb.visible { display:flex; }
-    /* In RTL flex: first child = RIGHT side, last child = LEFT side */
-    .gtb-right { width:90px; display:flex; align-items:center; justify-content:flex-end; padding-left:8px; flex-shrink:0; }
-    .gtb-nav   { flex:1; display:flex; justify-content:center; align-items:center; }
-    .gtb-left  { width:90px; display:flex; align-items:center; justify-content:flex-start; padding-right:8px; gap:4px; flex-shrink:0; }
-    .gtb-logo  { height:34px; width:auto;  }
-    .gnav{background:none;border:none;font-family:Arial,sans-serif;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;padding:4px 10px;border-radius:8px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s;white-space:nowrap;}
-    .gnav .gi{font-size:20px;}
-    .gnav.active{background:rgba(137,10,10,0.1);color:var(--red);font-weight:700;}
-    
-    #exit-btn  { background:none; border:none; cursor:pointer; padding:4px; color:rgba(69,71,74,0.5); width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; }
-    #exit-btn:hover { color:var(--red); }
-    #exit-btn svg { width:20px; height:20px; transform:scaleX(-1); }
 
     /* ── GTB ── */
     #gtb {
@@ -194,6 +174,8 @@
     .bnav-btn.active{color:var(--red);font-weight:700;background:rgba(137,10,10,0.08);}
     .bnav-icon{font-size:22px;line-height:1;}
 
+    .crop-chip{padding:5px 12px;border-radius:16px;border:1.5px solid var(--border);background:white;color:var(--text);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:Arial,sans-serif;}
+    .crop-chip.sel{background:var(--red);border-color:var(--red);color:white;}
   </style>
 </head>
 <body>
@@ -203,10 +185,10 @@
   <div class="gtb-nav">
     <button class="gnav active" id="gnav-map"     onclick="navTo('map')"><span class="gi">🗺️</span>מפה</button>
     <button class="gnav"        id="gnav-traps"   onclick="navTo('traps')"><span class="gi">📍</span>מלכודות</button>
-    <button class="gnav"        id="gnav-insects" onclick="navTo('insects')"><span class="gi">🐛</span>סוגי מלכודות</button>
     <button class="gnav"        id="gnav-export"  onclick="navTo('export')"><span class="gi">📊</span>דוחות</button>
   </div>
   <div class="gtb-exit-wrap">
+    <button id="settings-btn" onclick="navTo('settings')" title="הגדרות" style="background:none;border:none;cursor:pointer;padding:4px;color:rgba(69,71,74,0.5);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <button id="exit-btn" onclick="doLogout()" title="התנתקות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
   </div>
 </div>
@@ -241,11 +223,20 @@
   <div id="map-pick-bar" style="display:none;position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:21;pointer-events:auto;">
     <button onclick="saveMapPickLocation()" style="padding:12px 28px;background:var(--red);color:white;border:none;border-radius:10px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);">שמור מיקום זה</button>
   </div><button class="map-type-btn" onclick="toggleMapType()">🛰️ לוויין</button><button class="map-fab" onclick="locateMe()" title="מיקום נוכחי">📍</button></div></div>
-<div class="view" id="view-insects"><div class="sc" id="insects-list"></div></div>
+<div class="view" id="view-settings"><div class="sc">
+  <div class="fs"><div class="fst">נתוני ייחוס משותפים</div>
+    <div class="card" onclick="navTo('insects')"><div class="cb"><div class="ct">🐛 סוגי מלכודות</div><div class="cs">משותף בין מלכודות, מדגמים ותצפיות</div></div></div>
+  </div>
+</div></div>
+<div class="view" id="view-insects">
+  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
+  <div class="sc" id="insects-list"></div>
+</div>
 <div class="view" id="view-insect-form">
   <div class="fv"><input type="hidden" id="if-id"/>
     <div class="fs"><div class="fst">פרטי סוג מלכודת</div><div class="fr"><label class="frl">שם סוג המלכודת</label><input class="fin" type="text" id="if-name" placeholder="לדוגמה: זבוב הים התיכון"/></div><div class="fr"><label class="frl">צבע סמן במפה</label><div class="crow" id="color-row"></div></div></div>
     <div class="fs"><div class="fst">סוגי ממצאים</div><div id="dynf-container"></div><button class="addf" onclick="addDynF()">＋ הוסף שדה</button></div>
+    <div class="fs"><div class="fst">גידולים רלוונטיים (ריק = כל הגידולים)</div><div class="crop-chips" id="if-crop-chips" style="display:flex;flex-wrap:wrap;gap:6px;"></div></div>
     <div id="if-del-wrap" style="display:none;"><button class="btn-del" onclick="confirmDelInsect()">🗑️ מחק סוג מלכודת</button></div>
   </div>
   <div class="ffoot"><button class="btn-sec" onclick="navTo('insects')">ביטול</button><button class="btn-sav" onclick="saveInsect()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div>
@@ -293,7 +284,7 @@
     <div class="fs"><div class="fst">פרטי מלכודת</div>
       <div class="fr"><label class="frl">מספר מלכודת</label><input class="fin" type="text" id="tf-trapnum" placeholder="מספר או קוד מלכודת"/></div>
       <div class="fr"><label class="frl">סוג מלכודת</label><input class="fin" type="text" id="tf-traptype" placeholder="למשל: דלתון, יוני"/></div>
-      <div class="fr"><label class="frl">גידול</label><input class="fin" type="text" id="tf-crop" placeholder="לדוגמה: שזיף, תפוח"/></div>
+      <div class="fr"><label class="frl">גידול</label><input class="fin" type="text" id="tf-crop" placeholder="לדוגמה: שזיף, תפוח" oninput="renderIChips()"/></div>
       <div class="fr"><label class="frl">חלקה</label><input class="fin" type="text" id="tf-plot" placeholder="מספר חלקה"/></div>
       <div class="fr"><label class="frl">שורה</label><input class="fin" type="text" id="tf-row" placeholder="מספר שורה"/></div>
       <div class="fr"><label class="frl">עץ</label><input class="fin" type="text" id="tf-tree" placeholder="מספר עץ"/></div>
@@ -337,10 +328,10 @@
 firebase.initializeApp({apiKey:"AIzaSyAucl67C2ZdoxirQYxafLCtWJ1zlER_4FY",authDomain:"rhythmos-scout-mf.firebaseapp.com",projectId:"rhythmos-scout-mf",storageBucket:"rhythmos-scout-mf.firebasestorage.app",messagingSenderId:"284277545202",appId:"1:284277545202:web:66d2041c3670dc10f4d86b"});
 const auth=firebase.auth(),db=firebase.firestore();
 let map=null,mapType='hybrid',trapMarkers={};
-let insects=[],traps=[],curTrapId=null,confirmCb=null;
-let selColor='#c0392b',dynFields=[],selTrapIns=null;
+let insects=[],traps=[],curTrapId=null;
+let selColor='#c0392b',dynFields=[],selTrapIns=null,selInsCrops=new Set(),plotsCache=[],cropsCache=[];
 let mapPickMode=false,mapPickMarker=null,curView='map';
-const BACK={'insects':'map','insect-form':'insects','traps':'map','trap-form':'traps','inspection':'map','export':'map'};
+const BACK={'insects':'settings','insect-form':'insects','traps':'map','trap-form':'traps','inspection':'map','export':'map','settings':'map'};
 const COLORS=['#c0392b','#e67e22','#f1c40f','#27ae60','#2980b9','#8e44ad','#16a085','#2c3e50','#e91e63','#795548'];
 let GTB_H=70,BAR_H=56;
 window.__setGtbHeight = function(px){
@@ -365,11 +356,6 @@ window.addEventListener('load',()=>{
 async function doLogin(){const email=document.getElementById('l-email').value.trim(),remember=document.getElementById('remember-me').checked;try{await auth.setPersistence(remember?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);await auth.signInWithEmailAndPassword(email,document.getElementById('l-pw').value);if(remember)localStorage.setItem('r_saved_email',email);else localStorage.removeItem('r_saved_email');}catch(e){document.getElementById('auth-err').textContent=authMsg(e.code);}}
 
 async function doLogout(){showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',async()=>{await auth.signOut();});}
-function togglePwVisibility(){
-  const inp=document.getElementById('l-pw'), btn=document.getElementById('pw-toggle-btn');
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','הסתר סיסמה');}
-  else{inp.type='password';btn.textContent='👁';btn.setAttribute('aria-label','הצג סיסמה');}
-}
 function authMsg(c){return({'auth/invalid-email':'אימייל לא תקין','auth/user-not-found':'משתמש לא נמצא','auth/wrong-password':'סיסמה שגויה','auth/invalid-credential':'אימייל או סיסמה שגויים','auth/email-already-in-use':'אימייל כבר רשום','auth/weak-password':'סיסמה חלשה מדי'})[c]||'שגיאת התחברות';}
 function checkMapsKey(){loadMaps();}
 function loadMaps(){
@@ -380,7 +366,8 @@ function loadMaps(){
   s.onerror=()=>showToast('שגיאה בטעינת המפה - בדוק חיבור אינטרנט');
   document.head.appendChild(s);
 }
-window.initApp=async function(){await resolveFarm();await loadInsects();await loadTraps();showV('map');setTimeout(initMap,150);};
+window.initApp=async function(){await resolveFarm();await loadInsects();await loadTraps();await loadCropsCache();showV('map');setTimeout(initMap,150);};
+async function loadCropsCache(){const s=await db.collection('crops').orderBy('name').get();cropsCache=s.docs.map(d=>({id:d.id,...d.data()}));}
 function initMap(){
   document.getElementById('map-wrap').style.top='0';
   document.getElementById('map-wrap').style.bottom='56px';
@@ -405,9 +392,11 @@ function initMap(){
 
 // Plots (from the Samples module's insp_plots, read-only) shown as a reference
 // layer on the Traps map, so trap placement can be seen relative to plot boundaries.
+// Also cached in plotsCache[] to source the crop-chip list on insect-type forms.
 async function renderPlotOverlaysOnMap() {
   try {
     const snap = await db.collection(farmCol('insp_plots')).get();
+    plotsCache = snap.docs.map(d => ({id:d.id, ...d.data()}));
     snap.docs.forEach(doc => {
       const plot = doc.data();
       if (!plot.polygon || plot.polygon.length < 3) return;
@@ -587,23 +576,25 @@ function navTo(s){
 }
 function showV(n){curView=n;document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active');v.style.display='';});const el=document.getElementById('view-'+n);if(el){el.classList.add('active');el.style.display='flex';if(n!=='login'){el.style.top=GTB_H+'px';el.style.bottom=BAR_H+'px';}else{el.style.top='0';el.style.bottom='0';}}updateTopBar(n);}
 function updateTopBar(v){
-  const MAIN=['map','traps','insects','export'];
+  const MAIN=['map','traps','export','settings'];
   MAIN.forEach(t=>{const b=document.getElementById('gnav-'+t);if(b)b.classList.toggle('active',t===v);});
   const eb=document.getElementById('exit-btn');
   const isMain=MAIN.includes(v);
   if(eb)eb.style.display=isMain?'flex':'none';
 }
 function goBack(){navTo(BACK[curView]||'map');}
-async function loadInsects(){const s=await db.collection('insects').orderBy('createdAt').get();insects=s.docs.map(d=>({id:d.id,...d.data()}));}
+async function loadInsects(){const s=await db.collection('pest_types').orderBy('createdAt').get();insects=s.docs.map(d=>{const v=d.data();return{id:d.id,name:v.name,color:v.color,fields:v.trapFields||[],crops:v.crops||[]};});}
 function renderInsects(){const el=document.getElementById('insects-list');const fab='<div class="fab-inline"><button class="fab" onclick="openInsectForm(null)">+</button></div>';if(!insects.length){el.innerHTML='<div class="empty"><div class="eico">🐛</div><p>אין סוגי מלכודות מוגדרים.<br>לחץ + להוספה.</p></div>'+fab;return;}el.innerHTML=insects.map(i=>`<div class="card" onclick="openInsectForm('${i.id}')"><div class="cdot" style="background:${i.color}"></div><div class="cb"><div class="ct">${i.name}</div><div class="cs">${i.fields.map(f=>f.label).join(' • ')}</div></div><div class="ca"><button class="ia" onclick="event.stopPropagation();openInsectForm('${i.id}')">✏️</button></div></div>`).join('')+fab;}
-function openInsectForm(id){selColor='#c0392b';dynFields=[];document.getElementById('if-id').value=id||'';document.getElementById('if-name').value='';document.getElementById('if-del-wrap').style.display=id?'block':'none';if(id){const i=insects.find(x=>x.id===id);if(i){document.getElementById('if-name').value=i.name;selColor=i.color;dynFields=i.fields.map(f=>({...f}));}}else dynFields.push({label:''});renderColorRow();renderDynF();showV('insect-form');updateTopBar('insect-form');}
+function openInsectForm(id){selColor='#c0392b';dynFields=[];selInsCrops=new Set();document.getElementById('if-id').value=id||'';document.getElementById('if-name').value='';document.getElementById('if-del-wrap').style.display=id?'block':'none';if(id){const i=insects.find(x=>x.id===id);if(i){document.getElementById('if-name').value=i.name;selColor=i.color;dynFields=i.fields.map(f=>({...f}));selInsCrops=new Set(i.crops||[]);}}else dynFields.push({label:''});renderColorRow();renderDynF();renderInsectCropChips();showV('insect-form');updateTopBar('insect-form');}
+function renderInsectCropChips(){const el=document.getElementById('if-crop-chips');const uniqueCrops=cropsCache.map(c=>c.name).sort();if(!uniqueCrops.length){el.innerHTML='<span style="font-size:12px;color:var(--text-muted);">אין גידולים מוגדרים עדיין (מנוהל באפליקציית המדגמים, בהגדרות)</span>';return;}el.innerHTML=uniqueCrops.map(c=>`<button type="button" class="crop-chip${selInsCrops.has(c)?' sel':''}" onclick="toggleInsectCrop('${c}',this)">${c}</button>`).join('');}
+function toggleInsectCrop(c,el){if(selInsCrops.has(c))selInsCrops.delete(c);else selInsCrops.add(c);el.classList.toggle('sel');}
 function renderColorRow(){document.getElementById('color-row').innerHTML=COLORS.map(c=>`<div class="copt ${c===selColor?'sel':''}" style="background:${c}" onclick="pickCol('${c}',this)"></div>`).join('');}
 function pickCol(c,el){selColor=c;document.querySelectorAll('.copt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');}
 function addDynF(){dynFields.push({label:''});renderDynF();}
 function renderDynF(){document.getElementById('dynf-container').innerHTML=dynFields.map((f,i)=>`<div class="dfrow"><input type="text" value="${f.label}" placeholder="שם שדה, למשל: זכרים" oninput="dynFields[${i}].label=this.value"/><button class="rmf" onclick="rmDynF(${i})">✕</button></div>`).join('');}
 function rmDynF(i){dynFields.splice(i,1);renderDynF();}
-async function saveInsect(){const name=document.getElementById('if-name').value.trim();if(!name){showToast('נא להזין שם סוג מלכודת');return;}const fields=dynFields.filter(f=>f.label.trim());if(!fields.length){showToast('נא להוסיף לפחות שדה ממצא אחד');return;}const id=document.getElementById('if-id').value;const data={name,color:selColor,fields:fields.map(f=>({label:f.label.trim(),type:'number'})),updatedAt:firebase.firestore.FieldValue.serverTimestamp()};try{if(id)await db.collection('insects').doc(id).update(data);else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('insects').add(data);}await loadInsects();renderMarkers();showToast('סוג המלכודת נשמר');navTo('insects');}catch(e){showToast('שגיאה: '+e.message);}}
-function confirmDelInsect(){const id=document.getElementById('if-id').value;const ins=insects.find(i=>i.id===id);showConfirm('מחיקת סוג מלכודת',`האם למחוק את "${ins?.name}"?`,async()=>{await db.collection('insects').doc(id).delete();await loadInsects();renderInsects();renderMarkers();showToast('סוג המלכודת נמחק');navTo('insects');});}
+async function saveInsect(){const name=document.getElementById('if-name').value.trim();if(!name){showToast('נא להזין שם סוג מלכודת');return;}const fields=dynFields.filter(f=>f.label.trim());if(!fields.length){showToast('נא להוסיף לפחות שדה ממצא אחד');return;}const id=document.getElementById('if-id').value;const data={name,color:selColor,trapFields:fields.map(f=>({label:f.label.trim(),type:'number'})),crops:[...selInsCrops],updatedAt:firebase.firestore.FieldValue.serverTimestamp()};try{if(id)await db.collection('pest_types').doc(id).update(data);else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('pest_types').add(data);}await loadInsects();renderMarkers();showToast('סוג המלכודת נשמר');navTo('insects');}catch(e){showToast('שגיאה: '+e.message);}}
+function confirmDelInsect(){const id=document.getElementById('if-id').value;const ins=insects.find(i=>i.id===id);showConfirm('מחיקת סוג מלכודת',`האם למחוק את "${ins?.name}"? אם הסוג הזה גם משמש למדגמים/תצפיות, רק חלק המלכודות שלו יימחק.`,async()=>{const ref=db.collection('pest_types').doc(id);const doc=await ref.get();const hasSampling=(doc.data()?.samplingChecks||[]).length>0;if(hasSampling){await ref.update({trapFields:[],crops:doc.data().crops||[]});}else{await ref.delete();}await loadInsects();renderInsects();renderMarkers();showToast('סוג המלכודת נמחק');navTo('insects');});}
 async function loadTraps(){const s=await db.collection(farmCol('traps')).orderBy('createdAt').get();traps=s.docs.map(d=>({id:d.id,...d.data()}));}
 function renderTraps(){
   const el=document.getElementById('traps-list');
@@ -705,7 +696,7 @@ function clearTrapFilter(){
   applyTrapFilter();
 }
 function openTrapForm(id){selTrapIns=null;document.getElementById('tf-id').value=id||'';document.getElementById('tf-lat').value='';document.getElementById('tf-lng').value='';document.getElementById('gps-disp').textContent='לא נקלט מיקום';['tf-trapnum','tf-traptype','tf-crop','tf-plot','tf-row','tf-tree'].forEach(f=>document.getElementById(f).value='');document.getElementById('tf-phdate').value=di(new Date());document.getElementById('tf-del-wrap').style.display=id?'block':'none';if(id){const t=traps.find(x=>x.id===id);if(t){selTrapIns=t.insectId;document.getElementById('tf-trapnum').value=t.trapNum||'';document.getElementById('tf-traptype').value=t.trapType||'';document.getElementById('tf-crop').value=t.crop||'';document.getElementById('tf-plot').value=t.plot||'';document.getElementById('tf-row').value=t.row||'';document.getElementById('tf-tree').value=t.tree||'';if(t.lat&&t.lng){document.getElementById('tf-lat').value=t.lat;document.getElementById('tf-lng').value=t.lng;document.getElementById('gps-disp').textContent=t.lat.toFixed(6)+', '+t.lng.toFixed(6);}if(t.pheromoneDate)document.getElementById('tf-phdate').value=t.pheromoneDate;}}else captureGPS();renderIChips();showV('trap-form');updateTopBar('trap-form');}
-function renderIChips(){const g=document.getElementById('ichip-grid');if(!insects.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין סוגי מלכודות מוגדרים. הגדר סוג מלכודת תחילה.</p>';return;}g.innerHTML='<div style="display:flex;flex-wrap:wrap;">'+insects.map(i=>{const s=selTrapIns===i.id;return `<div class="ichip" style="border-color:${s?i.color:'var(--border)'};background:${s?i.color:'white'};color:${s?'white':'var(--text)'}" onclick="pickTrapIns('${i.id}')"><span style="width:10px;height:10px;border-radius:50%;background:${s?'white':i.color};flex-shrink:0;display:inline-block;"></span>${i.name}</div>`;}).join('')+'</div>';}
+function renderIChips(){const g=document.getElementById('ichip-grid');const curCrop=document.getElementById('tf-crop')?.value.trim()||'';const visible=insects.filter(i=>!i.crops?.length||!curCrop||i.crops.includes(curCrop));if(!insects.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין סוגי מלכודות מוגדרים. הגדר סוג מלכודת תחילה.</p>';return;}if(!visible.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין סוגי מלכודות המשויכים לגידול זה.</p>';return;}g.innerHTML='<div style="display:flex;flex-wrap:wrap;">'+visible.map(i=>{const s=selTrapIns===i.id;return `<div class="ichip" style="border-color:${s?i.color:'var(--border)'};background:${s?i.color:'white'};color:${s?'white':'var(--text)'}" onclick="pickTrapIns('${i.id}')"><span style="width:10px;height:10px;border-radius:50%;background:${s?'white':i.color};flex-shrink:0;display:inline-block;"></span>${i.name}</div>`;}).join('')+'</div>';}
 function pickTrapIns(id){selTrapIns=id;renderIChips();}
 function captureGPS(){if(!navigator.geolocation){showToast('GPS לא זמין');return;}showToast('קולט מיקום...');navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,ln=p.coords.longitude;document.getElementById('tf-lat').value=la;document.getElementById('tf-lng').value=ln;document.getElementById('gps-disp').textContent=la.toFixed(6)+', '+ln.toFixed(6);showToast('מיקום נקלט');},()=>showToast('שגיאה בקליטת מיקום'));}
 async function saveTrap(){if(!selTrapIns){showToast('נא לבחור סוג מלכודת');return;}const id=document.getElementById('tf-id').value;const la=parseFloat(document.getElementById('tf-lat').value);const ln=parseFloat(document.getElementById('tf-lng').value);const data={insectId:selTrapIns,trapNum:document.getElementById('tf-trapnum').value.trim(),trapType:document.getElementById('tf-traptype').value.trim(),crop:document.getElementById('tf-crop').value.trim(),plot:document.getElementById('tf-plot').value.trim(),row:document.getElementById('tf-row').value.trim(),tree:document.getElementById('tf-tree').value.trim(),pheromoneDate:document.getElementById('tf-phdate').value,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};if(!isNaN(la)&&!isNaN(ln)){data.lat=la;data.lng=ln;}try{if(id)await db.collection(farmCol('traps')).doc(id).update(data);else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection(farmCol('traps')).add(data);}await loadTraps();renderMarkers();showToast('המלכודת נשמרה');navTo('traps');}catch(e){showToast('שגיאה: '+e.message);}}
@@ -801,7 +792,7 @@ async function exportBackup(){
   showToast('מכין גיבוי...');
   try{
     const [insSnap,trapSnap,inspSnap]=await Promise.all([
-      db.collection('insects').get(),
+      db.collection('pest_types').get(),
       db.collection(farmCol('traps')).get(),
       db.collection(farmCol('inspections')).get()
     ]);
@@ -819,11 +810,9 @@ async function exportBackup(){
     showToast('גיבוי הורד בהצלחה ('+inspSnap.size+' סקרים)');
   }catch(e){showToast('שגיאה בגיבוי: '+e.message);}
 }
-function di(d){return d.toISOString().slice(0,10);}
 function fd(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-function showConfirm(title,msg,cb){document.getElementById('cm-title').textContent=title;document.getElementById('cm-msg').textContent=msg;document.getElementById('confirm-modal').classList.add('open');confirmCb=cb;}
-function closeConfirm(ok){document.getElementById('confirm-modal').classList.remove('open');if(ok&&confirmCb)confirmCb();confirmCb=null;}
+
+
 
 </script>
 
@@ -901,7 +890,7 @@ async function doRestore(){
   try{
     // Step 1: auto-backup current state before restoring
     const [insSnap,trapSnap,inspSnap] = await Promise.all([
-      db.collection('insects').get(),
+      db.collection('pest_types').get(),
       db.collection(farmCol('traps')).get(),
       db.collection(farmCol('inspections')).get()
     ]);

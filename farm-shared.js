@@ -12,6 +12,34 @@
 
 let currentFarmId = null, currentFarmName = '';
 
+// ── Shared UI utilities used by both apps (verified byte-identical before
+//    extraction, only whitespace/formatting differed between the two copies) ──
+function di(d){ return d.toISOString().slice(0,10); }
+
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+let confirmCb=null;
+function showConfirm(title,msg,cb){
+  document.getElementById('cm-title').textContent=title;
+  document.getElementById('cm-msg').textContent=msg;
+  document.getElementById('confirm-modal').classList.add('open');
+  confirmCb=cb;
+}
+function closeConfirm(ok){
+  document.getElementById('confirm-modal').classList.remove('open');
+  if(ok&&confirmCb)confirmCb();
+  confirmCb=null;
+}
+
+function togglePwVisibility(){
+  const inp=document.getElementById('l-pw'), btn=document.getElementById('pw-toggle-btn');
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';btn.setAttribute('aria-label','הסתר סיסמה');}
+  else{inp.type='password';btn.textContent='👁';btn.setAttribute('aria-label','הצג סיסמה');}
+}
+
 // Turns a bare collection name into this farm's nested path.
 // Call ONLY for farm-scoped collections (plots/surveys/traps/inspections/obs_records) —
 // insp_pests, insects, and obs_meta stay global and must NOT go through this.
@@ -116,7 +144,7 @@ function showFarmBadge() {
     wrap.id = 'farm-strip';
     wrap.style.cssText = 'display:flex;align-items:center;gap:6px;flex-shrink:0;padding:0 4px;';
     wrap.innerHTML =
-      '<span id="farm-name-label" style="color:var(--teal,#134F5C);font-size:24px;font-weight:700;' +
+      '<span id="farm-name-label" style="color:var(--red,#890a0a);font-size:24px;font-weight:700;' +
       'max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>' +
       '<button type="button" onclick="switchFarm()" style="background:rgba(255,255,255,0.2);' +
       'border:1px solid rgba(255,255,255,0.5);color:white;border-radius:14px;padding:12px 20px;' +
