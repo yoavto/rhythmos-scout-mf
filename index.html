@@ -123,48 +123,14 @@
     }
     #gtb.visible { display:flex; }
 
-    /* ── GTB ── */
-    #gtb {
-      display:none;
-      position:fixed; top:0; left:0; right:0;
-      height:var(--gtb);
-      background:var(--farmbg) center/cover;
-      border-bottom:1.5px solid rgba(0,0,0,0.1);
-      box-shadow:0 2px 8px rgba(0,0,0,0.08);
-      z-index:1000;
-      align-items:center;
-    }
-    #gtb.visible { display:flex; }
-    /* Logo absolutely positioned on the right (start in RTL) */
-    .gtb-logo-wrap { position:absolute; right:10px; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:8px; }
-    .gtb-logo { height:auto; width:auto; max-height:28px; max-width:90px; display:block; object-fit:contain; } @media (min-width:600px){ .gtb-logo { max-height:34px; max-width:160px; } }
-    /* Exit absolutely on the far left */
-    .gtb-exit-wrap { position:absolute; left:10px; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:6px; }
-    /* Back btn inside exit-wrap, hidden by default */
-    
-    #exit-btn { background:none; border:none; cursor:pointer; padding:4px; color:rgba(69,71,74,0.5); width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; }
-    #exit-btn:hover { color:var(--red); }
-    #exit-btn svg { width:20px; height:20px; transform:scaleX(-1); }
-    /* Nav always centered, full width (absolute items don't affect flow) */
-    .gtb-nav { flex:1; display:flex; justify-content:center; align-items:center; }
-    .gnav{background:none;border:none;font-family:Arial,sans-serif;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;padding:4px 10px;border-radius:8px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s;white-space:nowrap;}
-    .gnav .gi{font-size:20px;}
-    .gnav.active{background:rgba(137,10,10,0.1);color:var(--red);font-weight:700;}
-    #back-btn{display:none;align-items:center;gap:4px;flex-direction:row;direction:ltr;padding:5px 10px;background:white;border:2px solid rgb(137,10,10);border-radius:8px;font-family:Arial,sans-serif;font-size:12px;font-weight:600;color:rgb(69,71,74);cursor:pointer;white-space:nowrap;}
-    
     /* ── MOBILE / PWA ── */
     @media (max-width: 480px) {
-      .gnav { padding: 4px 8px; font-size: 11px; }
-      .gnav .gi{font-size:20px;}
-      #back-btn { font-size: 11px; padding: 4px 8px; }
-      .gtb-logo { height: 26px; }
       .card { padding: 11px 12px; }
       .btn-sav, .btn-sec { padding: 10px 16px; font-size: 13px; }
     }
     /* Safe area for notched phones */
-    #gtb { padding-top: env(safe-area-inset-top); }
     #bottom-bar { height: calc(var(--bar) + env(safe-area-inset-bottom)); }
-    .view { top: var(--gtb); bottom:var(--bnav); }
+    .view { top: 0; bottom:var(--bnav); }
 
       .btn-del{padding:10px 0;width:90px;height:100%;background:white;color:rgb(137,10,10);border:1.5px solid rgb(137,10,10);border-radius:8px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;}
     
@@ -183,16 +149,30 @@
 </head>
 <body>
 
-<div id="gtb">
-  
-  <div class="gtb-nav">
-    <button class="gnav active" id="gnav-map"     onclick="navTo('map')"><span class="gi">🗺️</span>מפה</button>
-    <button class="gnav"        id="gnav-traps"   onclick="navTo('traps')"><span class="gi">📍</span>מלכודות</button>
-    <button class="gnav"        id="gnav-export"  onclick="navTo('export')"><span class="gi">📊</span>דוחות</button>
-  </div>
-  <div class="gtb-exit-wrap">
-    <button id="settings-btn" onclick="navTo('settings')" title="הגדרות" style="background:none;border:none;cursor:pointer;padding:4px;color:rgba(69,71,74,0.5);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-    <button id="exit-btn" onclick="doLogout()" title="התנתקות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+<div class="view" id="view-home">
+  <div class="sc" style="padding-top:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <button onclick="showFarmPicker(()=>showFarmNameStatic('home-farm-name'))" style="flex:1;display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;font-family:Arial,sans-serif;font-size:17px;font-weight:700;color:var(--text);cursor:pointer;">
+        <span style="font-size:16px;">🔀</span><span id="home-farm-name">חווה</span>
+      </button>
+      <button onclick="doLogout()" title="התנתקות" style="background:none;border:none;cursor:pointer;padding:8px;margin-right:8px;color:rgba(69,71,74,0.5);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+    </div>
+    <div class="fst" style="text-align:center;margin-bottom:14px;">דיווחים</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+      <div class="card" onclick="window.location.href='/traps'" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📍 מעקב מלכודות</div></div>
+      </div>
+      <div class="card" onclick="goToSamples()" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">🔬 רישום מדגמים</div></div>
+      </div>
+      <div class="card" onclick="goToObs()" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">👁 תצפיות</div></div>
+      </div>
+    </div>
+    <div class="fst" style="text-align:center;margin-bottom:14px;">הגדרות</div>
+    <div class="card" onclick="navTo('settings')" style="justify-content:center;text-align:center;">
+      <div class="card-body"><div class="card-title" style="font-size:16px;">⚙️ גידולים ומזיקים</div></div>
+    </div>
   </div>
 </div>
 
@@ -219,33 +199,121 @@
   </div>
 </div>
 
-<div class="view" id="view-map"><div id="map-wrap"><div id="map-container"></div>
-  <div id="map-pick-overlay" style="display:none;position:absolute;inset:0;pointer-events:none;z-index:20;">
-    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);font-size:36px;line-height:1;">📍</div>
-  </div>
-  <div id="map-pick-bar" style="display:none;position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:21;pointer-events:auto;">
-    <button onclick="saveMapPickLocation()" style="padding:12px 28px;background:var(--red);color:white;border:none;border-radius:10px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);">שמור מיקום זה</button>
-  </div><button class="map-type-btn" onclick="toggleMapType()">🛰️ לוויין</button><button class="map-fab" onclick="locateMe()" title="מיקום נוכחי">📍</button></div></div>
 <div class="view" id="view-settings"><div class="sc">
   <div class="fs"><div class="fst">נתוני ייחוס משותפים</div>
+    <div class="card" onclick="navTo('plots')"><div class="cb"><div class="ct">🗺️ חלקות</div><div class="cs">ניהול חלקות, גידולים ופוליגונים</div></div></div>
     <div class="card" onclick="navTo('insects')"><div class="cb"><div class="ct">🐛 סוגי מזיקים</div><div class="cs">משותף בין מלכודות, מדגמים ותצפיות</div></div></div>
-  </div>
-  <div class="fs"><div class="fst">הגדרות מלכודות</div>
-    <div class="card" onclick="navTo('traphw')"><div class="cb"><div class="ct">🪤 סוגי מלכודת</div><div class="cs">רשימה כללית, רלוונטית למלכודות בלבד</div></div></div>
+    <div class="card" onclick="navTo('crops')"><div class="cb"><div class="ct">🌱 גידולים</div><div class="cs">רשימה כללית, זמינה בכל החוות</div></div></div>
   </div>
 </div></div>
-<div class="view" id="view-traphw">
+<div class="view" id="view-plots">
   <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
-  <div class="sc">
-    <div class="fs"><div class="fst">הוספת סוג מלכודת</div>
-      <div style="display:flex;gap:8px;">
-        <input class="fin" id="traphw-new-name" type="text" placeholder="לדוגמה: דלתון" style="flex:1;" onkeydown="if(event.key==='Enter')addTrapHardware();"/>
-        <button class="btn-sav" style="width:80px;" onclick="addTrapHardware()">הוסף</button>
+  <div class="sc" id="plots-list"></div>
+</div>
+
+<!-- Plot form -->
+<div class="view" id="view-plot-form">
+  <div class="fv">
+    <div class="section">
+      <div class="sec-title">פרטי חלקה</div>
+      <input type="hidden" id="pf-id"/>
+      <div class="fr"><label class="frl">שם החלקה</label>
+        <input class="fin" id="pf-name" type="text" placeholder="לדוגמה: נטע 1 מערב"/>
+      </div>
+      <div class="fr"><label class="frl">גידול</label>
+        <select class="fin" id="pf-crop"></select>
+      </div>
+      <div class="fr"><label class="frl">זן</label>
+        <input class="fin" id="pf-variety" type="text" placeholder="לדוגמה: וונדרפול, האס"/>
+      </div>
+      <div class="fr"><label class="frl">שנת נטיעה</label>
+        <input class="fin" id="pf-year" type="number" placeholder="2020" min="1980" max="2030"/>
+      </div>
+      <div class="fr"><label class="frl">שטח (דונם)</label>
+        <input class="fin" id="pf-area" type="number" placeholder="לדוגמה: 15" step="0.1"/>
       </div>
     </div>
-    <div class="fs"><div class="fst">סוגים קיימים</div><div id="traphw-list"></div></div>
+    <div class="section">
+      <div class="sec-title">פוליגון (אופציונלי)</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;">
+        <button type="button" class="map-tab-btn active" id="pf-tab-map" onclick="switchPlotMapTab('map')">🖊 ציור</button>
+        <button type="button" class="map-tab-btn" id="pf-tab-coords" onclick="switchPlotMapTab('coords')">🧭 קואורדינטות</button>
+      </div>
+      <div id="pf-map-panel">
+        <div class="plot-map-toolbar">
+          <button type="button" class="map-tool-btn active" id="pf-btn-draw" onclick="setPlotDrawMode(true)">✏️ ציור</button>
+          <button type="button" class="map-tool-btn" onclick="undoLastPlotPoint()">↩ בטל נקודה</button>
+          <button type="button" class="map-tool-btn danger" onclick="clearPlotPolygon()">🗑 נקה</button>
+          <button type="button" class="map-tool-btn" onclick="centerPlotMapGPS()">📍 מיקום</button>
+          <button type="button" class="map-tool-btn" id="pf-btn-maptype" onclick="togglePlotMapType()">🛰 לוויין</button>
+          <span class="plot-point-count" id="pf-point-count"></span>
+        </div>
+        <div id="plot-map-canvas" class="plot-map-container"></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">לחץ על המפה להוספת נקודה. לחץ על נקודה קיימת למחיקתה. גרור נקודה להזזתה.</div>
+      </div>
+      <div id="pf-coords-panel" style="display:none;">
+        <textarea id="pf-polygon-coords" class="coord-textarea" rows="10" placeholder="32.192507,34.923707&#10;32.192709,34.923881&#10;..."></textarea>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">שורה אחת לכל נקודה, בפורמט lat,lng</div>
+      </div>
+    </div>
+    <div id="pf-del-wrap" style="display:none;padding:0 0 8px;">
+      <button class="btn-del" style="width:100%;" onclick="deletePlot()">מחק חלקה</button>
+    </div>
+  </div>
+  <div class="ffoot">
+    <button class="btn-sec" onclick="confirmLeaveIfDirty(()=>navTo('plots'))">ביטול</button>
+    <button class="btn-sav" onclick="savePlot()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      שמור
+    </button>
   </div>
 </div>
+
+<!-- Plot import (bulk) -->
+<div class="view" id="view-plots-import">
+  <div class="fv">
+    <div class="section">
+      <div class="sec-title">ייבוא חלקות מ-Excel</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.6;">
+        פורמט נדרש: עמודות <strong>plot name, Latitude, Longitude, גידול, זן</strong><br/>
+        כל שורה היא נקודת פוליגון — שורות עם אותו שם חלקה נאספות לפוליגון אחד.
+      </p>
+      <input type="file" id="plots-import-file" accept=".xlsx,.xls" style="display:none" onchange="importPlotsFromExcel(event)"/>
+      <button onclick="document.getElementById('plots-import-file').click()" style="width:100%;padding:14px;background:white;border:2px dashed var(--dusty-rose);border-radius:12px;font-family:Arial,sans-serif;font-size:14px;color:var(--dusty-rose);cursor:pointer;font-weight:600;">
+        📁 בחר קובץ Excel לייבוא
+      </button>
+      <div id="import-preview" style="display:none;">
+        <div class="sec-title" style="margin-top:12px;">תצוגה מקדימה</div>
+        <div id="import-preview-list"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ffoot">
+    <button class="btn-sec" onclick="confirmLeaveIfDirty(()=>navTo('plots'))">ביטול</button>
+    <button class="btn-sav" id="import-confirm-btn" style="display:none;" onclick="confirmImportPlots()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      ייבא
+    </button>
+  </div>
+</div>
+
+<div class="view" id="view-crops">
+  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
+  <div class="sc">
+    <div class="section">
+      <div class="sec-title">הוספת גידול</div>
+      <div style="display:flex;gap:8px;">
+        <input class="fin" id="crop-new-name" type="text" placeholder="לדוגמה: רימון" style="flex:1;" onkeydown="if(event.key==='Enter')addCrop();"/>
+        <button class="btn-sav" style="width:80px;" onclick="addCrop()">הוסף</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-title">גידולים קיימים</div>
+      <div id="crops-list"></div>
+    </div>
+  </div>
+</div>
+
 <div class="view" id="view-insects">
   <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
   <div class="sc" id="insects-list"></div>
@@ -269,91 +337,7 @@
     <div class="fs"><div class="fst">ממצאי מלכודות</div><div id="dynf-container"></div><button class="addf" onclick="addDynF()">＋ הוסף שדה</button></div>
     <div id="if-del-wrap" style="display:none;"><button class="btn-del" onclick="confirmDelInsect()">🗑️ מחק מזיק</button></div>
   </div>
-  <div class="ffoot"><button class="btn-sec" onclick="navTo('insects')">ביטול</button><button class="btn-sav" onclick="saveInsect()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div>
-</div>
-<div class="view" id="view-traps">
-  <div id="traps-filter-bar" style="background:var(--white);border-bottom:1px solid var(--border);padding:8px 12px;flex-shrink:0;">
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-      <div style="position:relative;">
-        <button onclick="toggleDropdown('dd-pest')" id="btn-pest" style="width:100%;font-size:12px;padding:5px 6px;border-radius:6px;border:0.5px solid var(--border);background:rgb(244,245,248);color:var(--text);font-family:Arial;cursor:pointer;text-align:right;display:flex;justify-content:space-between;align-items:center;">
-          <span id="lbl-pest">שם המזיק</span><span style="font-size:9px;opacity:0.5;">▼</span>
-        </button>
-        <div id="dd-pest" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:500;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
-      </div>
-      <div style="position:relative;">
-        <button onclick="toggleDropdown('dd-crop')" id="btn-crop" style="width:100%;font-size:12px;padding:5px 6px;border-radius:6px;border:0.5px solid var(--border);background:rgb(244,245,248);color:var(--text);font-family:Arial;cursor:pointer;text-align:right;display:flex;justify-content:space-between;align-items:center;">
-          <span id="lbl-crop">גידול</span><span style="font-size:9px;opacity:0.5;">▼</span>
-        </button>
-        <div id="dd-crop" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:500;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
-      </div>
-      <div style="position:relative;">
-        <button onclick="toggleDropdown('dd-plot')" id="btn-plot" style="width:100%;font-size:12px;padding:5px 6px;border-radius:6px;border:0.5px solid var(--border);background:rgb(244,245,248);color:var(--text);font-family:Arial;cursor:pointer;text-align:right;display:flex;justify-content:space-between;align-items:center;">
-          <span id="lbl-plot">חלקה</span><span style="font-size:9px;opacity:0.5;">▼</span>
-        </button>
-        <div id="dd-plot" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:500;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
-      <button onclick="clearTrapFilter()" style="font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;font-family:Arial;">נקה סינון ✕</button>
-      <span id="trap-count" style="font-size:11px;color:rgba(69,71,74,0.6);"></span>
-    </div>
-  </div>
-  <div class="sc" id="traps-list"></div>
-</div>
-<div class="view" id="view-trap-form">
-  <div class="fv"><input type="hidden" id="tf-id"/>
-    <div class="fs"><div class="fst">מיקום מלכודת</div>
-      <div style="font-size:12px;color:var(--text);font-family:monospace;background:var(--input-bg);border-radius:6px;padding:6px 10px;margin-bottom:10px;min-height:22px;" id="gps-disp">לא נקלט מיקום</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <button onclick="captureGPS()" style="width:100%;padding:10px;background:var(--red);color:white;border:1.5px solid var(--red);border-radius:8px;font-family:Arial,sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-sizing:border-box;">📡 שמור מיקום נוכחי</button>
-        <button onclick="startMapPick()" style="width:100%;padding:10px;background:white;color:var(--dusty-rose);border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial,sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-sizing:border-box;">🗺️ סמן על המפה</button>
-      </div>
-      <input type="hidden" id="tf-lat"/><input type="hidden" id="tf-lng"/>
-    </div>
-    <div class="fs"><div class="fst">חלקה וגידול</div>
-      <div class="fr"><label class="frl">חלקה</label><select class="fin" id="tf-plot" onchange="onTrapPlotChange(this.value)"></select></div>
-      <div class="fr"><label class="frl">גידול</label><select class="fin" id="tf-crop" onchange="renderIChips()"></select></div>
-    </div>
-    <div class="fs"><div class="fst">שם המזיק</div><div id="ichip-grid"></div></div>
-    <div class="fs"><div class="fst">פרטי מלכודת</div>
-      <div class="fr"><label class="frl">סוג מלכודת</label><select class="fin" id="tf-traptype"></select></div>
-      <div class="fr"><label class="frl">מספר מלכודת</label><input class="fin" type="text" id="tf-trapnum" placeholder="מספר או קוד מלכודת"/></div>
-      <div class="fr"><label class="frl">שורה</label><input class="fin" type="text" id="tf-row" placeholder="מספר שורה"/></div>
-      <div class="fr"><label class="frl">עץ</label><input class="fin" type="text" id="tf-tree" placeholder="מספר עץ"/></div>
-    </div>
-    <div class="fs"><div class="fst">פרומון</div><div class="fr"><label class="frl">תאריך החלפה אחרונה</label><input class="fin" type="date" id="tf-phdate"/></div></div>
-    <div id="tf-del-wrap" style="display:none;"><button class="btn-del" onclick="deleteTrap()">🗑️ מחק מלכודת</button></div>
-  </div>
-  <div class="ffoot"><button class="btn-sec" onclick="navTo('traps')">ביטול</button><button class="btn-sav" onclick="saveTrap()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div>
-</div>
-<div class="view" id="view-inspection"><div class="fv" id="insp-content"></div><div class="ffoot"><button class="btn-sec" onclick="navTo('map')">ביטול</button><button id="del-insp-btn" class="btn-del" onclick="deleteInspection()" style="display:none;">מחק דיווח</button><button class="btn-sav" onclick="saveInspection()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div></div>
-<div class="view" id="view-export">
-  <div class="sc">
-    <div class="fs"><div class="fst">טווח תאריכים</div><div class="dpair"><div class="fr"><label class="frl">מתאריך</label><input class="fin" type="date" id="ex-from"/></div><div class="fr"><label class="frl">עד תאריך</label><input class="fin" type="date" id="ex-to"/></div></div></div>
-    <div class="fs"><div class="fst">סינון</div><label class="frl">מזיקים (ריק = הכל)</label><div class="crop-chips" id="ex-ins-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div></div>
-    <button class="btn-sav" style="width:100%;margin-top:4px;justify-content:center;" onclick="exportCSV()">⬇️ ייצא לקובץ Excel</button>
-    <button class="btn-sec" style="width:100%;margin-top:8px;" onclick="exportBackup()">💾 ייצא גיבוי מלא (JSON)</button>
-
-    <div class="fs" style="margin-top:16px;">
-      <div class="fst">שחזור נתונים</div>
-      <div id="restore-box">
-        <p style="font-size:13px;color:var(--text-muted);text-align:right;margin:8px 0;">בחר קובץ גיבוי JSON לשחזור:</p>
-        <input type="file" id="restore-file" accept=".json" style="display:none" onchange="onRestoreFileChosen(event)"/>
-        <button class="btn-sec" style="width:100%;margin-top:4px;" onclick="document.getElementById('restore-file').click()">📂 בחר קובץ גיבוי</button>
-      </div>
-      <div id="restore-preview" style="display:none;margin-top:12px;">
-        <div style="background:rgb(244,245,248);border-radius:8px;padding:12px;text-align:right;font-size:13px;color:var(--text);">
-          <div style="font-weight:700;margin-bottom:6px;">📋 פרטי הגיבוי הנבחר:</div>
-          <div id="restore-summary"></div>
-        </div>
-        <div style="margin-top:10px;background:#fff3cd;border:1.5px solid #e6a817;border-radius:8px;padding:10px;text-align:right;font-size:12px;color:#7a4f00;">
-          ⚠️ <strong>אזהרה:</strong> פעולת השחזור תמחק את כל הנתונים הקיימים במערכת ותחליף אותם בנתוני הגיבוי. לפני השחזור יישמר גיבוי אוטומטי של המצב הנוכחי.
-        </div>
-        <button id="restore-btn" class="btn-sav" style="width:100%;margin-top:10px;justify-content:center;background:rgb(137,10,10);" onclick="doRestore()">⚠️ שחזר נתונים</button>
-        <button class="btn-sec" style="width:100%;margin-top:6px;" onclick="cancelRestore()">ביטול</button>
-      </div>
-    </div>
-  </div>
+  <div class="ffoot"><button class="btn-sec" onclick="confirmLeaveIfDirty(()=>navTo('insects'))">ביטול</button><button class="btn-sav" onclick="saveInsect()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div>
 </div>
 
 <script>
@@ -362,314 +346,438 @@ const auth=firebase.auth(),db=firebase.firestore();
 let map=null,mapType='hybrid',trapMarkers={};
 let insects=[],traps=[],curTrapId=null;
 let selColor='#c0392b',dynFields=[],selTrapIns=null,selInsCrops=new Set(),plotsCache=[],cropsCache=[],trapHardware=[];
-let mapPickMode=false,mapPickMarker=null,curView='map';
-const BACK={'insects':'settings','insect-form':'insects','traphw':'settings','traps':'map','trap-form':'traps','inspection':'map','export':'map','settings':'map'};
+let curView='login';
+const BACK={'insects':'settings','insect-form':'insects','settings':'home','plots':'settings','plot-form':'plots','crops':'settings'};
 const COLORS=['#e53935','#d81b60','#8e24aa','#3949ab','#1e88e5','#00acc1','#00897b','#43a047','#c0ca33','#ffb300','#fb8c00','#6d4c41','#000000','#bdbdbd','#c8ad7f','#f06292'];
-let GTB_H=70,BAR_H=56;
-window.__setGtbHeight = function(px){
-  GTB_H = px;
-  const active = document.querySelector('.view.active');
-  if(active && active.id !== 'view-login'){ active.style.top = GTB_H+'px'; }
-};
+let BAR_H=56;
 
 auth.onAuthStateChanged(u=>{
-  const gtb=document.getElementById('gtb'),bar=document.getElementById('bottom-bar');
-  if(u){sessionStorage.removeItem('rhythmos_just_switched');checkMapsKey();gtb.classList.add('visible');var bn=document.getElementById('bottom-nav');if(bn)bn.classList.add('visible');}
-  else{
+  if(u){
+    sessionStorage.removeItem('rhythmos_just_switched');
+    initApp();
+  } else {
     if(!sessionStorage.getItem('rhythmos_just_switched')){showV('login');}
-    gtb.classList.remove('visible');var bn2=document.getElementById('bottom-nav');if(bn2)bn2.classList.remove('visible');
   }
 });
 
 async function doLogout(){showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',async()=>{await auth.signOut();});}
-function checkMapsKey(){loadMaps();}
-function loadMaps(){
-  if(window.google?.maps){initApp();return;}
-  const s=document.createElement('script');
-  s.src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBR-YULE9PQCHzIEQGnllYaJ4jalSTD3IM&loading=async&callback=initApp';
-  s.async=true;
-  s.onerror=()=>showToast('שגיאה בטעינת המפה - בדוק חיבור אינטרנט');
-  document.head.appendChild(s);
-}
-window.initApp=async function(){await resolveFarm();await loadInsects();await loadTraps();await loadCropsCache();await loadTrapHardware();showV('map');setTimeout(initMap,150);};
+async function initApp(){await resolveFarm();await loadInsects();await loadPlots();await loadCropsCache();await loadCrops();await seedCropsIfEmpty();navTo('home');}
 async function loadCropsCache(){const s=await db.collection('crops').orderBy('name').get();cropsCache=s.docs.map(d=>({id:d.id,...d.data()}));}
-async function loadTrapHardware(){const s=await db.collection('trap_hardware').orderBy('name').get();trapHardware=s.docs.map(d=>({id:d.id,...d.data()}));}
-function initMap(){
-  document.getElementById('map-wrap').style.top='0';
-  document.getElementById('map-wrap').style.bottom='56px';
-  map=new google.maps.Map(document.getElementById('map-container'),{center:{lat:31.8,lng:34.9},zoom:13,mapTypeId:'hybrid',disableDefaultUI:true,gestureHandling:'greedy',clickableIcons:false});
-  // Center to user's location on load + show blue dot
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(
-      p=>{map.panTo({lat:p.coords.latitude,lng:p.coords.longitude});map.setZoom(15);updateLocationDot(p);},
-      ()=>{}
-    );
-    // Keep dot updated as user moves
-    navigator.geolocation.watchPosition(
-      p=>updateLocationDot(p),
-      ()=>{}, {enableHighAccuracy:true, maximumAge:10000}
-    );
-  }
-  map.addListener('click',e=>{ if(!mapPickMode)return; /* location set via center pin */ });
-
-  renderMarkers();
-  renderPlotOverlaysOnMap();
-}
-
-// Plots (from the Samples module's insp_plots, read-only) shown as a reference
-// layer on the Traps map, so trap placement can be seen relative to plot boundaries.
-// Also cached in plotsCache[] to source the crop-chip list on insect-type forms.
-async function renderPlotOverlaysOnMap() {
-  try {
-    const snap = await db.collection(farmCol('insp_plots')).get();
-    plotsCache = snap.docs.map(d => ({id:d.id, ...d.data()}));
-    snap.docs.forEach(doc => {
-      const plot = doc.data();
-      if (!plot.polygon || plot.polygon.length < 3) return;
-      new google.maps.Polygon({
-        paths: plot.polygon, map,
-        strokeColor: '#ffe14d', strokeWeight: 2, fillColor: '#ffe14d', fillOpacity: 0.15,
-        clickable: false,
-      });
-      if (plot.name) {
-        const bounds = new google.maps.LatLngBounds();
-        plot.polygon.forEach(pt => bounds.extend(pt));
-        new google.maps.Marker({
-          position: bounds.getCenter(), map,
-          label: { text: plot.name, color: '#890a0a', fontSize: '12px', fontWeight: '800' },
-          icon: { path: 0, scale: 0 }, // invisible icon — label only
-          clickable: false,
-        });
-      }
-    });
-  } catch (e) { console.error('Failed to load plot overlays', e); }
-}
-function toggleMapType(){mapType=mapType==='hybrid'?'roadmap':'hybrid';map.setMapTypeId(mapType);document.querySelector('.map-type-btn').textContent=mapType==='hybrid'?'🛰️ לוויין':'🗺️ מפה';}
-function locateMe(){if(!navigator.geolocation){showToast('GPS לא זמין');return;}navigator.geolocation.getCurrentPosition(p=>{map.panTo({lat:p.coords.latitude,lng:p.coords.longitude});map.setZoom(17);updateLocationDot(p);},()=>showToast('לא ניתן לקבל מיקום'));}
-function renderMarkers(){Object.values(trapMarkers).forEach(m=>m.setMap(null));trapMarkers={};traps.forEach(addMarker);}
-
-// ── Location dot (blue, like Google Maps) ──
-let locationDot=null, locationCircle=null;
-function updateLocationDot(pos){
-  const latlng={lat:pos.coords.latitude, lng:pos.coords.longitude};
-  if(!map)return;
-  if(!locationDot){
-    locationDot=new google.maps.Marker({
-      position:latlng, map,
-      icon:{
-        path:google.maps.SymbolPath.CIRCLE,
-        scale:9,
-        fillColor:'#4285F4',
-        fillOpacity:1,
-        strokeColor:'white',
-        strokeWeight:2.5
-      },
-      zIndex:200,
-      title:'מיקומך'
-    });
-    locationCircle=new google.maps.Circle({
-      map, center:latlng,
-      radius:pos.coords.accuracy,
-      fillColor:'#4285F4', fillOpacity:0.12,
-      strokeColor:'#4285F4', strokeOpacity:0.4, strokeWeight:1
-    });
-  } else {
-    locationDot.setPosition(latlng);
-    locationCircle.setCenter(latlng);
-    locationCircle.setRadius(pos.coords.accuracy);
-  }
-}
-
-// ── Map bubble: shows on marker tap ─────────────────────────────────────────
-let activeBubble = null;
-
-async function openTrapBubble(trapId, marker) {
-  // Close existing bubble
-  if (activeBubble) { activeBubble.close(); activeBubble = null; }
-
-  const trap = traps.find(t => t.id === trapId);
-  const ins = insects.find(i => i.id === trap?.insectId);
-  if (!trap) return;
-
-  const trapLabel = [
-    trap.plot || '',
-    trap.trapNum ? 'מלכודת ' + trap.trapNum : ''
-  ].filter(Boolean).join(' | ');
-
-  // Fetch last inspection date + comments
-  let lastInspLabel = 'אין סקרים';
-  let lastInspComment = '';
-  try {
-    const snap = await db.collection(farmCol('inspections'))
-      .where('trapId', '==', trapId)
-      .get();
-    if (!snap.empty) {
-      const sorted = snap.docs
-        .map(d => d.data())
-        .filter(d => d.inspectedAt)
-        .sort((a, b) => b.inspectedAt.toMillis() - a.inspectedAt.toMillis());
-      if (sorted.length) {
-        const data = sorted[0];
-        const dt = data.inspectedAt?.toDate?.() || null;
-        if (dt) lastInspLabel = dt.toLocaleDateString('he-IL');
-        const c = (data.comments || '').trim();
-        if (c) lastInspComment = c.length > 60 ? c.substring(0, 60) + '...' : c;
-      }
-    }
-  } catch(e) { lastInspLabel = '—'; }
-
-  const infoWindow = new google.maps.InfoWindow({
-    content: `<div dir="rtl" style="font-family:Arial;min-width:190px;padding:4px 2px;">
-      <div style="font-weight:700;font-size:14px;color:#89000a;margin-bottom:3px;">${ins?.name || 'מזיק לא ידוע'}</div>
-      <div style="font-size:11px;color:#666;margin-bottom:4px;">${trapLabel}</div>
-      <div style="font-size:11px;color:#444;margin-bottom:${lastInspComment?'4px':'10px'};">תאריך סקר אחרון: <strong>${lastInspLabel}</strong></div>
-      ${lastInspComment?`<div style="font-size:11px;color:#666;margin-bottom:10px;font-style:italic;">${lastInspComment}</div>`:''}
-      <div style="display:flex;gap:8px;">
-        <button onclick="closeBubbleAndDo('new','${trapId}')"
-          style="flex:1;padding:7px 6px;background:#89000a;color:white;border:none;border-radius:7px;font-family:Arial;font-size:12px;font-weight:600;cursor:pointer;">
-          ✚ סקר חדש
-        </button>
-        <button onclick="closeBubbleAndDo('last','${trapId}')"
-          style="flex:1;padding:7px 6px;background:white;color:#444;border:1.5px solid #ccc;border-radius:7px;font-family:Arial;font-size:12px;cursor:pointer;">
-          ✏️ דיווח אחרון
-        </button>
-      </div>
-    </div>`,
-    disableAutoPan: false
-  });
-  infoWindow.open(map, marker);
-  activeBubble = infoWindow;
-  google.maps.event.addListenerOnce(map, 'click', () => {
-    infoWindow.close(); activeBubble = null;
-  });
-}
-
-function closeBubbleAndDo(action, trapId) {
-  if (activeBubble) { activeBubble.close(); activeBubble = null; }
-  if (action === 'new') {
-    openInspection(trapId);
-  } else {
-    openLastInspection(trapId);
-  }
-}
-
-async function openLastInspection(trapId) {
-  showToast('טוען דיווח אחרון...');
-  try {
-    const snap = await db.collection(farmCol('inspections'))
-      .where('trapId', '==', trapId)
-      .get();
-    if (snap.empty) { showToast('אין דיווחים קודמים למלכודת זו'); return; }
-    const sorted = snap.docs
-      .filter(d => d.data().inspectedAt)
-      .sort((a, b) => b.data().inspectedAt.toMillis() - a.data().inspectedAt.toMillis());
-    if (!sorted.length) { showToast('אין דיווחים קודמים למלכודת זו'); return; }
-    const rec = sorted[0];
-    openInspection(trapId, rec.id, rec.data());
-  } catch(e) { showToast('שגיאה בטעינת דיווח: ' + e.message); }
-}
-
-function addMarker(trap){if(!map||!trap.lat||!trap.lng)return;const ins=insects.find(i=>i.id===trap.insectId);const col=ins?.color||'#8B1A1A';const m=new google.maps.Marker({position:{lat:trap.lat,lng:trap.lng},map,title:`${ins?.name||'?'} | ${trap.plot||''} שורה ${trap.row||''} עץ ${trap.tree||''}`,icon:{path:'M 0,-16 C -6,-16 -10,-11 -10,-6 C -10,2 0,14 0,14 C 0,14 10,2 10,-6 C 10,-11 6,-16 0,-16 Z',fillColor:col,fillOpacity:0.93,strokeColor:'white',strokeWeight:1.5,scale:1,anchor:new google.maps.Point(0,14)},zIndex:100});m.addListener('click',()=>openTrapBubble(trap.id,m));trapMarkers[trap.id]=m;}
-function startMapPick(){
-  if(!map){showToast('המפה לא נטענה עדיין');return;}
-  mapPickMode=true;
-  navTo('map');
-  setTimeout(()=>{
-    document.getElementById('map-pick-overlay').style.display='block';
-    document.getElementById('map-pick-bar').style.display='block';
-    map.setOptions({draggableCursor:'grab'});
-    showToast('הזז את המפה עד שהנעץ יהיה מעל המיקום הרצוי');
-  },100);
-}
-function saveMapPickLocation(){
-  if(!map||!mapPickMode)return;
-  const c=map.getCenter();
-  const la=c.lat(), ln=c.lng();
-  document.getElementById('tf-lat').value=la;
-  document.getElementById('tf-lng').value=ln;
-  document.getElementById('gps-disp').textContent=la.toFixed(6)+', '+ln.toFixed(6);
-  mapPickMode=false;
-  map.setOptions({draggableCursor:''});
-  document.getElementById('map-pick-overlay').style.display='none';
-  document.getElementById('map-pick-bar').style.display='none';
-  if(mapPickMarker){mapPickMarker.setMap(null);mapPickMarker=null;}
-  showV('trap-form');updateTopBar('trap-form');
-  showToast('המיקום נשמר');
-}
 function navTo(s){
   curView=s;
   showV(s);
+  if(s==='home')showFarmNameStatic('home-farm-name');
   if(s==='insects')renderInsects();
-  if(s==='traps')renderTraps();
-  if(s==='traphw')renderTrapHardwareSettings();
-  if(s==='export')prepExport();
-  if(s==='map'&&map)setTimeout(()=>google.maps.event.trigger(map,'resize'),50);
-  updateTopBar(s);
-  if(typeof showFarmBadge==='function' && currentFarmId) showFarmBadge();
+  if(s==='plots')renderPlots();
+  if(s==='crops')renderCropsSettings();
 }
 
-// Trap hardware type (physical trap design, e.g. Delta/Jackson) — Traps-only,
-// unlike crops/pest types which are shared across all three surfaces.
-async function seedTrapHardwareIfEmpty(){
-  if(trapHardware.length) return;
-  const existing=[...new Set(traps.map(t=>t.trapType).filter(Boolean))];
+function showV(n){curView=n;document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active');v.style.display='';});const el=document.getElementById('view-'+n);if(el){el.classList.add('active');el.style.display='flex';el.style.top='0';el.style.bottom=(n==='login')?'0':BAR_H+'px';const scrollable=el.querySelector('.fv, .sc');if(scrollable)scrollable.scrollTop=0;}}
+function goBack(){confirmLeaveIfDirty(()=>navTo(BACK[curView]||'home'));}
+// ── Plots + Crops management, moved here from inspections.html ──
+let plots = [];
+async function loadPlots() {
+  const snap = await db.collection(farmCol('insp_plots')).orderBy('name').get();
+  plots = snap.docs.map(d => ({id:d.id,...d.data()}));
+}
+let crops = [];
+async function loadCrops() {
+  const snap = await db.collection('crops').orderBy('name').get();
+  crops = snap.docs.map(d => ({id:d.id,...d.data()}));
+}
+
+// Seeds the crops collection from whatever distinct crop values already exist on plots.
+// Runs once at app init (before any screen consumes crops), and again defensively when
+// the Crops settings screen renders, in case init ran before plots/crops were ready.
+// No-op once crops already has data.
+async function seedCropsIfEmpty() {
+  if(crops.length) return;
+  const existing = [...new Set(plots.map(p=>p.crop).filter(Boolean))];
   if(!existing.length) return;
-  const batch=db.batch();
-  existing.forEach(name=>{
-    const ref=db.collection('trap_hardware').doc();
-    batch.set(ref,{name,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  const batch = db.batch();
+  existing.forEach(name => {
+    const ref = db.collection('crops').doc();
+    batch.set(ref, {name, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
   });
   await batch.commit();
-  await loadTrapHardware();
+  await loadCrops();
 }
-async function renderTrapHardwareSettings(){
-  const el=document.getElementById('traphw-list');
-  el.innerHTML='<p style="font-size:13px;color:var(--text-muted);">טוען...</p>';
-  await seedTrapHardwareIfEmpty();
-  if(!trapHardware.length){el.innerHTML='<p style="font-size:13px;color:var(--text-muted);">אין סוגי מלכודת עדיין. הוסף למעלה.</p>';return;}
-  el.innerHTML=trapHardware.map(h=>`<div class="card" style="cursor:default;"><div class="cb"><div class="ct">${h.name}</div></div><div class="ca"><button class="ia" onclick="confirmDeleteTrapHardware('${h.id}')" style="color:var(--red);">🗑</button></div></div>`).join('');
+
+async function renderCropsSettings() {
+  const el = document.getElementById('crops-list');
+  el.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">טוען...</p>';
+  await seedCropsIfEmpty();
+
+  if(!crops.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">אין גידולים עדיין. הוסף גידול למעלה.</p>';
+    return;
+  }
+  el.innerHTML = crops.map(c => `
+    <div class="plot-row">
+      <div class="plot-row-main" style="cursor:default;"><div class="card-title">${c.name}</div></div>
+      <div class="plot-row-actions">
+        <button class="ia ia-danger" onclick="confirmDeleteCrop('${c.id}')" title="מחיקה">🗑</button>
+      </div>
+    </div>`).join('');
 }
-async function addTrapHardware(){
-  const input=document.getElementById('traphw-new-name');
-  const name=input.value.trim();
-  if(!name){showToast('נא להזין שם');return;}
-  if(trapHardware.some(h=>h.name===name)){showToast('סוג זה כבר קיים');return;}
-  try{
-    await db.collection('trap_hardware').add({name,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-    input.value='';
-    await loadTrapHardware();
-    renderTrapHardwareSettings();
-    showToast('נוסף בהצלחה');
-  }catch(e){showToast('שגיאה: '+e.message);}
+
+async function addCrop() {
+  const input = document.getElementById('crop-new-name');
+  const name = input.value.trim();
+  if(!name) { showToast('נא להזין שם גידול'); return; }
+  if(crops.some(c => c.name === name)) { showToast('גידול זה כבר קיים'); return; }
+  try {
+    await db.collection('crops').add({name, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+    input.value = '';
+    await loadCrops();
+    renderCropsSettings();
+    showToast('הגידול נוסף');
+  } catch(e) { showToast('שגיאה: '+e.message); }
 }
-function confirmDeleteTrapHardware(id){
-  const h=trapHardware.find(x=>x.id===id);
-  showConfirm('מחיקת סוג מלכודת',`האם למחוק את "${h?.name||''}"?`,async()=>{
-    try{
-      await db.collection('trap_hardware').doc(id).delete();
-      await loadTrapHardware();
-      renderTrapHardwareSettings();
-      showToast('נמחק');
-    }catch(e){showToast('שגיאה: '+e.message);}
+
+function confirmDeleteCrop(id) {
+  const c = crops.find(x=>x.id===id);
+  showConfirm('מחיקת גידול', `האם למחוק את "${c?.name||''}"? חלקות וסוגי מזיקים קיימים ששייכים לגידול זה לא ישתנו, אך הגידול לא יופיע יותר לבחירה.`, async () => {
+    try {
+      await db.collection('crops').doc(id).delete();
+      await loadCrops();
+      renderCropsSettings();
+      showToast('הגידול נמחק');
+    } catch(e) { showToast('שגיאה: '+e.message); }
   });
 }
-function populateTrapHardwareSelect(currentValue){
-  const sel=document.getElementById('tf-traptype');
-  const names=trapHardware.map(h=>h.name);
-  let opts='<option value="">בחר סוג מלכודת</option>'+names.map(n=>`<option value="${n}">${n}</option>`).join('');
-  if(currentValue&&!names.includes(currentValue)) opts+=`<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
-  sel.innerHTML=opts;
-  sel.value=currentValue||'';
+
+// ── Plot list, form, and polygon editor ──
+function renderPlots() {
+  const el = document.getElementById('plots-list');
+  const fab = `<div class="fab-wrap">
+    <button onclick="openImportPlots()" style="background:white;border:1.5px solid var(--dusty-rose);color:var(--dusty-rose);border-radius:50%;width:50px;height:50px;font-size:20px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">📥</button>
+    <button class="fab" onclick="openPlotForm(null)">+</button>
+  </div>`;
+  if(!plots.length) {
+    el.innerHTML = fab + `<div class="empty"><div class="eico">🌿</div><p>אין חלקות מוגדרות.<br/>לחץ + להוספה או 📥 לייבוא.</p></div>`;
+    return;
+  }
+  el.innerHTML = fab + plots.map(p => {
+    const isActive = p.active !== false; // existing plots predate this field; treat missing as active
+    return `
+    <div class="plot-row${isActive?'':' plot-row-inactive'}">
+      <div class="plot-row-main" onclick="openPlotForm('${p.id}')">
+        <div class="card-title">${p.name}</div>
+        <div class="card-sub">${p.crop||'—'}${p.variety?' · '+p.variety:''}${p.plantYear?' · '+p.plantYear:''}${p.area?' · '+p.area+' ד':''}${p.polygon?.length?' · 🗺️ פוליגון':''}</div>
+      </div>
+      <div class="plot-row-actions">
+        <button class="ia" onclick="event.stopPropagation();openPlotForm('${p.id}')" title="עריכה">✏️</button>
+        <button class="plot-toggle-btn${isActive?'':' plot-toggle-btn-off'}" onclick="event.stopPropagation();togglePlotActive('${p.id}',${isActive})">${isActive?'בטל':'הפעל'}</button>
+        <button class="ia ia-danger" onclick="event.stopPropagation();confirmDeletePlot('${p.id}')" title="מחיקה">🗑</button>
+      </div>
+    </div>`;
+  }).join('') + fab;
 }
-function showV(n){curView=n;document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active');v.style.display='';});const el=document.getElementById('view-'+n);if(el){el.classList.add('active');el.style.display='flex';if(n!=='login'){el.style.top=GTB_H+'px';el.style.bottom=BAR_H+'px';}else{el.style.top='0';el.style.bottom='0';}const scrollable=el.querySelector('.fv, .sc');if(scrollable)scrollable.scrollTop=0;}updateTopBar(n);}
-function updateTopBar(v){
-  const MAIN=['map','traps','export','settings'];
-  MAIN.forEach(t=>{const b=document.getElementById('gnav-'+t);if(b)b.classList.toggle('active',t===v);});
-  const eb=document.getElementById('exit-btn');
-  const isMain=MAIN.includes(v);
-  if(eb)eb.style.display=isMain?'flex':'none';
+
+async function togglePlotActive(id, wasActive) {
+  try {
+    await db.collection(farmCol('insp_plots')).doc(id).update({active: !wasActive});
+    await loadPlots();
+    renderPlots();
+    showToast(wasActive ? 'החלקה הושבתה' : 'החלקה הופעלה');
+  } catch(e) { showToast('שגיאה: '+e.message); }
 }
-function goBack(){navTo(BACK[curView]||'map');}
+
+function confirmDeletePlot(id) {
+  const p = plots.find(x=>x.id===id);
+  showConfirm('מחיקת חלקה', `האם למחוק את "${p?.name||''}"? פעולה זו אינה ניתנת לביטול.`, async () => {
+    try {
+      await db.collection(farmCol('insp_plots')).doc(id).delete();
+      await loadPlots();
+      renderPlots();
+      showToast('החלקה נמחקה');
+    } catch(e) { showToast('שגיאה: '+e.message); }
+  });
+}
+
+let _plotMap = null, _plotPolygonOverlay = null, _plotMarkers = [], _plotMapTabMode = 'map';
+
+function populatePlotCropSelect(currentValue) {
+  const sel = document.getElementById('pf-crop');
+  const names = crops.map(c=>c.name);
+  let opts = '<option value="">בחר גידול</option>' + names.map(n=>`<option value="${n}">${n}</option>`).join('');
+  if(currentValue && !names.includes(currentValue)) {
+    // legacy value from before the canonical list existed; keep it selectable so saving
+    // the form again doesn't silently blank or change the plot's existing crop
+    opts += `<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
+  }
+  sel.innerHTML = opts;
+  sel.value = currentValue || '';
+}
+
+function openPlotForm(id) {
+  document.getElementById('pf-id').value = id || '';
+  document.getElementById('pf-name').value = '';
+  document.getElementById('pf-variety').value = '';
+  document.getElementById('pf-year').value = '';
+  document.getElementById('pf-area').value = '';
+  document.getElementById('pf-del-wrap').style.display = id ? 'block' : 'none';
+  document.getElementById('pf-polygon-coords').value = '';
+  _plotMarkers = [];
+  _plotMapTabMode = 'map';
+  let existingPolygon = [];
+  let curCrop = '';
+  if(id) {
+    const p = plots.find(x => x.id===id);
+    if(p) {
+      document.getElementById('pf-name').value = p.name||'';
+      curCrop = p.crop||'';
+      document.getElementById('pf-variety').value = p.variety||'';
+      document.getElementById('pf-year').value = p.plantYear||'';
+      document.getElementById('pf-area').value = p.area||'';
+      if(p.polygon?.length) existingPolygon = p.polygon;
+    }
+  }
+  populatePlotCropSelect(curCrop);
+  if(window._importedPolygon?.length) { existingPolygon = window._importedPolygon; window._importedPolygon = null; }
+  switchPlotMapTab('map');
+  navTo('plot-form');
+  markFormClean('view-plot-form');
+  setTimeout(() => initPlotMap(existingPolygon), 150);
+}
+
+function switchPlotMapTab(tab) {
+  _plotMapTabMode = tab;
+  document.getElementById('pf-map-panel').style.display    = tab==='map'    ? '' : 'none';
+  document.getElementById('pf-coords-panel').style.display = tab==='coords' ? '' : 'none';
+  document.getElementById('pf-tab-map').className    = 'map-tab-btn' + (tab==='map'    ? ' active' : '');
+  document.getElementById('pf-tab-coords').className = 'map-tab-btn' + (tab==='coords' ? ' active' : '');
+  if(tab==='map') { setTimeout(() => { if(_plotMap) google.maps.event.trigger(_plotMap, 'resize'); }, 100); }
+  else {
+    const pts = _plotMarkers.map(m => `${m.getPosition().lat().toFixed(6)},${m.getPosition().lng().toFixed(6)}`).join('\n');
+    if(pts) document.getElementById('pf-polygon-coords').value = pts;
+  }
+}
+
+async function initPlotMap(existingPolygon) {
+  const mapEl = document.getElementById('plot-map-canvas');
+  if(!mapEl) return;
+  try { await loadGoogleMapsScript(); } catch(e) { showToast('שגיאה בטעינת המפה'); return; }
+
+  const center = existingPolygon?.[0] || {lat:31.55, lng:34.85};
+  _plotMap = new google.maps.Map(mapEl, {
+    zoom:16, center, mapTypeId:'roadmap',
+    disableDefaultUI:true, zoomControl:true, gestureHandling:'greedy',
+  });
+  _plotPolygonOverlay = new google.maps.Polygon({
+    map:_plotMap, strokeColor:'#890a0a', strokeWeight:2, fillColor:'#890a0a', fillOpacity:0.15,
+    editable:false, clickable:false,
+  });
+  _plotMarkers = [];
+  updatePlotPointCount();
+
+  if(existingPolygon?.length >= 2) {
+    existingPolygon.forEach(p => {
+      const lat = Array.isArray(p) ? p[0] : p.lat, lng = Array.isArray(p) ? p[1] : p.lng;
+      addPlotMapPoint(new google.maps.LatLng(lat, lng));
+    });
+    google.maps.event.addListenerOnce(_plotMap, 'idle', () => {
+      google.maps.event.trigger(_plotMap, 'resize');
+      const bounds = new google.maps.LatLngBounds();
+      existingPolygon.forEach(p => bounds.extend({lat:Array.isArray(p)?p[0]:p.lat, lng:Array.isArray(p)?p[1]:p.lng}));
+      _plotMap.fitBounds(bounds, 40);
+    });
+  }
+  _plotMap.addListener('click', e => {
+    const btn = document.getElementById('pf-btn-draw');
+    if(!btn || !btn.classList.contains('active')) return;
+    addPlotMapPoint(e.latLng);
+  });
+}
+
+function addPlotMapPoint(latLng) {
+  const marker = new google.maps.Marker({
+    position: latLng, map: _plotMap, draggable: true,
+    icon:{ path: google.maps.SymbolPath.CIRCLE, scale:6, fillColor:'#890a0a', fillOpacity:1, strokeColor:'#fff', strokeWeight:1.5 },
+  });
+  marker.addListener('click', () => {
+    const idx = _plotMarkers.indexOf(marker);
+    if(idx >= 0) { _plotMarkers.splice(idx,1); marker.setMap(null); redrawPlotPolygon(); }
+  });
+  marker.addListener('drag', () => redrawPlotPolygon());
+  _plotMarkers.push(marker);
+  redrawPlotPolygon();
+}
+
+function redrawPlotPolygon() {
+  _plotPolygonOverlay.setPath(_plotMarkers.map(m => m.getPosition()));
+  updatePlotPointCount();
+}
+
+function undoLastPlotPoint() {
+  const m = _plotMarkers.pop();
+  if(m) { m.setMap(null); redrawPlotPolygon(); }
+}
+
+function clearPlotPolygon() {
+  _plotMarkers.forEach(m => m.setMap(null));
+  _plotMarkers = [];
+  redrawPlotPolygon();
+}
+
+function setPlotDrawMode(active) {
+  const btn = document.getElementById('pf-btn-draw');
+  if(btn) btn.className = 'map-tool-btn' + (active ? ' active' : '');
+}
+
+function updatePlotPointCount() {
+  const el = document.getElementById('pf-point-count');
+  if(el) el.textContent = _plotMarkers.length ? `${_plotMarkers.length} נקודות` : '';
+}
+
+function centerPlotMapGPS() {
+  if(!navigator.geolocation || !_plotMap) return;
+  navigator.geolocation.getCurrentPosition(pos => {
+    _plotMap.setCenter({lat:pos.coords.latitude, lng:pos.coords.longitude});
+    _plotMap.setZoom(17);
+  }, () => showToast('לא ניתן לאתר מיקום'));
+}
+
+function togglePlotMapType() {
+  if(!_plotMap) return;
+  const isHybrid = _plotMap.getMapTypeId() === 'hybrid';
+  _plotMap.setMapTypeId(isHybrid ? 'roadmap' : 'hybrid');
+}
+
+async function savePlot() {
+  const name = document.getElementById('pf-name').value.trim();
+  if(!name) { showToast('נא להזין שם חלקה'); return; }
+  const data = {
+    name,
+    crop    : document.getElementById('pf-crop').value.trim(),
+    variety : document.getElementById('pf-variety').value.trim(),
+    plantYear: document.getElementById('pf-year').value ? parseInt(document.getElementById('pf-year').value) : null,
+    area    : document.getElementById('pf-area').value ? parseFloat(document.getElementById('pf-area').value) : null,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  if(_plotMapTabMode === 'map' && _plotMarkers.length >= 3) {
+    data.polygon = _plotMarkers.map(m => ({lat:m.getPosition().lat(), lng:m.getPosition().lng()}));
+  } else {
+    const raw = document.getElementById('pf-polygon-coords').value || '';
+    const parsed = raw.trim().split('\n').map(l=>l.trim()).filter(l=>l.includes(','))
+      .map(l => { const [a,b] = l.split(',').map(Number); return {lat:a,lng:b}; })
+      .filter(p => !isNaN(p.lat) && !isNaN(p.lng));
+    if(parsed.length) data.polygon = parsed;
+  }
+  try {
+    const id = document.getElementById('pf-id').value;
+    if(id) await db.collection(farmCol('insp_plots')).doc(id).update(data);
+    else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); data.active = true; await db.collection(farmCol('insp_plots')).add(data); }
+    await loadPlots();
+    showToast('החלקה נשמרה');
+    markFormClean('view-plot-form');
+    navTo('plots');
+  } catch(e) { showToast('שגיאה: '+e.message); }
+}
+
+async function deletePlot() {
+  const id = document.getElementById('pf-id').value;
+  if(!id) return;
+  showConfirm('מחיקת חלקה','האם למחוק את החלקה? פעולה זו אינה ניתנת לביטול.', async () => {
+    await db.collection(farmCol('insp_plots')).doc(id).delete();
+    await loadPlots();
+    showToast('החלקה נמחקה');
+    navTo('plots');
+  });
+}
+
+// Bulk import from Excel
+function openImportPlots() {
+  importPlotsData = [];
+  document.getElementById('plots-import-file').value = '';
+  document.getElementById('import-preview').style.display = 'none';
+  document.getElementById('import-confirm-btn').style.display = 'none';
+  navTo('plots-import');
+  markFormClean('view-plots-import');
+}
+
+function importPlotsFromExcel(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const wb = XLSX.read(ev.target.result, {type:'binary'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+      if(rows.length < 2) { showToast('הקובץ ריק'); return; }
+      // Group rows by plot name — each row is a polygon point
+      const plotMap = {};
+      for(let i=1; i<rows.length; i++) {
+        const r = rows[i];
+        const name = String(r[0]||'').trim();
+        if(!name) continue;
+        const lat = parseFloat(r[1]), lng = parseFloat(r[2]);
+        if(!plotMap[name]) {
+          plotMap[name] = {
+            name,
+            crop   : String(r[3]||'').trim(),
+            variety: String(r[4]||'').trim(),
+            polygon: []
+          };
+        }
+        if(!isNaN(lat) && !isNaN(lng)) plotMap[name].polygon.push({lat, lng});
+      }
+      importPlotsData = Object.values(plotMap);
+      if(!importPlotsData.length) { showToast('לא נמצאו שורות תקינות'); return; }
+      const preview = document.getElementById('import-preview-list');
+      preview.innerHTML = importPlotsData.slice(0,5).map(p =>
+        `<div class="card" style="cursor:default;margin-bottom:6px;">
+          <div class="card-body">
+            <div class="card-title">${p.name}</div>
+            <div class="card-sub">${p.crop} ${p.variety?'· '+p.variety:''} · ${p.polygon.length} נקודות פוליגון</div>
+          </div>
+        </div>`).join('') +
+        (importPlotsData.length>5 ? `<div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:4px;">ועוד ${importPlotsData.length-5} חלקות...</div>` : '');
+      document.getElementById('import-preview').style.display = 'block';
+      document.getElementById('import-confirm-btn').style.display = 'inline-flex';
+      showToast(`נמצאו ${importPlotsData.length} חלקות`);
+    } catch(err) { showToast('שגיאה בקריאת הקובץ: '+err.message); }
+  };
+  reader.readAsBinaryString(file);
+}
+
+async function confirmImportPlots() {
+  if(!importPlotsData.length) return;
+  showToast('מייבא חלקות...');
+  try {
+    for(let i=0; i<importPlotsData.length; i+=400) {
+      const batch = db.batch();
+      importPlotsData.slice(i,i+400).forEach(p => {
+        const ref = db.collection(farmCol('insp_plots')).doc();
+        batch.set(ref, {...p, active: true, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
+      });
+      await batch.commit();
+    }
+    await loadPlots();
+    showToast(`יובאו ${importPlotsData.length} חלקות בהצלחה`);
+    markFormClean('view-plots-import');
+    navTo('plots');
+  } catch(e) { showToast('שגיאה בייבוא: '+e.message); }
+}
+
+// ── Google Maps loader for the polygon editor ──
+const OBS_MAPS_KEY = 'AIzaSyBR-YULE9PQCHzIEQGnllYaJ4jalSTD3IM';
+let obsMapsLoadPromise = null;
+function loadGoogleMapsScript() {
+  if(window.google && window.google.maps) return Promise.resolve();
+  if(obsMapsLoadPromise) return obsMapsLoadPromise;
+  obsMapsLoadPromise = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${OBS_MAPS_KEY}`;
+    s.onload = resolve;
+    s.onerror = () => { obsMapsLoadPromise = null; reject(new Error('load failed')); };
+    document.head.appendChild(s);
+  });
+  return obsMapsLoadPromise;
+}
+
 async function loadInsects(){const s=await db.collection('pest_types').get();insects=s.docs.map(d=>{const v=d.data();return{id:d.id,name:v.name,color:v.color,fields:v.trapFields||[],crops:v.crops||[],sortOrder:v.sortOrder,checks:v.checks||[],sampleRows:v.sampleRows,sampleTrees:v.sampleTrees,sampleFruits:v.sampleFruits};}).sort((a,b)=>(a.sortOrder??999)-(b.sortOrder??999)||a.name.localeCompare(b.name,'he'));}
 async function moveInsect(id, direction){
   const idx = insects.findIndex(i => i.id === id);
@@ -732,7 +840,8 @@ function openInsectForm(id){
     addInsectCheckRow('');
   }
   renderColorRow();renderDynF();renderInsectCropChips();
-  showV('insect-form');updateTopBar('insect-form');
+  showV('insect-form');
+  markFormClean('view-insect-form');
 }
 function renderInsectCropChips(){const el=document.getElementById('if-crop-chips');const uniqueCrops=cropsCache.map(c=>c.name).sort();if(!uniqueCrops.length){el.innerHTML='<span style="font-size:12px;color:var(--text-muted);">אין גידולים מוגדרים עדיין (מנוהל באפליקציית המדגמים, בהגדרות)</span>';return;}el.innerHTML=uniqueCrops.map(c=>`<button type="button" class="crop-chip${selInsCrops.has(c)?' sel':''}" onclick="toggleInsectCrop('${c}',this)">${c}</button>`).join('');}
 function toggleInsectCrop(c,el){if(selInsCrops.has(c))selInsCrops.delete(c);else selInsCrops.add(c);el.classList.toggle('sel');}
@@ -771,299 +880,10 @@ async function saveInsect(){
   try{
     if(id) await db.collection('pest_types').doc(id).update(data);
     else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();data.sortOrder=insects.length;await db.collection('pest_types').add(data);}
-    await loadInsects();renderMarkers();showToast('המזיק נשמר');navTo('insects');
+    await loadInsects();showToast('המזיק נשמר');markFormClean('view-insect-form');navTo('insects');
   }catch(e){showToast('שגיאה: '+e.message);}
 }
-function confirmDelInsect(){const id=document.getElementById('if-id').value;const ins=insects.find(i=>i.id===id);showConfirm('מחיקת מזיק',`האם למחוק את "${ins?.name}"? אם הסוג הזה גם משמש למדגמים/תצפיות, רק חלק המלכודות שלו יימחק.`,async()=>{const ref=db.collection('pest_types').doc(id);const doc=await ref.get();const hasSampling=(doc.data()?.samplingChecks||[]).length>0;if(hasSampling){await ref.update({trapFields:[],crops:doc.data().crops||[]});}else{await ref.delete();}await loadInsects();renderInsects();renderMarkers();showToast('המזיק נמחק');navTo('insects');});}
-async function loadTraps(){const s=await db.collection(farmCol('traps')).orderBy('createdAt').get();traps=s.docs.map(d=>({id:d.id,...d.data()}));}
-function renderTraps(){
-  const el=document.getElementById('traps-list');
-  const fab='<div class="fab-inline"><button class="fab" onclick="openTrapForm(null)">+</button></div>';
-  if(!traps.length){el.innerHTML='<div class="empty"><div class="eico">📍</div><p>אין מלכודות.<br>לחץ + להוספה.</p></div>'+fab;return;}
-  // Build dropdown options (preserving selections). Pest name is resolved via insectId,
-  // traps never actually stored an insectName field, so reading it directly always
-  // returned undefined and left this filter empty even when pests were assigned.
-  buildFilterDropdown('dd-pest','lbl-pest','שם המזיק',
-    [...new Set(traps.map(t=>insects.find(i=>i.id===t.insectId)?.name).filter(Boolean))].sort());
-  buildFilterDropdown('dd-crop','lbl-crop','גידול',
-    [...new Set(traps.map(t=>t.crop).filter(Boolean))].sort());
-  buildFilterDropdown('dd-plot','lbl-plot','חלקה',
-    [...new Set(traps.map(t=>t.plot).filter(Boolean))].sort());
-  applyTrapFilter();
-}
-
-// State: sets of selected values per filter
-const trapSel={pest:new Set(),crop:new Set(),plot:new Set()};
-
-function buildFilterDropdown(ddId,lblId,placeholder,options){
-  const dd=document.getElementById(ddId);
-  if(!dd)return;
-  const key=ddId.replace('dd-','');
-  dd.innerHTML=options.map(v=>{
-    const checked=trapSel[key].has(v);
-    return `<label style="display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:Arial;color:rgb(69,71,74);direction:rtl;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-      <input type="checkbox" value="${v}" ${checked?'checked':''} onchange="onFilterCheck('${key}',this)" style="accent-color:var(--red);flex-shrink:0;"/>
-      <span style="overflow:hidden;text-overflow:ellipsis;">${v}</span>
-    </label>`;
-  }).join('');
-  updateFilterBtn(key,placeholder);
-}
-
-function onFilterCheck(key,cb){
-  if(cb.checked) trapSel[key].add(cb.value);
-  else trapSel[key].delete(cb.value);
-  const lbl=document.getElementById('lbl-'+key);
-  const placeholder={pest:'שם המזיק',crop:'גידול',plot:'חלקה'}[key];
-  updateFilterBtn(key,placeholder);
-  applyTrapFilter();
-}
-
-function updateFilterBtn(key,placeholder){
-  const lbl=document.getElementById('lbl-'+key);
-  const btn=document.getElementById('btn-'+key);
-  if(!lbl)return;
-  const n=trapSel[key].size;
-  if(n===0){lbl.textContent=placeholder;btn.style.background='rgb(244,245,248)';btn.style.color='rgb(69,71,74)';}
-  else if(n===1){lbl.textContent=[...trapSel[key]][0];btn.style.background='var(--red)';btn.style.color='white';}
-  else{lbl.textContent=placeholder+' ('+n+')';btn.style.background='var(--red)';btn.style.color='white';}
-}
-
-function toggleDropdown(id){
-  ['dd-pest','dd-crop','dd-plot'].forEach(d=>{
-    if(d!==id) document.getElementById(d).style.display='none';
-  });
-  const dd=document.getElementById(id);
-  dd.style.display=dd.style.display==='none'?'block':'none';
-}
-
-// Close dropdowns when tapping outside
-document.addEventListener('click',e=>{
-  if(!e.target.closest('#traps-filter-bar')){
-    ['dd-pest','dd-crop','dd-plot'].forEach(d=>{
-      const el=document.getElementById(d);
-      if(el) el.style.display='none';
-    });
-  }
-});
-
-function applyTrapFilter(){
-  const el=document.getElementById('traps-list');
-  const fab='<div class="fab-inline"><button class="fab" onclick="openTrapForm(null)">+</button></div>';
-  const filtered=traps.filter(t=>
-    (!trapSel.pest.size||trapSel.pest.has(insects.find(i=>i.id===t.insectId)?.name))&&
-    (!trapSel.crop.size||trapSel.crop.has(t.crop))&&
-    (!trapSel.plot.size||trapSel.plot.has(t.plot))
-  );
-  const countEl=document.getElementById('trap-count');
-  if(countEl) countEl.textContent='מציג '+filtered.length+' מתוך '+traps.length;
-  if(!filtered.length){
-    el.innerHTML='<div class="empty"><div class="eico">🔍</div><p>אין מלכודות התואמות את הסינון.</p></div>'+fab;
-    return;
-  }
-  el.innerHTML=filtered.map(t=>{
-    const ins=insects.find(i=>i.id===t.insectId);
-    const col=ins?.color||'#8B1A1A';
-    return `<div class="card" onclick="openInspection('${t.id}')"><div class="cdot" style="background:${col}"></div><div class="cb"><div class="ct">${ins?.name||'מזיק לא ידוע'}${t.pheromoneDate?' <span style="font-size:12px;font-weight:400;color:rgba(69,71,74,0.65);">🧪 '+fd(t.pheromoneDate)+'</span>':''}</div><div class="cs">${t.plot||'—'}${t.trapNum?' | מלכודת: '+t.trapNum:''}</div></div><div class="ca"><button class="ia" onclick="event.stopPropagation();openTrapForm('${t.id}')">✏️</button></div></div>`;
-  }).join('')+fab;
-}
-
-function clearTrapFilter(){
-  trapSel.pest.clear(); trapSel.crop.clear(); trapSel.plot.clear();
-  ['pest','crop','plot'].forEach(k=>{
-    const placeholder={pest:'שם המזיק',crop:'גידול',plot:'חלקה'}[k];
-    updateFilterBtn(k,placeholder);
-    const dd=document.getElementById('dd-'+k);
-    if(dd) dd.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false);
-  });
-  applyTrapFilter();
-}
-function onTrapPlotChange(plotName){
-  const plot=plotsCache.find(p=>p.name===plotName);
-  const crop=plot?.crop||'';
-  const cropSel=document.getElementById('tf-crop');
-  if(cropSel){cropSel.value=crop;cropSel.disabled=!!crop;}
-  renderIChips();
-}
-function populateTrapCropSelect(currentValue){
-  const sel=document.getElementById('tf-crop');
-  const names=cropsCache.map(c=>c.name);
-  let opts='<option value="">בחר גידול</option>'+names.map(n=>`<option value="${n}">${n}</option>`).join('');
-  if(currentValue&&!names.includes(currentValue)) opts+=`<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
-  sel.innerHTML=opts;
-  sel.value=currentValue||'';
-}
-function populateTrapPlotSelect(currentValue){
-  const sel=document.getElementById('tf-plot');
-  const names=plotsCache.map(p=>p.name).filter(Boolean);
-  let opts='<option value="">בחר חלקה</option>'+names.map(n=>`<option value="${n}">${n}</option>`).join('');
-  if(currentValue&&!names.includes(currentValue)) opts+=`<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
-  sel.innerHTML=opts;
-  sel.value=currentValue||'';
-}
-function openTrapForm(id){
-  selTrapIns=null;
-  document.getElementById('tf-id').value=id||'';
-  document.getElementById('tf-lat').value='';
-  document.getElementById('tf-lng').value='';
-  document.getElementById('gps-disp').textContent='לא נקלט מיקום';
-  ['tf-trapnum','tf-row','tf-tree'].forEach(f=>document.getElementById(f).value='');
-  document.getElementById('tf-phdate').value=di(new Date());
-  document.getElementById('tf-del-wrap').style.display=id?'block':'none';
-  let curCrop='',curPlot='',curTrapType='';
-  if(id){
-    const t=traps.find(x=>x.id===id);
-    if(t){
-      selTrapIns=t.insectId;
-      document.getElementById('tf-trapnum').value=t.trapNum||'';
-      curTrapType=t.trapType||'';
-      curCrop=t.crop||'';curPlot=t.plot||'';
-      document.getElementById('tf-row').value=t.row||'';
-      document.getElementById('tf-tree').value=t.tree||'';
-      if(t.lat&&t.lng){document.getElementById('tf-lat').value=t.lat;document.getElementById('tf-lng').value=t.lng;document.getElementById('gps-disp').textContent=t.lat.toFixed(6)+', '+t.lng.toFixed(6);}
-      if(t.pheromoneDate)document.getElementById('tf-phdate').value=t.pheromoneDate;
-    }
-  } else captureGPS();
-  populateTrapCropSelect(curCrop);
-  populateTrapPlotSelect(curPlot);
-  populateTrapHardwareSelect(curTrapType);
-  onTrapPlotChange(curPlot);
-  showV('trap-form');
-  updateTopBar('trap-form');
-}
-function renderIChips(){const g=document.getElementById('ichip-grid');const curCrop=document.getElementById('tf-crop')?.value.trim()||'';const visible=insects.filter(i=>!i.crops?.length||!curCrop||i.crops.includes(curCrop));if(!insects.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין מזיקים מוגדרים. הגדר מזיק תחילה.</p>';return;}if(!visible.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין מזיקים המשויכים לגידול זה.</p>';return;}g.innerHTML='<div style="display:flex;flex-wrap:wrap;">'+visible.map(i=>{const s=selTrapIns===i.id;return `<div class="ichip" style="border-color:${s?i.color:'var(--border)'};background:${s?i.color:'white'};color:${s?'white':'var(--text)'}" onclick="pickTrapIns('${i.id}')"><span style="width:10px;height:10px;border-radius:50%;background:${s?'white':i.color};flex-shrink:0;display:inline-block;"></span>${i.name}</div>`;}).join('')+'</div>';}
-function pickTrapIns(id){selTrapIns=id;renderIChips();}
-function captureGPS(){if(!navigator.geolocation){showToast('GPS לא זמין');return;}showToast('קולט מיקום...');navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,ln=p.coords.longitude;document.getElementById('tf-lat').value=la;document.getElementById('tf-lng').value=ln;document.getElementById('gps-disp').textContent=la.toFixed(6)+', '+ln.toFixed(6);const plot=findPlotByGPS(la,ln,plotsCache);if(plot){document.getElementById('tf-plot').value=plot.name;onTrapPlotChange(plot.name);showToast('מיקום נקלט, חלקה זוהתה: '+plot.name);}else{showToast('מיקום נקלט');}},()=>showToast('שגיאה בקליטת מיקום'));}
-async function saveTrap(){if(!selTrapIns){showToast('נא לבחור מזיק');return;}const id=document.getElementById('tf-id').value;const la=parseFloat(document.getElementById('tf-lat').value);const ln=parseFloat(document.getElementById('tf-lng').value);const data={insectId:selTrapIns,trapNum:document.getElementById('tf-trapnum').value.trim(),trapType:document.getElementById('tf-traptype').value.trim(),crop:document.getElementById('tf-crop').value.trim(),plot:document.getElementById('tf-plot').value.trim(),row:document.getElementById('tf-row').value.trim(),tree:document.getElementById('tf-tree').value.trim(),pheromoneDate:document.getElementById('tf-phdate').value,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};if(!isNaN(la)&&!isNaN(ln)){data.lat=la;data.lng=ln;}try{if(id)await db.collection(farmCol('traps')).doc(id).update(data);else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection(farmCol('traps')).add(data);}await loadTraps();renderMarkers();showToast('המלכודת נשמרה');navTo('traps');}catch(e){showToast('שגיאה: '+e.message);}}
-function deleteTrap(){const id=document.getElementById('tf-id').value;showConfirm('מחיקת מלכודת','האם למחוק את המלכודת? לא ניתן לביטול.',async()=>{await db.collection(farmCol('traps')).doc(id).delete();await loadTraps();renderMarkers();showToast('המלכודת נמחקה');navTo('traps');});}
-function openInspection(trapId, existingId, existingData){
-  const trap=traps.find(t=>t.id===trapId);
-  if(!trap){showToast('מלכודת לא נמצאה');return;}
-  const ins=insects.find(i=>i.id===trap.insectId);
-  curTrapId=trapId;
-  curInspectionId=existingId||null;setTimeout(()=>{const db=document.getElementById('del-insp-btn');if(db)db.style.display=curInspectionId?'block':'none';},50);
-  const phDate=trap.pheromoneDate?fd(trap.pheromoneDate):'לא הוזן';document.getElementById('insp-content').innerHTML=`<div class="trap-hdr"><div class="thn">${ins?.name||'מזיק לא ידוע'}</div><div class="thd">גידול: ${trap.crop||'—'} | חלקה: ${trap.plot||'—'} | שורה: ${trap.row||'—'} | עץ: ${trap.tree||'—'}${trap.trapNum?' | מלכודת: '+trap.trapNum:''}</div></div><div class="phbox"><span style="font-size:20px;">🧪</span><div><div style="font-weight:700;font-size:13px;">פרומון אחרון</div><div style="font-size:14px;">${phDate}</div></div></div><div class="fs"><div class="fst">ממצאים</div>${ins?ins.fields.map((f,i)=>`<div class="finrow"><label class="finlbl">${f.label}</label><input class="fininp" type="number" id="fi-${i}" min="0" value="0" inputmode="numeric"/></div>`).join(''):'<p style="font-size:13px;color:var(--text-muted)">מזיק לא מוגדר</p>'}</div><div class="fs"><div class="fst">פרומון</div><label class="chkrow"><input type="checkbox" id="ph-chk" onchange="togglePhDate(this)"/><span class="chklbl">החלפתי פרומון היום</span></label><div id="ph-date-row" style="display:none;margin-top:12px;"><label class="frl">תאריך החלפה</label><input class="fin" type="date" id="ph-new-date" value="${di(new Date())}"/></div></div><div class="fs"><div class="fst">הערות</div><textarea class="fta" id="insp-comments" placeholder="הערות..."></textarea></div>`;showV('inspection');updateTopBar('inspection');
-  // Pre-fill if editing existing record
-  if(existingData){
-    ins.fields.forEach((f,j)=>{
-      const el=document.getElementById('fi-'+j);
-      if(el) el.value=existingData.findings?.[f.label]??0;
-    });
-    if(existingData.pheromoneReplaced){
-      const chk=document.getElementById('ph-chk');
-      if(chk){chk.checked=true;togglePhDate(chk);}
-      const pd=document.getElementById('ph-new-date');
-      if(pd&&existingData.pheromoneReplacedDate) pd.value=existingData.pheromoneReplacedDate;
-    }
-    document.getElementById('insp-comments').value=existingData.comments||'';
-  }
-}
-function togglePhDate(cb){document.getElementById('ph-date-row').style.display=cb.checked?'block':'none';}
-
-async function deleteInspection(){
-  if(!curInspectionId){showToast('אין דיווח למחיקה');return;}
-  if(!confirm('למחוק את הדיווח? פעולה זו אינה ניתנת לביטול.'))return;
-  try{
-    await db.collection(farmCol('inspections')).doc(curInspectionId).delete();
-    curInspectionId=null;
-    showToast('הדיווח נמחק');
-    navTo('map');
-  }catch(e){showToast('שגיאה במחיקה: '+e.message);}
-}
-
-async function saveInspection(){const trap=traps.find(t=>t.id===curTrapId);const ins=insects.find(i=>i.id===trap?.insectId);if(!trap||!ins){showToast('שגיאה');return;}const findings={};ins.fields.forEach((f,i)=>{findings[f.label]=parseInt(document.getElementById(`fi-${i}`)?.value)||0;});const phR=document.getElementById('ph-chk').checked;const phD=phR?document.getElementById('ph-new-date').value:null;const data={trapId:curTrapId,insectId:trap.insectId,insectName:ins.name,trapSnapshot:{trapNum:trap.trapNum||'',crop:trap.crop,plot:trap.plot,row:trap.row,tree:trap.tree},findings,pheromoneReplaced:phR,pheromoneReplacedDate:phD,comments:document.getElementById('insp-comments').value.trim(),inspectedAt:firebase.firestore.FieldValue.serverTimestamp(),createdAt:firebase.firestore.FieldValue.serverTimestamp()};try{if(curInspectionId){
-    await db.collection(farmCol('inspections')).doc(curInspectionId).update(data);
-    showToast('הדיווח עודכן בהצלחה');
-  } else {
-    await db.collection(farmCol('inspections')).add(data);
-    showToast('הדיווח נשמר');
-  }
-  curInspectionId=null;if(phR&&phD){await db.collection(farmCol('traps')).doc(curTrapId).update({pheromoneDate:phD});await loadTraps();renderMarkers();}showToast('הסקר נשמר');navTo('map');}catch(e){showToast('שגיאה: '+e.message);}}
-let exSelectedInsects = new Set();
-function prepExport(){
-  const now=new Date(),from=new Date(now.getFullYear(),now.getMonth(),1);
-  document.getElementById('ex-from').value=di(from);
-  document.getElementById('ex-to').value=di(now);
-  exSelectedInsects = new Set();
-  renderExInsChips();
-}
-function renderExInsChips(){
-  const el=document.getElementById('ex-ins-chips');
-  el.innerHTML=insects.map(i=>`<button type="button" class="crop-chip${exSelectedInsects.has(i.id)?' sel':''}" onclick="toggleExIns('${i.id}')">${i.name}</button>`).join('');
-}
-function toggleExIns(id){
-  if(exSelectedInsects.has(id))exSelectedInsects.delete(id);
-  else exSelectedInsects.add(id);
-  renderExInsChips();
-}
-async function exportCSV(){
-  const from=document.getElementById('ex-from').value,
-        to=document.getElementById('ex-to').value;
-  if(!from||!to){showToast('נא לבחור תאריכים');return;}
-  showToast('מייצא...');
-  const snap=await db.collection(farmCol('inspections')).get();
-  const docsSorted=snap.docs.slice()
-    .filter(d=>!exSelectedInsects.size||exSelectedInsects.has(d.data().insectId))
-    .sort((a,b)=>{
-      const ta=a.data().inspectedAt?.toMillis?.()||0, tb=b.data().inspectedAt?.toMillis?.()||0;
-      return ta-tb;
-    });
-  const byInsect={};
-  docsSorted.forEach(d=>{
-    const rec=d.data();
-    const dt=rec.inspectedAt?.toDate?rec.inspectedAt.toDate():new Date();
-    const dateOnly=di(dt);
-    if(dateOnly<from||dateOnly>to)return;
-    const iname=rec.insectName||'מזיק';
-    if(!byInsect[iname])byInsect[iname]={rows:[],fields:new Set()};
-    Object.keys(rec.findings||{}).forEach(k=>byInsect[iname].fields.add(k));
-    byInsect[iname].rows.push({rec,dt});
-  });
-  const wb=XLSX.utils.book_new();
-  let totalRows=0;
-  Object.entries(byInsect).forEach(([iname,{rows,fields}])=>{
-    const fn=[...fields];
-    const headers=['חלקה','מספר מלכודת','גידול','תאריך לכידה',...fn,'האם הוחלף פרומון','הערות'];
-    const sheetRows=rows.map(({rec,dt})=>[
-      rec.trapSnapshot?.plot||'',
-      rec.trapSnapshot?.trapNum||'',
-      rec.trapSnapshot?.crop||'',
-      dt.toLocaleDateString('he-IL'),
-      ...fn.map(f=>rec.findings?.[f]??''),
-      rec.pheromoneReplaced?'כן':'לא',
-      rec.comments||''
-    ]);
-    const ws=XLSX.utils.aoa_to_sheet([headers,...sheetRows]);
-    ws['!cols']=headers.map(()=>({wch:16}));
-    XLSX.utils.book_append_sheet(wb,ws,iname.substring(0,31));
-    totalRows+=sheetRows.length;
-  });
-  if(!totalRows){showToast('אין נתונים בטווח שנבחר');return;}
-  XLSX.writeFile(wb,'rhythmos-scout-'+from+'-'+to+'.xlsx');
-  showToast('יוצאו '+totalRows+' רשומות');
-}
-async function exportBackup(){
-  showToast('מכין גיבוי...');
-  try{
-    const [insSnap,trapSnap,inspSnap]=await Promise.all([
-      db.collection('pest_types').get(),
-      db.collection(farmCol('traps')).get(),
-      db.collection(farmCol('inspections')).get()
-    ]);
-    const backup={
-      exportedAt:new Date().toISOString(),
-      insects:insSnap.docs.map(d=>({id:d.id,...d.data()})),
-      traps:trapSnap.docs.map(d=>({id:d.id,...d.data()})),
-      inspections:inspSnap.docs.map(d=>({id:d.id,...d.data()}))
-    };
-    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download='rhythmos-backup-'+di(new Date())+'.json';
-    a.click();
-    showToast('גיבוי הורד בהצלחה ('+inspSnap.size+' סקרים)');
-  }catch(e){showToast('שגיאה בגיבוי: '+e.message);}
-}
-function fd(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;}
+function confirmDelInsect(){const id=document.getElementById('if-id').value;const ins=insects.find(i=>i.id===id);showConfirm('מחיקת מזיק',`האם למחוק את "${ins?.name}"? אם הסוג הזה גם משמש למדגמים/תצפיות, רק חלק המלכודות שלו יימחק.`,async()=>{const ref=db.collection('pest_types').doc(id);const doc=await ref.get();const hasSampling=(doc.data()?.samplingChecks||[]).length>0;if(hasSampling){await ref.update({trapFields:[],crops:doc.data().crops||[]});}else{await ref.delete();}await loadInsects();renderInsects();showToast('המזיק נמחק');navTo('insects');});}
 
 
 
@@ -1074,7 +894,7 @@ function fd(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}
 // ── Android back button: double-tap to exit ───────────────────────
 let backPressedOnce = false;
 let backTimer = null;
-const MAIN_VIEWS = ['map','traps','insects','export'];
+const MAIN_VIEWS = ['home'];
 
 function handleAndroidBack() {
   if (!MAIN_VIEWS.includes(curView)) {
@@ -1098,109 +918,6 @@ window.addEventListener('load', () => { history.pushState({pwa:true}, ''); });
 
 
 // ── RESTORE FUNCTIONS ─────────────────────────────────────────────
-let restoreData = null;
-
-function onRestoreFileChosen(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev){
-    try{
-      restoreData = JSON.parse(ev.target.result);
-      // Validate structure
-      if(!restoreData.insects||!restoreData.traps||!restoreData.inspections){
-        showToast('קובץ גיבוי לא תקין');
-        restoreData = null;
-        return;
-      }
-      // Show preview
-      const dt = restoreData.exportedAt ? new Date(restoreData.exportedAt).toLocaleString('he-IL') : 'לא ידוע';
-      document.getElementById('restore-summary').innerHTML =
-        '<div>תאריך גיבוי: <strong>' + dt + '</strong></div>' +
-        '<div>סוגי מזיקים: <strong>' + restoreData.insects.length + '</strong></div>' +
-        '<div>מלכודות: <strong>' + restoreData.traps.length + '</strong></div>' +
-        '<div>סקרים: <strong>' + restoreData.inspections.length + '</strong></div>';
-      document.getElementById('restore-preview').style.display = 'block';
-    } catch(err){
-      showToast('שגיאה בקריאת הקובץ');
-      restoreData = null;
-    }
-  };
-  reader.readAsText(file);
-}
-
-function cancelRestore(){
-  restoreData = null;
-  document.getElementById('restore-preview').style.display = 'none';
-  document.getElementById('restore-file').value = '';
-}
-
-async function doRestore(){
-  if(!restoreData){showToast('אין קובץ גיבוי נבחר');return;}
-  const btn = document.getElementById('restore-btn');
-  btn.disabled = true;
-  btn.textContent = 'מגבה מצב נוכחי...';
-  try{
-    // Step 1: auto-backup current state before restoring
-    const [insSnap,trapSnap,inspSnap] = await Promise.all([
-      db.collection('pest_types').get(),
-      db.collection(farmCol('traps')).get(),
-      db.collection(farmCol('inspections')).get()
-    ]);
-    const preBackup = {
-      exportedAt: new Date().toISOString(),
-      note: 'גיבוי אוטומטי לפני שחזור',
-      insects: insSnap.docs.map(d=>({id:d.id,...d.data()})),
-      traps: trapSnap.docs.map(d=>({id:d.id,...d.data()})),
-      inspections: inspSnap.docs.map(d=>({id:d.id,...d.data()}))
-    };
-    const preBlob = new Blob([JSON.stringify(preBackup,null,2)],{type:'application/json'});
-    const preA = document.createElement('a');
-    preA.href = URL.createObjectURL(preBlob);
-    preA.download = 'rhythmos-pre-restore-' + di(new Date()) + '.json';
-    preA.click();
-
-    btn.textContent = 'מוחק נתונים קיימים...';
-    await new Promise(r=>setTimeout(r,1000)); // let download start
-
-    // Step 2: delete all existing docs in batches
-    // NOTE: 'insects'/pest_types (סוגי מזיקים) is global, shared by every farm — a per-farm
-    // restore must never delete/overwrite it. It's still included in the backup
-    // JSON above for reference, just not touched here.
-    async function deleteCollection(colName, docs){
-      const batch = db.batch();
-      docs.forEach(d => batch.delete(db.collection(colName).doc(d.id)));
-      if(docs.length) await batch.commit();
-    }
-    await deleteCollection(farmCol('traps'), trapSnap.docs);
-    await deleteCollection(farmCol('inspections'), inspSnap.docs);
-
-    btn.textContent = 'משחזר נתונים...';
-
-    // Step 3: write restore data in batches (max 500 per batch)
-    async function restoreCollection(colName, items){
-      for(let i=0; i<items.length; i+=400){
-        const batch = db.batch();
-        items.slice(i,i+400).forEach(item=>{
-          const {id,...data} = item;
-          batch.set(db.collection(colName).doc(id), data);
-        });
-        await batch.commit();
-      }
-    }
-    await restoreCollection(farmCol('traps'), restoreData.traps);
-    await restoreCollection(farmCol('inspections'), restoreData.inspections);
-
-    showToast('שחזור הושלם בהצלחה!');
-    cancelRestore();
-    await initApp(); // reload app data
-  } catch(err){
-    showToast('שגיאה בשחזור: ' + err.message);
-    btn.disabled = false;
-    btn.textContent = '⚠️ שחזר נתונים';
-  }
-}
-
 
 function goToSamples(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections';}
 function goToObs(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections?mode=obs';}
@@ -1214,10 +931,6 @@ if ('serviceWorker' in navigator) {
 </script>
 
 
-<div class="view" id="view-insp-insects"><div class="sc"><div class="empty"><div class="eico">🐛</div><p>מזיקים — תצפיות<br><span style="font-size:12px;color:#aaa;">בפיתוח</span></p></div></div></div>
-<div class="view" id="view-insp-reports"><div class="sc"><div class="empty"><div class="eico">📋</div><p>דיווחים<br><span style="font-size:12px;color:#aaa;">בפיתוח</span></p></div></div></div>
-<div class="view" id="view-insp-plots"><div class="sc"><div class="empty"><div class="eico">🌿</div><p>חלקות<br><span style="font-size:12px;color:#aaa;">בפיתוח</span></p></div></div></div>
-<div class="view" id="view-insp-export"><div class="sc"><div class="empty"><div class="eico">📊</div><p>דוחות — תצפיות<br><span style="font-size:12px;color:#aaa;">בפיתוח</span></p></div></div></div>
 
 <div id="bottom-nav">
   <button class="bnav-btn" id="bnav-samples" onclick="goToSamples()"><span class="bnav-icon">🔬</span>מדגמים</button>

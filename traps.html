@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>ריתמוס סקאוט — מלכודות</title>
+  <link rel="icon" href="/favicon.png"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="/farm-shared.js"></script>
+    <link rel="stylesheet" href="/shared.css"/>
+  <meta name="theme-color" content="#89000a"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="ריתמוס"/>
+  <link rel="apple-touch-icon" href="/icon-192.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--red-dark:rgb(100,5,5);--gold:rgb(255,209,63);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;background:var(--cream);color:var(--text);direction:rtl;}
+    
+    
+    
+    
+    
+    .view{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;overflow:hidden;background:var(--cream);}
+    .view.active{display:flex;}
+    #view-login{align-items:center;justify-content:center;padding:24px;background:var(--farmbg) center/cover;}
+    #map-wrap{position:absolute;inset:0;}
+    #map-container{position:absolute;inset:0;}
+    .map-type-btn{position:absolute;top:10px;left:10px;background:var(--white);border:none;border-radius:8px;padding:7px 12px;font-size:13px;font-family:Arial,sans-serif;cursor:pointer;box-shadow:var(--shadow);z-index:10;color:var(--text);font-weight:500;}
+    .map-fab{position:absolute;bottom:24px;right:16px;background:var(--red);color:white;border:none;border-radius:50%;width:52px;height:52px;font-size:24px;cursor:pointer;box-shadow:0 4px 16px rgba(137,10,10,0.45);display:flex;align-items:center;justify-content:center;z-index:10;}
+    .login-card{background:var(--white);border-radius:20px;padding:36px 28px;max-width:400px;width:100%;box-shadow:var(--shadow);}
+    .login-sub{font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:26px;font-weight:300;}
+    .tab-row{display:flex;background:var(--cream);border-radius:8px;padding:3px;margin-bottom:20px;}
+    .tab{flex:1;padding:8px;border:none;background:transparent;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;cursor:pointer;color:var(--text-muted);font-weight:500;transition:all 0.2s;}
+    .tab.active{background:var(--white);color:var(--red);box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+    
+    
+    .fi{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:Arial,sans-serif;color:var(--text);background:rgb(244,245,248);outline:none;direction:ltr;text-align:right;}
+    .fi:focus{border-color:var(--red);}
+    
+    
+    .sc{flex:1;overflow-y:auto;padding:16px;}
+    .fv{flex:1;overflow-y:auto;padding:16px;width:100%;max-width:680px;margin:0 auto;box-sizing:border-box;}
+    .card{background:var(--white);border-radius:var(--radius);padding:13px 15px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;gap:12px;cursor:pointer;}
+    .cb{flex:1;min-width:0;}.ct{font-size:15px;font-weight:600;margin-bottom:2px;}.cs{font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .ca{display:flex;gap:6px;flex-shrink:0;}
+    
+    
+    
+    
+    
+    .cdot{width:26px;height:26px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,0.08);}
+    .fab-inline{position:fixed;bottom:calc(var(--bnav) + 16px);right:16px;z-index:50;}
+    .fs{background:var(--white);border-radius:var(--radius);padding:15px;margin-bottom:13px;box-shadow:0 1px 6px rgba(0,0,0,0.05);}
+    .fst{font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:13px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+    .fr{margin-bottom:12px;}
+    .fin{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:Arial,sans-serif;color:var(--text);background:var(--input-bg);outline:none;}
+    .fin:focus{border-color:var(--red);}.fin[type="number"]{direction:ltr;text-align:right;}
+    .fta{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:Arial,sans-serif;color:var(--text);background:rgb(244,245,248);outline:none;resize:none;height:80px;}
+    .ffoot{display:flex;flex-direction:row;gap:8px;padding:12px 16px;background:var(--white);border-top:1px solid var(--border);flex-shrink:0;justify-content:center;align-items:stretch;}
+    .btn-sec{padding:10px 0;width:90px;background:rgb(69,71,74);color:white;border:none;border-radius:8px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;}
+    .btn-sav{padding:10px 0;width:90px;background:var(--red);color:white;border:none;border-radius:8px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;}
+    .btn-del{padding:12px;background:transparent;color:#c0392b;border:1.5px solid #c0392b;border-radius:10px;font-size:14px;font-family:Arial,sans-serif;font-weight:500;cursor:pointer;width:100%;margin-bottom:16px;}
+    .dfrow{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:var(--input-bg);border-radius:8px;padding:8px 10px;}
+    .dfrow input{flex:1;border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;font-family:Arial,sans-serif;background:rgb(244,245,248);outline:none;color:var(--text);}
+    .rmf{background:none;border:none;color:#c0392b;font-size:18px;cursor:pointer;flex-shrink:0;}
+    .addf{display:flex;align-items:center;gap:6px;background:none;border:1.5px dashed var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:Arial,sans-serif;color:var(--text);cursor:pointer;width:100%;font-weight:500;margin-top:4px;}
+    .crow{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:6px;}
+    .copt{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;box-shadow:0 1px 4px rgba(0,0,0,0.2);padding:0;}
+    .copt.sel{border-color:var(--text);box-shadow:0 0 0 2px white inset,0 1px 4px rgba(0,0,0,0.35);}
+    .gbox{background:var(--input-bg);border-radius:8px;padding:10px 12px;font-size:12px;font-family:monospace;color:var(--text);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .gbtn{background:var(--red);color:white;border:none;border-radius:6px;padding:6px 10px;font-size:12px;font-family:Arial,sans-serif;cursor:pointer;white-space:nowrap;}
+    .ichip{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;border:2px solid var(--border);background:white;color:var(--text);margin:4px;transition:all 0.15s;}
+    .trap-hdr{background:rgb(69,71,74);color:white;border-radius:var(--radius);padding:14px 16px;margin-bottom:13px;}
+    .thn{font-size:16px;font-weight:700;margin-bottom:3px;}.thd{font-size:12px;opacity:0.85;}
+    .phbox{background:rgba(255,209,63,0.2);border:1.5px solid var(--gold);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:13px;display:flex;align-items:center;gap:10px;}
+    .finrow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);}
+    .finlbl{font-size:14px;font-weight:500;}
+    .fininp{width:90px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:16px;font-weight:600;font-family:Arial,sans-serif;text-align:center;direction:ltr;background:var(--input-bg);color:var(--text);outline:none;}
+    .chkrow{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--input-bg);border-radius:8px;cursor:pointer;}
+    .chkrow input[type="checkbox"]{width:18px;height:18px;accent-color:var(--red);cursor:pointer;flex-shrink:0;}
+    .chklbl{font-size:14px;font-weight:500;cursor:pointer;}
+    .dpair{display:flex;gap:10px;}.dpair .fr{flex:1;}
+    .empty p{font-size:14px;line-height:1.7;}
+    .mover{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1500;align-items:center;justify-content:center;padding:20px;}
+    .mover.open{display:flex;}
+    .mover
+    .mbox{background:var(--white);border-radius:16px;padding:24px;width:100%;max-width:360px;box-shadow:var(--shadow);}
+    .mtitle{font-size:16px;font-weight:700;color:var(--red);margin-bottom:10px;}
+    
+    
+    .btn-mcan{flex:1;padding:11px;border:1.5px solid var(--border);border-radius:10px;background:white;font-family:Arial,sans-serif;font-size:14px;cursor:pointer;color:var(--text-muted);}
+    .btn-mok{flex:1;padding:11px;background:#c0392b;color:white;border:none;border-radius:10px;font-family:Arial,sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
+    
+    #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgb(69,71,74);color:white;padding:10px 20px;border-radius:20px;font-size:14px;font-family:Arial,sans-serif;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+  
+    
+    
+    
+    
+    
+
+    /* ── MOBILE / PWA ── */
+    @media (max-width: 480px) {
+      .card { padding: 11px 12px; }
+      .btn-sav, .btn-sec { padding: 10px 16px; font-size: 13px; }
+    }
+    /* Safe area for notched phones */
+    #bottom-bar { height: calc(var(--bar) + env(safe-area-inset-bottom)); }
+    .view { top: 0; bottom:var(--bnav); }
+
+      .btn-del{padding:10px 0;width:90px;height:100%;background:white;color:rgb(137,10,10);border:1.5px solid rgb(137,10,10);border-radius:8px;font-size:13px;font-family:Arial,sans-serif;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;}
+    
+    
+    
+    .crop-chip.sel{background:var(--red);border-color:var(--red);color:white;}
+  </style>
+</head>
+<body>
+
+<div class="view" id="view-home">
+  <div class="sc" style="padding-top:24px;">
+    <div style="text-align:center;font-size:18px;font-weight:700;color:var(--text-muted);margin-bottom:28px;" id="home-farm-name"></div>
+    <div class="fst" style="text-align:center;margin-bottom:14px;">דיווחים</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" onclick="navTo('map')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">🗺️ מפה</div></div>
+      </div>
+      <div class="card" onclick="navTo('traps')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📍 רשימת מלכודות</div></div>
+      </div>
+      <div class="card" onclick="navTo('export')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📊 דוחות</div></div>
+      </div>
+      <div class="card" onclick="navTo('traphw')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">⚙️ הגדרות</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div class="mover" id="confirm-modal"><div class="mbox"><div class="mtitle" id="cm-title">אישור</div><div class="mmsg" id="cm-msg"></div><div class="mfoot"><button class="btn-mcan" onclick="closeConfirm(false)">ביטול</button><button class="btn-mok" onclick="closeConfirm(true)">אישור</button></div></div></div>
+<div class="view" id="view-map"><div id="map-wrap"><div id="map-container"></div>
+  <div id="map-pick-overlay" style="display:none;position:absolute;inset:0;pointer-events:none;z-index:20;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);font-size:36px;line-height:1;">📍</div>
+  </div>
+  <div id="map-pick-bar" style="display:none;position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:21;pointer-events:auto;">
+    <button onclick="saveMapPickLocation()" style="padding:12px 28px;background:var(--red);color:white;border:none;border-radius:10px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25);">שמור מיקום זה</button>
+  </div><button class="map-type-btn" onclick="toggleMapType()">🛰️ לוויין</button><button class="map-fab" onclick="locateMe()" title="מיקום נוכחי">📍</button></div></div>
+<div class="view" id="view-traphw">
+  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('home')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">בית</span></div>
+  <div class="sc">
+    <div class="fs"><div class="fst">הוספת סוג מלכודת</div>
+      <div style="display:flex;gap:8px;">
+        <input class="fin" id="traphw-new-name" type="text" placeholder="לדוגמה: דלתון" style="flex:1;" onkeydown="if(event.key==='Enter')addTrapHardware();"/>
+        <button class="btn-sav" style="width:80px;" onclick="addTrapHardware()">הוסף</button>
+      </div>
+    </div>
+    <div class="fs"><div class="fst">סוגים קיימים</div><div id="traphw-list"></div></div>
+  </div>
+</div>
+<div class="view" id="view-traps">
+  <div id="traps-filter-bar" style="background:var(--white);border-bottom:1px solid var(--border);padding:8px 12px;flex-shrink:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+      <div style="position:relative;">
+        <button onclick="toggleDropdown('dd-pest')" id="btn-pest" style="width:100%;font-size:12px;padding:5px 6px;border-radius:6px;border:0.5px solid var(--border);background:rgb(244,245,248);color:var(--text);font-family:Arial;cursor:pointer;text-align:right;display:flex;justify-content:space-between;align-items:center;">
+          <span id="lbl-pest">שם המזיק</span><span style="font-size:9px;opacity:0.5;">▼</span>
+        </button>
+        <div id="dd-pest" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:500;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
+      </div>
+      <div style="position:relative;">
+        <button onclick="toggleDropdown('dd-crop')" id="btn-crop" style="width:100%;font-size:12px;padding:5px 6px;border-radius:6px;border:0.5px solid var(--border);background:rgb(244,245,248);color:var(--text);font-family:Arial;cursor:pointer;text-align:right;display:flex;justify-content:space-between;align-items:center;">
+          <span id="lbl-crop">גידול</span><span style="font-size:9px;opacity:0.5;">▼</span>
+        </button>
+        <div id="dd-crop" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:500;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
+      </div>
+      <div style="position:relative;">
+        <button onclick="toggleDropdown('dd-plot')" id="btn-plot" style="width:100%;font-size:12px;padding:5px 6px;border-radius:6px;border:0.5px solid var(--border);background:rgb(244,245,248);color:var(--text);font-family:Arial;cursor:pointer;text-align:right;display:flex;justify-content:space-between;align-items:center;">
+          <span id="lbl-plot">חלקה</span><span style="font-size:9px;opacity:0.5;">▼</span>
+        </button>
+        <div id="dd-plot" style="display:none;position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:500;max-height:200px;overflow-y:auto;padding:4px 0;"></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+      <button onclick="clearTrapFilter()" style="font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;padding:0;font-family:Arial;">נקה סינון ✕</button>
+      <span id="trap-count" style="font-size:11px;color:rgba(69,71,74,0.6);"></span>
+    </div>
+  </div>
+  <div class="sc" id="traps-list"></div>
+</div>
+<div class="view" id="view-trap-form">
+  <div class="fv"><input type="hidden" id="tf-id"/>
+    <div class="fs"><div class="fst">מיקום מלכודת</div>
+      <div style="font-size:12px;color:var(--text);font-family:monospace;background:var(--input-bg);border-radius:6px;padding:6px 10px;margin-bottom:10px;min-height:22px;" id="gps-disp">לא נקלט מיקום</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button onclick="captureGPS()" style="width:100%;padding:10px;background:var(--red);color:white;border:1.5px solid var(--red);border-radius:8px;font-family:Arial,sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-sizing:border-box;">📡 שמור מיקום נוכחי</button>
+        <button onclick="startMapPick()" style="width:100%;padding:10px;background:white;color:var(--dusty-rose);border:1.5px solid var(--dusty-rose);border-radius:8px;font-family:Arial,sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-sizing:border-box;">🗺️ סמן על המפה</button>
+      </div>
+      <input type="hidden" id="tf-lat"/><input type="hidden" id="tf-lng"/>
+    </div>
+    <div class="fs"><div class="fst">חלקה וגידול</div>
+      <div class="fr"><label class="frl">חלקה</label><select class="fin" id="tf-plot" onchange="onTrapPlotChange(this.value)"></select></div>
+      <div class="fr"><label class="frl">גידול</label><select class="fin" id="tf-crop" onchange="renderIChips()"></select></div>
+    </div>
+    <div class="fs"><div class="fst">שם המזיק</div><div id="ichip-grid"></div></div>
+    <div class="fs"><div class="fst">פרטי מלכודת</div>
+      <div class="fr"><label class="frl">סוג מלכודת</label><select class="fin" id="tf-traptype"></select></div>
+      <div class="fr"><label class="frl">מספר מלכודת</label><input class="fin" type="text" id="tf-trapnum" placeholder="מספר או קוד מלכודת"/></div>
+      <div class="fr"><label class="frl">שורה</label><input class="fin" type="text" id="tf-row" placeholder="מספר שורה"/></div>
+      <div class="fr"><label class="frl">עץ</label><input class="fin" type="text" id="tf-tree" placeholder="מספר עץ"/></div>
+    </div>
+    <div class="fs"><div class="fst">פרומון</div><div class="fr"><label class="frl">תאריך החלפה אחרונה</label><input class="fin" type="date" id="tf-phdate"/></div></div>
+    <div id="tf-del-wrap" style="display:none;"><button class="btn-del" onclick="deleteTrap()">🗑️ מחק מלכודת</button></div>
+  </div>
+  <div class="ffoot"><button class="btn-sec" onclick="confirmLeaveIfDirty(()=>navTo('traps'))">ביטול</button><button class="btn-sav" onclick="saveTrap()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div>
+</div>
+<div class="view" id="view-inspection"><div class="fv" id="insp-content"></div><div class="ffoot"><button class="btn-sec" onclick="confirmLeaveIfDirty(()=>navTo('map'))">ביטול</button><button id="del-insp-btn" class="btn-del" onclick="deleteInspection()" style="display:none;">מחק דיווח</button><button class="btn-sav" onclick="saveInspection()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> שמור</button></div></div>
+<div class="view" id="view-export">
+  <div class="sc">
+    <div class="fs"><div class="fst">טווח תאריכים</div><div class="dpair"><div class="fr"><label class="frl">מתאריך</label><input class="fin" type="date" id="ex-from"/></div><div class="fr"><label class="frl">עד תאריך</label><input class="fin" type="date" id="ex-to"/></div></div></div>
+    <div class="fs"><div class="fst">סינון</div><label class="frl">מזיקים (ריק = הכל)</label><div class="crop-chips" id="ex-ins-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div></div>
+    <button class="btn-sav" style="width:100%;margin-top:4px;justify-content:center;" onclick="exportCSV()">⬇️ ייצא לקובץ Excel</button>
+    <button class="btn-sec" style="width:100%;margin-top:8px;" onclick="exportBackup()">💾 ייצא גיבוי מלא (JSON)</button>
+
+    <div class="fs" style="margin-top:16px;">
+      <div class="fst">שחזור נתונים</div>
+      <div id="restore-box">
+        <p style="font-size:13px;color:var(--text-muted);text-align:right;margin:8px 0;">בחר קובץ גיבוי JSON לשחזור:</p>
+        <input type="file" id="restore-file" accept=".json" style="display:none" onchange="onRestoreFileChosen(event)"/>
+        <button class="btn-sec" style="width:100%;margin-top:4px;" onclick="document.getElementById('restore-file').click()">📂 בחר קובץ גיבוי</button>
+      </div>
+      <div id="restore-preview" style="display:none;margin-top:12px;">
+        <div style="background:rgb(244,245,248);border-radius:8px;padding:12px;text-align:right;font-size:13px;color:var(--text);">
+          <div style="font-weight:700;margin-bottom:6px;">📋 פרטי הגיבוי הנבחר:</div>
+          <div id="restore-summary"></div>
+        </div>
+        <div style="margin-top:10px;background:#fff3cd;border:1.5px solid #e6a817;border-radius:8px;padding:10px;text-align:right;font-size:12px;color:#7a4f00;">
+          ⚠️ <strong>אזהרה:</strong> פעולת השחזור תמחק את כל הנתונים הקיימים במערכת ותחליף אותם בנתוני הגיבוי. לפני השחזור יישמר גיבוי אוטומטי של המצב הנוכחי.
+        </div>
+        <button id="restore-btn" class="btn-sav" style="width:100%;margin-top:10px;justify-content:center;background:rgb(137,10,10);" onclick="doRestore()">⚠️ שחזר נתונים</button>
+        <button class="btn-sec" style="width:100%;margin-top:6px;" onclick="cancelRestore()">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+firebase.initializeApp({apiKey:"AIzaSyAucl67C2ZdoxirQYxafLCtWJ1zlER_4FY",authDomain:"rhythmos-scout-mf.firebaseapp.com",projectId:"rhythmos-scout-mf",storageBucket:"rhythmos-scout-mf.firebasestorage.app",messagingSenderId:"284277545202",appId:"1:284277545202:web:66d2041c3670dc10f4d86b"});
+const auth=firebase.auth(),db=firebase.firestore();
+let map=null,mapType='hybrid',trapMarkers={};
+let insects=[],traps=[],curTrapId=null;
+let selColor='#c0392b',dynFields=[],selTrapIns=null,selInsCrops=new Set(),plotsCache=[],cropsCache=[],trapHardware=[];
+let mapPickMode=false,mapPickMarker=null,curView='map';
+const BACK={'traphw':'home','map':'home','traps':'home','export':'home','trap-form':'traps','inspection':'map'};
+const COLORS=['#e53935','#d81b60','#8e24aa','#3949ab','#1e88e5','#00acc1','#00897b','#43a047','#c0ca33','#ffb300','#fb8c00','#6d4c41','#000000','#bdbdbd','#c8ad7f','#f06292'];
+let BAR_H=56;
+
+auth.onAuthStateChanged(u=>{
+  if(u){
+    sessionStorage.removeItem('rhythmos_just_switched');
+    initApp();
+  } else {
+    if(!sessionStorage.getItem('rhythmos_just_switched')){
+      window.location.href='/';
+    }
+  }
+});
+
+async function doLogout(){showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',async()=>{await auth.signOut();});}
+function checkMapsKey(){loadMaps();}
+function loadMaps(){
+  if(window.google?.maps){initMap();return;}
+  const s=document.createElement('script');
+  s.src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBR-YULE9PQCHzIEQGnllYaJ4jalSTD3IM&loading=async&callback=initMap';
+  s.async=true;
+  s.onerror=()=>showToast('שגיאה בטעינת המפה - בדוק חיבור אינטרנט');
+  document.head.appendChild(s);
+}
+window.initApp=async function(){await resolveFarm();await loadInsects();await loadTraps();await loadCropsCache();await loadTrapHardware();navTo('home');loadMaps();};
+async function loadCropsCache(){const s=await db.collection('crops').orderBy('name').get();cropsCache=s.docs.map(d=>({id:d.id,...d.data()}));}
+async function loadTrapHardware(){const s=await db.collection('trap_hardware').orderBy('name').get();trapHardware=s.docs.map(d=>({id:d.id,...d.data()}));}
+function initMap(){
+  document.getElementById('map-wrap').style.top='0';
+  document.getElementById('map-wrap').style.bottom='56px';
+  map=new google.maps.Map(document.getElementById('map-container'),{center:{lat:31.8,lng:34.9},zoom:13,mapTypeId:'hybrid',disableDefaultUI:true,gestureHandling:'greedy',clickableIcons:false});
+  // Center to user's location on load + show blue dot
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      p=>{map.panTo({lat:p.coords.latitude,lng:p.coords.longitude});map.setZoom(15);updateLocationDot(p);},
+      ()=>{}
+    );
+    // Keep dot updated as user moves
+    navigator.geolocation.watchPosition(
+      p=>updateLocationDot(p),
+      ()=>{}, {enableHighAccuracy:true, maximumAge:10000}
+    );
+  }
+  map.addListener('click',e=>{ if(!mapPickMode)return; /* location set via center pin */ });
+
+  renderMarkers();
+  renderPlotOverlaysOnMap();
+}
+
+// Plots (from the Samples module's insp_plots, read-only) shown as a reference
+// layer on the Traps map, so trap placement can be seen relative to plot boundaries.
+// Also cached in plotsCache[] to source the crop-chip list on insect-type forms.
+async function renderPlotOverlaysOnMap() {
+  try {
+    const snap = await db.collection(farmCol('insp_plots')).get();
+    plotsCache = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    snap.docs.forEach(doc => {
+      const plot = doc.data();
+      if (!plot.polygon || plot.polygon.length < 3) return;
+      new google.maps.Polygon({
+        paths: plot.polygon, map,
+        strokeColor: '#ffe14d', strokeWeight: 2, fillColor: '#ffe14d', fillOpacity: 0.15,
+        clickable: false,
+      });
+      if (plot.name) {
+        const bounds = new google.maps.LatLngBounds();
+        plot.polygon.forEach(pt => bounds.extend(pt));
+        new google.maps.Marker({
+          position: bounds.getCenter(), map,
+          label: { text: plot.name, color: '#890a0a', fontSize: '12px', fontWeight: '800' },
+          icon: { path: 0, scale: 0 }, // invisible icon — label only
+          clickable: false,
+        });
+      }
+    });
+  } catch (e) { console.error('Failed to load plot overlays', e); }
+}
+function toggleMapType(){mapType=mapType==='hybrid'?'roadmap':'hybrid';map.setMapTypeId(mapType);document.querySelector('.map-type-btn').textContent=mapType==='hybrid'?'🛰️ לוויין':'🗺️ מפה';}
+function locateMe(){if(!navigator.geolocation){showToast('GPS לא זמין');return;}navigator.geolocation.getCurrentPosition(p=>{map.panTo({lat:p.coords.latitude,lng:p.coords.longitude});map.setZoom(17);updateLocationDot(p);},()=>showToast('לא ניתן לקבל מיקום'));}
+function renderMarkers(){Object.values(trapMarkers).forEach(m=>m.setMap(null));trapMarkers={};traps.forEach(addMarker);}
+
+// ── Location dot (blue, like Google Maps) ──
+let locationDot=null, locationCircle=null;
+function updateLocationDot(pos){
+  const latlng={lat:pos.coords.latitude, lng:pos.coords.longitude};
+  if(!map)return;
+  if(!locationDot){
+    locationDot=new google.maps.Marker({
+      position:latlng, map,
+      icon:{
+        path:google.maps.SymbolPath.CIRCLE,
+        scale:9,
+        fillColor:'#4285F4',
+        fillOpacity:1,
+        strokeColor:'white',
+        strokeWeight:2.5
+      },
+      zIndex:200,
+      title:'מיקומך'
+    });
+    locationCircle=new google.maps.Circle({
+      map, center:latlng,
+      radius:pos.coords.accuracy,
+      fillColor:'#4285F4', fillOpacity:0.12,
+      strokeColor:'#4285F4', strokeOpacity:0.4, strokeWeight:1
+    });
+  } else {
+    locationDot.setPosition(latlng);
+    locationCircle.setCenter(latlng);
+    locationCircle.setRadius(pos.coords.accuracy);
+  }
+}
+
+// ── Map bubble: shows on marker tap ─────────────────────────────────────────
+let activeBubble = null;
+
+async function openTrapBubble(trapId, marker) {
+  // Close existing bubble
+  if (activeBubble) { activeBubble.close(); activeBubble = null; }
+
+  const trap = traps.find(t => t.id === trapId);
+  const ins = insects.find(i => i.id === trap?.insectId);
+  if (!trap) return;
+
+  const trapLabel = [
+    trap.plot || '',
+    trap.trapNum ? 'מלכודת ' + trap.trapNum : ''
+  ].filter(Boolean).join(' | ');
+
+  // Fetch last inspection date + comments
+  let lastInspLabel = 'אין סקרים';
+  let lastInspComment = '';
+  try {
+    const snap = await db.collection(farmCol('inspections'))
+      .where('trapId', '==', trapId)
+      .get();
+    if (!snap.empty) {
+      const sorted = snap.docs
+        .map(d => d.data())
+        .filter(d => d.inspectedAt)
+        .sort((a, b) => b.inspectedAt.toMillis() - a.inspectedAt.toMillis());
+      if (sorted.length) {
+        const data = sorted[0];
+        const dt = data.inspectedAt?.toDate?.() || null;
+        if (dt) lastInspLabel = dt.toLocaleDateString('he-IL');
+        const c = (data.comments || '').trim();
+        if (c) lastInspComment = c.length > 60 ? c.substring(0, 60) + '...' : c;
+      }
+    }
+  } catch(e) { lastInspLabel = '—'; }
+
+  const infoWindow = new google.maps.InfoWindow({
+    content: `<div dir="rtl" style="font-family:Arial;min-width:190px;padding:4px 2px;">
+      <div style="font-weight:700;font-size:14px;color:#89000a;margin-bottom:3px;">${ins?.name || 'מזיק לא ידוע'}</div>
+      <div style="font-size:11px;color:#666;margin-bottom:4px;">${trapLabel}</div>
+      <div style="font-size:11px;color:#444;margin-bottom:${lastInspComment?'4px':'10px'};">תאריך סקר אחרון: <strong>${lastInspLabel}</strong></div>
+      ${lastInspComment?`<div style="font-size:11px;color:#666;margin-bottom:10px;font-style:italic;">${lastInspComment}</div>`:''}
+      <div style="display:flex;gap:8px;">
+        <button onclick="closeBubbleAndDo('new','${trapId}')"
+          style="flex:1;padding:7px 6px;background:#89000a;color:white;border:none;border-radius:7px;font-family:Arial;font-size:12px;font-weight:600;cursor:pointer;">
+          ✚ סקר חדש
+        </button>
+        <button onclick="closeBubbleAndDo('last','${trapId}')"
+          style="flex:1;padding:7px 6px;background:white;color:#444;border:1.5px solid #ccc;border-radius:7px;font-family:Arial;font-size:12px;cursor:pointer;">
+          ✏️ דיווח אחרון
+        </button>
+      </div>
+    </div>`,
+    disableAutoPan: false
+  });
+  infoWindow.open(map, marker);
+  activeBubble = infoWindow;
+  google.maps.event.addListenerOnce(map, 'click', () => {
+    infoWindow.close(); activeBubble = null;
+  });
+}
+
+function closeBubbleAndDo(action, trapId) {
+  if (activeBubble) { activeBubble.close(); activeBubble = null; }
+  if (action === 'new') {
+    openInspection(trapId);
+  } else {
+    openLastInspection(trapId);
+  }
+}
+
+async function openLastInspection(trapId) {
+  showToast('טוען דיווח אחרון...');
+  try {
+    const snap = await db.collection(farmCol('inspections'))
+      .where('trapId', '==', trapId)
+      .get();
+    if (snap.empty) { showToast('אין דיווחים קודמים למלכודת זו'); return; }
+    const sorted = snap.docs
+      .filter(d => d.data().inspectedAt)
+      .sort((a, b) => b.data().inspectedAt.toMillis() - a.data().inspectedAt.toMillis());
+    if (!sorted.length) { showToast('אין דיווחים קודמים למלכודת זו'); return; }
+    const rec = sorted[0];
+    openInspection(trapId, rec.id, rec.data());
+  } catch(e) { showToast('שגיאה בטעינת דיווח: ' + e.message); }
+}
+
+function addMarker(trap){if(!map||!trap.lat||!trap.lng)return;const ins=insects.find(i=>i.id===trap.insectId);const col=ins?.color||'#8B1A1A';const m=new google.maps.Marker({position:{lat:trap.lat,lng:trap.lng},map,title:`${ins?.name||'?'} | ${trap.plot||''} שורה ${trap.row||''} עץ ${trap.tree||''}`,icon:{path:'M 0,-16 C -6,-16 -10,-11 -10,-6 C -10,2 0,14 0,14 C 0,14 10,2 10,-6 C 10,-11 6,-16 0,-16 Z',fillColor:col,fillOpacity:0.93,strokeColor:'white',strokeWeight:1.5,scale:1,anchor:new google.maps.Point(0,14)},zIndex:100});m.addListener('click',()=>openTrapBubble(trap.id,m));trapMarkers[trap.id]=m;}
+function startMapPick(){
+  if(!map){showToast('המפה לא נטענה עדיין');return;}
+  mapPickMode=true;
+  navTo('map');
+  setTimeout(()=>{
+    document.getElementById('map-pick-overlay').style.display='block';
+    document.getElementById('map-pick-bar').style.display='block';
+    map.setOptions({draggableCursor:'grab'});
+    showToast('הזז את המפה עד שהנעץ יהיה מעל המיקום הרצוי');
+  },100);
+}
+function saveMapPickLocation(){
+  if(!map||!mapPickMode)return;
+  const c=map.getCenter();
+  const la=c.lat(), ln=c.lng();
+  document.getElementById('tf-lat').value=la;
+  document.getElementById('tf-lng').value=ln;
+  document.getElementById('gps-disp').textContent=la.toFixed(6)+', '+ln.toFixed(6);
+  mapPickMode=false;
+  map.setOptions({draggableCursor:''});
+  document.getElementById('map-pick-overlay').style.display='none';
+  document.getElementById('map-pick-bar').style.display='none';
+  if(mapPickMarker){mapPickMarker.setMap(null);mapPickMarker=null;}
+  showV('trap-form');
+  showToast('המיקום נשמר');
+}
+function navTo(s){
+  curView=s;
+  showV(s);
+  if(s==='home')showFarmNameStatic('home-farm-name');
+  if(s==='traps')renderTraps();
+  if(s==='traphw')renderTrapHardwareSettings();
+  if(s==='export')prepExport();
+  if(s==='map'&&map)setTimeout(()=>google.maps.event.trigger(map,'resize'),50);
+}
+
+// Trap hardware type (physical trap design, e.g. Delta/Jackson) — Traps-only,
+// unlike crops/pest types which are shared across all three surfaces.
+async function seedTrapHardwareIfEmpty(){
+  if(trapHardware.length) return;
+  const existing=[...new Set(traps.map(t=>t.trapType).filter(Boolean))];
+  if(!existing.length) return;
+  const batch=db.batch();
+  existing.forEach(name=>{
+    const ref=db.collection('trap_hardware').doc();
+    batch.set(ref,{name,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  });
+  await batch.commit();
+  await loadTrapHardware();
+}
+async function renderTrapHardwareSettings(){
+  const el=document.getElementById('traphw-list');
+  el.innerHTML='<p style="font-size:13px;color:var(--text-muted);">טוען...</p>';
+  await seedTrapHardwareIfEmpty();
+  if(!trapHardware.length){el.innerHTML='<p style="font-size:13px;color:var(--text-muted);">אין סוגי מלכודת עדיין. הוסף למעלה.</p>';return;}
+  el.innerHTML=trapHardware.map(h=>`<div class="card" style="cursor:default;"><div class="cb"><div class="ct">${h.name}</div></div><div class="ca"><button class="ia" onclick="confirmDeleteTrapHardware('${h.id}')" style="color:var(--red);">🗑</button></div></div>`).join('');
+}
+async function addTrapHardware(){
+  const input=document.getElementById('traphw-new-name');
+  const name=input.value.trim();
+  if(!name){showToast('נא להזין שם');return;}
+  if(trapHardware.some(h=>h.name===name)){showToast('סוג זה כבר קיים');return;}
+  try{
+    await db.collection('trap_hardware').add({name,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    input.value='';
+    await loadTrapHardware();
+    renderTrapHardwareSettings();
+    showToast('נוסף בהצלחה');
+  }catch(e){showToast('שגיאה: '+e.message);}
+}
+function confirmDeleteTrapHardware(id){
+  const h=trapHardware.find(x=>x.id===id);
+  showConfirm('מחיקת סוג מלכודת',`האם למחוק את "${h?.name||''}"?`,async()=>{
+    try{
+      await db.collection('trap_hardware').doc(id).delete();
+      await loadTrapHardware();
+      renderTrapHardwareSettings();
+      showToast('נמחק');
+    }catch(e){showToast('שגיאה: '+e.message);}
+  });
+}
+function populateTrapHardwareSelect(currentValue){
+  const sel=document.getElementById('tf-traptype');
+  const names=trapHardware.map(h=>h.name);
+  let opts='<option value="">בחר סוג מלכודת</option>'+names.map(n=>`<option value="${n}">${n}</option>`).join('');
+  if(currentValue&&!names.includes(currentValue)) opts+=`<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
+  sel.innerHTML=opts;
+  sel.value=currentValue||'';
+}
+function showV(n){curView=n;document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active');v.style.display='';});const el=document.getElementById('view-'+n);if(el){el.classList.add('active');el.style.display='flex';el.style.top='0';el.style.bottom=BAR_H+'px';const scrollable=el.querySelector('.fv, .sc');if(scrollable)scrollable.scrollTop=0;}}
+function goBack(){confirmLeaveIfDirty(()=>navTo(BACK[curView]||'home'));}
+async function loadInsects(){const s=await db.collection('pest_types').get();insects=s.docs.map(d=>{const v=d.data();return{id:d.id,name:v.name,color:v.color,fields:v.trapFields||[],crops:v.crops||[],sortOrder:v.sortOrder,checks:v.checks||[],sampleRows:v.sampleRows,sampleTrees:v.sampleTrees,sampleFruits:v.sampleFruits};}).sort((a,b)=>(a.sortOrder??999)-(b.sortOrder??999)||a.name.localeCompare(b.name,'he'));}
+async function loadTraps(){const s=await db.collection(farmCol('traps')).orderBy('createdAt').get();traps=s.docs.map(d=>({id:d.id,...d.data()}));}
+function renderTraps(){
+  const el=document.getElementById('traps-list');
+  const fab='<div class="fab-inline"><button class="fab" onclick="openTrapForm(null)">+</button></div>';
+  if(!traps.length){el.innerHTML='<div class="empty"><div class="eico">📍</div><p>אין מלכודות.<br>לחץ + להוספה.</p></div>'+fab;return;}
+  // Build dropdown options (preserving selections). Pest name is resolved via insectId,
+  // traps never actually stored an insectName field, so reading it directly always
+  // returned undefined and left this filter empty even when pests were assigned.
+  buildFilterDropdown('dd-pest','lbl-pest','שם המזיק',
+    [...new Set(traps.map(t=>insects.find(i=>i.id===t.insectId)?.name).filter(Boolean))].sort());
+  buildFilterDropdown('dd-crop','lbl-crop','גידול',
+    [...new Set(traps.map(t=>t.crop).filter(Boolean))].sort());
+  buildFilterDropdown('dd-plot','lbl-plot','חלקה',
+    [...new Set(traps.map(t=>t.plot).filter(Boolean))].sort());
+  applyTrapFilter();
+}
+
+// State: sets of selected values per filter
+const trapSel={pest:new Set(),crop:new Set(),plot:new Set()};
+
+function buildFilterDropdown(ddId,lblId,placeholder,options){
+  const dd=document.getElementById(ddId);
+  if(!dd)return;
+  const key=ddId.replace('dd-','');
+  dd.innerHTML=options.map(v=>{
+    const checked=trapSel[key].has(v);
+    return `<label style="display:flex;align-items:center;gap:8px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:Arial;color:rgb(69,71,74);direction:rtl;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+      <input type="checkbox" value="${v}" ${checked?'checked':''} onchange="onFilterCheck('${key}',this)" style="accent-color:var(--red);flex-shrink:0;"/>
+      <span style="overflow:hidden;text-overflow:ellipsis;">${v}</span>
+    </label>`;
+  }).join('');
+  updateFilterBtn(key,placeholder);
+}
+
+function onFilterCheck(key,cb){
+  if(cb.checked) trapSel[key].add(cb.value);
+  else trapSel[key].delete(cb.value);
+  const lbl=document.getElementById('lbl-'+key);
+  const placeholder={pest:'שם המזיק',crop:'גידול',plot:'חלקה'}[key];
+  updateFilterBtn(key,placeholder);
+  applyTrapFilter();
+}
+
+function updateFilterBtn(key,placeholder){
+  const lbl=document.getElementById('lbl-'+key);
+  const btn=document.getElementById('btn-'+key);
+  if(!lbl)return;
+  const n=trapSel[key].size;
+  if(n===0){lbl.textContent=placeholder;btn.style.background='rgb(244,245,248)';btn.style.color='rgb(69,71,74)';}
+  else if(n===1){lbl.textContent=[...trapSel[key]][0];btn.style.background='var(--red)';btn.style.color='white';}
+  else{lbl.textContent=placeholder+' ('+n+')';btn.style.background='var(--red)';btn.style.color='white';}
+}
+
+function toggleDropdown(id){
+  ['dd-pest','dd-crop','dd-plot'].forEach(d=>{
+    if(d!==id) document.getElementById(d).style.display='none';
+  });
+  const dd=document.getElementById(id);
+  dd.style.display=dd.style.display==='none'?'block':'none';
+}
+
+// Close dropdowns when tapping outside
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#traps-filter-bar')){
+    ['dd-pest','dd-crop','dd-plot'].forEach(d=>{
+      const el=document.getElementById(d);
+      if(el) el.style.display='none';
+    });
+  }
+});
+
+function applyTrapFilter(){
+  const el=document.getElementById('traps-list');
+  const fab='<div class="fab-inline"><button class="fab" onclick="openTrapForm(null)">+</button></div>';
+  const filtered=traps.filter(t=>
+    (!trapSel.pest.size||trapSel.pest.has(insects.find(i=>i.id===t.insectId)?.name))&&
+    (!trapSel.crop.size||trapSel.crop.has(t.crop))&&
+    (!trapSel.plot.size||trapSel.plot.has(t.plot))
+  );
+  const countEl=document.getElementById('trap-count');
+  if(countEl) countEl.textContent='מציג '+filtered.length+' מתוך '+traps.length;
+  if(!filtered.length){
+    el.innerHTML='<div class="empty"><div class="eico">🔍</div><p>אין מלכודות התואמות את הסינון.</p></div>'+fab;
+    return;
+  }
+  el.innerHTML=filtered.map(t=>{
+    const ins=insects.find(i=>i.id===t.insectId);
+    const col=ins?.color||'#8B1A1A';
+    return `<div class="card" onclick="openInspection('${t.id}')"><div class="cdot" style="background:${col}"></div><div class="cb"><div class="ct">${ins?.name||'מזיק לא ידוע'}${t.pheromoneDate?' <span style="font-size:12px;font-weight:400;color:rgba(69,71,74,0.65);">🧪 '+fd(t.pheromoneDate)+'</span>':''}</div><div class="cs">${t.plot||'—'}${t.trapNum?' | מלכודת: '+t.trapNum:''}</div></div><div class="ca"><button class="ia" onclick="event.stopPropagation();openTrapForm('${t.id}')">✏️</button></div></div>`;
+  }).join('')+fab;
+}
+
+function clearTrapFilter(){
+  trapSel.pest.clear(); trapSel.crop.clear(); trapSel.plot.clear();
+  ['pest','crop','plot'].forEach(k=>{
+    const placeholder={pest:'שם המזיק',crop:'גידול',plot:'חלקה'}[k];
+    updateFilterBtn(k,placeholder);
+    const dd=document.getElementById('dd-'+k);
+    if(dd) dd.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=false);
+  });
+  applyTrapFilter();
+}
+function onTrapPlotChange(plotName){
+  const plot=plotsCache.find(p=>p.name===plotName);
+  const crop=plot?.crop||'';
+  const cropSel=document.getElementById('tf-crop');
+  if(cropSel){cropSel.value=crop;cropSel.disabled=!!crop;}
+  renderIChips();
+}
+function populateTrapCropSelect(currentValue){
+  const sel=document.getElementById('tf-crop');
+  const names=cropsCache.map(c=>c.name);
+  let opts='<option value="">בחר גידול</option>'+names.map(n=>`<option value="${n}">${n}</option>`).join('');
+  if(currentValue&&!names.includes(currentValue)) opts+=`<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
+  sel.innerHTML=opts;
+  sel.value=currentValue||'';
+}
+function populateTrapPlotSelect(currentValue){
+  const sel=document.getElementById('tf-plot');
+  const names=plotsCache.map(p=>p.name).filter(Boolean);
+  let opts='<option value="">בחר חלקה</option>'+names.map(n=>`<option value="${n}">${n}</option>`).join('');
+  if(currentValue&&!names.includes(currentValue)) opts+=`<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
+  sel.innerHTML=opts;
+  sel.value=currentValue||'';
+}
+function openTrapForm(id){
+  selTrapIns=null;
+  document.getElementById('tf-id').value=id||'';
+  document.getElementById('tf-lat').value='';
+  document.getElementById('tf-lng').value='';
+  document.getElementById('gps-disp').textContent='לא נקלט מיקום';
+  ['tf-trapnum','tf-row','tf-tree'].forEach(f=>document.getElementById(f).value='');
+  document.getElementById('tf-phdate').value=di(new Date());
+  document.getElementById('tf-del-wrap').style.display=id?'block':'none';
+  let curCrop='',curPlot='',curTrapType='';
+  if(id){
+    const t=traps.find(x=>x.id===id);
+    if(t){
+      selTrapIns=t.insectId;
+      document.getElementById('tf-trapnum').value=t.trapNum||'';
+      curTrapType=t.trapType||'';
+      curCrop=t.crop||'';curPlot=t.plot||'';
+      document.getElementById('tf-row').value=t.row||'';
+      document.getElementById('tf-tree').value=t.tree||'';
+      if(t.lat&&t.lng){document.getElementById('tf-lat').value=t.lat;document.getElementById('tf-lng').value=t.lng;document.getElementById('gps-disp').textContent=t.lat.toFixed(6)+', '+t.lng.toFixed(6);}
+      if(t.pheromoneDate)document.getElementById('tf-phdate').value=t.pheromoneDate;
+    }
+  } else captureGPS();
+  populateTrapCropSelect(curCrop);
+  populateTrapPlotSelect(curPlot);
+  populateTrapHardwareSelect(curTrapType);
+  onTrapPlotChange(curPlot);
+  showV('trap-form');
+  markFormClean('view-trap-form');
+}
+function renderIChips(){const g=document.getElementById('ichip-grid');const curCrop=document.getElementById('tf-crop')?.value.trim()||'';const visible=insects.filter(i=>!i.crops?.length||!curCrop||i.crops.includes(curCrop));if(!insects.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין מזיקים מוגדרים. הגדר מזיק תחילה.</p>';return;}if(!visible.length){g.innerHTML='<p style="font-size:13px;color:var(--text-muted)">אין מזיקים המשויכים לגידול זה.</p>';return;}g.innerHTML='<div style="display:flex;flex-wrap:wrap;">'+visible.map(i=>{const s=selTrapIns===i.id;return `<div class="ichip" style="border-color:${s?i.color:'var(--border)'};background:${s?i.color:'white'};color:${s?'white':'var(--text)'}" onclick="pickTrapIns('${i.id}')"><span style="width:10px;height:10px;border-radius:50%;background:${s?'white':i.color};flex-shrink:0;display:inline-block;"></span>${i.name}</div>`;}).join('')+'</div>';}
+function pickTrapIns(id){selTrapIns=id;renderIChips();}
+function captureGPS(){if(!navigator.geolocation){showToast('GPS לא זמין');return;}showToast('קולט מיקום...');navigator.geolocation.getCurrentPosition(p=>{const la=p.coords.latitude,ln=p.coords.longitude;document.getElementById('tf-lat').value=la;document.getElementById('tf-lng').value=ln;document.getElementById('gps-disp').textContent=la.toFixed(6)+', '+ln.toFixed(6);const plot=findPlotByGPS(la,ln,plotsCache);if(plot){document.getElementById('tf-plot').value=plot.name;onTrapPlotChange(plot.name);showToast('מיקום נקלט, חלקה זוהתה: '+plot.name);}else{showToast('מיקום נקלט');}},()=>showToast('שגיאה בקליטת מיקום'));}
+async function saveTrap(){if(!selTrapIns){showToast('נא לבחור מזיק');return;}const id=document.getElementById('tf-id').value;const la=parseFloat(document.getElementById('tf-lat').value);const ln=parseFloat(document.getElementById('tf-lng').value);const data={insectId:selTrapIns,trapNum:document.getElementById('tf-trapnum').value.trim(),trapType:document.getElementById('tf-traptype').value.trim(),crop:document.getElementById('tf-crop').value.trim(),plot:document.getElementById('tf-plot').value.trim(),row:document.getElementById('tf-row').value.trim(),tree:document.getElementById('tf-tree').value.trim(),pheromoneDate:document.getElementById('tf-phdate').value,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};if(!isNaN(la)&&!isNaN(ln)){data.lat=la;data.lng=ln;}try{if(id)await db.collection(farmCol('traps')).doc(id).update(data);else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection(farmCol('traps')).add(data);}await loadTraps();renderMarkers();showToast('המלכודת נשמרה');markFormClean('view-trap-form');navTo('traps');}catch(e){showToast('שגיאה: '+e.message);}}
+function deleteTrap(){const id=document.getElementById('tf-id').value;showConfirm('מחיקת מלכודת','האם למחוק את המלכודת? לא ניתן לביטול.',async()=>{await db.collection(farmCol('traps')).doc(id).delete();await loadTraps();renderMarkers();showToast('המלכודת נמחקה');navTo('traps');});}
+function openInspection(trapId, existingId, existingData){
+  const trap=traps.find(t=>t.id===trapId);
+  if(!trap){showToast('מלכודת לא נמצאה');return;}
+  const ins=insects.find(i=>i.id===trap.insectId);
+  curTrapId=trapId;
+  curInspectionId=existingId||null;setTimeout(()=>{const db=document.getElementById('del-insp-btn');if(db)db.style.display=curInspectionId?'block':'none';},50);
+  const phDate=trap.pheromoneDate?fd(trap.pheromoneDate):'לא הוזן';document.getElementById('insp-content').innerHTML=`<div class="trap-hdr"><div class="thn">${ins?.name||'מזיק לא ידוע'}</div><div class="thd">גידול: ${trap.crop||'—'} | חלקה: ${trap.plot||'—'} | שורה: ${trap.row||'—'} | עץ: ${trap.tree||'—'}${trap.trapNum?' | מלכודת: '+trap.trapNum:''}</div></div><div class="phbox"><span style="font-size:20px;">🧪</span><div><div style="font-weight:700;font-size:13px;">פרומון אחרון</div><div style="font-size:14px;">${phDate}</div></div></div><div class="fs"><div class="fst">ממצאים</div>${ins?ins.fields.map((f,i)=>`<div class="finrow"><label class="finlbl">${f.label}</label><input class="fininp" type="number" id="fi-${i}" min="0" value="0" inputmode="numeric"/></div>`).join(''):'<p style="font-size:13px;color:var(--text-muted)">מזיק לא מוגדר</p>'}</div><div class="fs"><div class="fst">פרומון</div><label class="chkrow"><input type="checkbox" id="ph-chk" onchange="togglePhDate(this)"/><span class="chklbl">החלפתי פרומון היום</span></label><div id="ph-date-row" style="display:none;margin-top:12px;"><label class="frl">תאריך החלפה</label><input class="fin" type="date" id="ph-new-date" value="${di(new Date())}"/></div></div><div class="fs"><div class="fst">הערות</div><textarea class="fta" id="insp-comments" placeholder="הערות..."></textarea></div>`;showV('inspection');
+  // Pre-fill if editing existing record
+  if(existingData){
+    ins.fields.forEach((f,j)=>{
+      const el=document.getElementById('fi-'+j);
+      if(el) el.value=existingData.findings?.[f.label]??0;
+    });
+    if(existingData.pheromoneReplaced){
+      const chk=document.getElementById('ph-chk');
+      if(chk){chk.checked=true;togglePhDate(chk);}
+      const pd=document.getElementById('ph-new-date');
+      if(pd&&existingData.pheromoneReplacedDate) pd.value=existingData.pheromoneReplacedDate;
+    }
+    document.getElementById('insp-comments').value=existingData.comments||'';
+  }
+  markFormClean('view-inspection');
+}
+function togglePhDate(cb){document.getElementById('ph-date-row').style.display=cb.checked?'block':'none';}
+
+async function deleteInspection(){
+  if(!curInspectionId){showToast('אין דיווח למחיקה');return;}
+  if(!confirm('למחוק את הדיווח? פעולה זו אינה ניתנת לביטול.'))return;
+  try{
+    await db.collection(farmCol('inspections')).doc(curInspectionId).delete();
+    curInspectionId=null;
+    showToast('הדיווח נמחק');
+    navTo('map');
+  }catch(e){showToast('שגיאה במחיקה: '+e.message);}
+}
+
+async function saveInspection(){const trap=traps.find(t=>t.id===curTrapId);const ins=insects.find(i=>i.id===trap?.insectId);if(!trap||!ins){showToast('שגיאה');return;}const findings={};ins.fields.forEach((f,i)=>{findings[f.label]=parseInt(document.getElementById(`fi-${i}`)?.value)||0;});const phR=document.getElementById('ph-chk').checked;const phD=phR?document.getElementById('ph-new-date').value:null;const data={trapId:curTrapId,insectId:trap.insectId,insectName:ins.name,trapSnapshot:{trapNum:trap.trapNum||'',crop:trap.crop,plot:trap.plot,row:trap.row,tree:trap.tree},findings,pheromoneReplaced:phR,pheromoneReplacedDate:phD,comments:document.getElementById('insp-comments').value.trim(),inspectedAt:firebase.firestore.FieldValue.serverTimestamp(),createdAt:firebase.firestore.FieldValue.serverTimestamp()};try{if(curInspectionId){
+    await db.collection(farmCol('inspections')).doc(curInspectionId).update(data);
+    showToast('הדיווח עודכן בהצלחה');
+  } else {
+    await db.collection(farmCol('inspections')).add(data);
+    showToast('הדיווח נשמר');
+  }
+  curInspectionId=null;if(phR&&phD){await db.collection(farmCol('traps')).doc(curTrapId).update({pheromoneDate:phD});await loadTraps();renderMarkers();}showToast('הסקר נשמר');markFormClean('view-inspection');navTo('map');}catch(e){showToast('שגיאה: '+e.message);}}
+let exSelectedInsects = new Set();
+function prepExport(){
+  const now=new Date(),from=new Date(now.getFullYear(),now.getMonth(),1);
+  document.getElementById('ex-from').value=di(from);
+  document.getElementById('ex-to').value=di(now);
+  exSelectedInsects = new Set();
+  renderExInsChips();
+}
+function renderExInsChips(){
+  const el=document.getElementById('ex-ins-chips');
+  el.innerHTML=insects.map(i=>`<button type="button" class="crop-chip${exSelectedInsects.has(i.id)?' sel':''}" onclick="toggleExIns('${i.id}')">${i.name}</button>`).join('');
+}
+function toggleExIns(id){
+  if(exSelectedInsects.has(id))exSelectedInsects.delete(id);
+  else exSelectedInsects.add(id);
+  renderExInsChips();
+}
+async function exportCSV(){
+  const from=document.getElementById('ex-from').value,
+        to=document.getElementById('ex-to').value;
+  if(!from||!to){showToast('נא לבחור תאריכים');return;}
+  showToast('מייצא...');
+  const snap=await db.collection(farmCol('inspections')).get();
+  const docsSorted=snap.docs.slice()
+    .filter(d=>!exSelectedInsects.size||exSelectedInsects.has(d.data().insectId))
+    .sort((a,b)=>{
+      const ta=a.data().inspectedAt?.toMillis?.()||0, tb=b.data().inspectedAt?.toMillis?.()||0;
+      return ta-tb;
+    });
+  const byInsect={};
+  docsSorted.forEach(d=>{
+    const rec=d.data();
+    const dt=rec.inspectedAt?.toDate?rec.inspectedAt.toDate():new Date();
+    const dateOnly=di(dt);
+    if(dateOnly<from||dateOnly>to)return;
+    const iname=rec.insectName||'מזיק';
+    if(!byInsect[iname])byInsect[iname]={rows:[],fields:new Set()};
+    Object.keys(rec.findings||{}).forEach(k=>byInsect[iname].fields.add(k));
+    byInsect[iname].rows.push({rec,dt});
+  });
+  const wb=XLSX.utils.book_new();
+  let totalRows=0;
+  Object.entries(byInsect).forEach(([iname,{rows,fields}])=>{
+    const fn=[...fields];
+    const headers=['חלקה','מספר מלכודת','גידול','תאריך לכידה',...fn,'האם הוחלף פרומון','הערות'];
+    const sheetRows=rows.map(({rec,dt})=>[
+      rec.trapSnapshot?.plot||'',
+      rec.trapSnapshot?.trapNum||'',
+      rec.trapSnapshot?.crop||'',
+      dt.toLocaleDateString('he-IL'),
+      ...fn.map(f=>rec.findings?.[f]??''),
+      rec.pheromoneReplaced?'כן':'לא',
+      rec.comments||''
+    ]);
+    const ws=XLSX.utils.aoa_to_sheet([headers,...sheetRows]);
+    ws['!cols']=headers.map(()=>({wch:16}));
+    XLSX.utils.book_append_sheet(wb,ws,iname.substring(0,31));
+    totalRows+=sheetRows.length;
+  });
+  if(!totalRows){showToast('אין נתונים בטווח שנבחר');return;}
+  XLSX.writeFile(wb,'rhythmos-scout-'+from+'-'+to+'.xlsx');
+  showToast('יוצאו '+totalRows+' רשומות');
+}
+async function exportBackup(){
+  showToast('מכין גיבוי...');
+  try{
+    const [insSnap,trapSnap,inspSnap]=await Promise.all([
+      db.collection('pest_types').get(),
+      db.collection(farmCol('traps')).get(),
+      db.collection(farmCol('inspections')).get()
+    ]);
+    const backup={
+      exportedAt:new Date().toISOString(),
+      insects:insSnap.docs.map(d=>({id:d.id,...d.data()})),
+      traps:trapSnap.docs.map(d=>({id:d.id,...d.data()})),
+      inspections:inspSnap.docs.map(d=>({id:d.id,...d.data()}))
+    };
+    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='rhythmos-backup-'+di(new Date())+'.json';
+    a.click();
+    showToast('גיבוי הורד בהצלחה ('+inspSnap.size+' סקרים)');
+  }catch(e){showToast('שגיאה בגיבוי: '+e.message);}
+}
+function fd(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;}
+
+
+
+</script>
+
+<script>
+
+// ── Android back button: double-tap to exit ───────────────────────
+let backPressedOnce = false;
+let backTimer = null;
+const MAIN_VIEWS = ['home'];
+
+function handleAndroidBack() {
+  if (!MAIN_VIEWS.includes(curView)) {
+    goBack();
+    history.pushState({pwa:true}, '');
+    return;
+  }
+  if (backPressedOnce) {
+    clearTimeout(backTimer);
+    return; // allow browser to close/go back
+  }
+  backPressedOnce = true;
+  showToast('לחץ שוב לצאת');
+  history.pushState({pwa:true}, '');
+  backTimer = setTimeout(() => { backPressedOnce = false; }, 2000);
+}
+
+window.addEventListener('popstate', handleAndroidBack);
+window.addEventListener('load', () => { history.pushState({pwa:true}, ''); });
+
+
+
+// ── RESTORE FUNCTIONS ─────────────────────────────────────────────
+let restoreData = null;
+
+function onRestoreFileChosen(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      restoreData = JSON.parse(ev.target.result);
+      // Validate structure
+      if(!restoreData.insects||!restoreData.traps||!restoreData.inspections){
+        showToast('קובץ גיבוי לא תקין');
+        restoreData = null;
+        return;
+      }
+      // Show preview
+      const dt = restoreData.exportedAt ? new Date(restoreData.exportedAt).toLocaleString('he-IL') : 'לא ידוע';
+      document.getElementById('restore-summary').innerHTML =
+        '<div>תאריך גיבוי: <strong>' + dt + '</strong></div>' +
+        '<div>סוגי מזיקים: <strong>' + restoreData.insects.length + '</strong></div>' +
+        '<div>מלכודות: <strong>' + restoreData.traps.length + '</strong></div>' +
+        '<div>סקרים: <strong>' + restoreData.inspections.length + '</strong></div>';
+      document.getElementById('restore-preview').style.display = 'block';
+    } catch(err){
+      showToast('שגיאה בקריאת הקובץ');
+      restoreData = null;
+    }
+  };
+  reader.readAsText(file);
+}
+
+function cancelRestore(){
+  restoreData = null;
+  document.getElementById('restore-preview').style.display = 'none';
+  document.getElementById('restore-file').value = '';
+}
+
+async function doRestore(){
+  if(!restoreData){showToast('אין קובץ גיבוי נבחר');return;}
+  const btn = document.getElementById('restore-btn');
+  btn.disabled = true;
+  btn.textContent = 'מגבה מצב נוכחי...';
+  try{
+    // Step 1: auto-backup current state before restoring
+    const [insSnap,trapSnap,inspSnap] = await Promise.all([
+      db.collection('pest_types').get(),
+      db.collection(farmCol('traps')).get(),
+      db.collection(farmCol('inspections')).get()
+    ]);
+    const preBackup = {
+      exportedAt: new Date().toISOString(),
+      note: 'גיבוי אוטומטי לפני שחזור',
+      insects: insSnap.docs.map(d=>({id:d.id,...d.data()})),
+      traps: trapSnap.docs.map(d=>({id:d.id,...d.data()})),
+      inspections: inspSnap.docs.map(d=>({id:d.id,...d.data()}))
+    };
+    const preBlob = new Blob([JSON.stringify(preBackup,null,2)],{type:'application/json'});
+    const preA = document.createElement('a');
+    preA.href = URL.createObjectURL(preBlob);
+    preA.download = 'rhythmos-pre-restore-' + di(new Date()) + '.json';
+    preA.click();
+
+    btn.textContent = 'מוחק נתונים קיימים...';
+    await new Promise(r=>setTimeout(r,1000)); // let download start
+
+    // Step 2: delete all existing docs in batches
+    // NOTE: 'insects'/pest_types (סוגי מזיקים) is global, shared by every farm — a per-farm
+    // restore must never delete/overwrite it. It's still included in the backup
+    // JSON above for reference, just not touched here.
+    async function deleteCollection(colName, docs){
+      const batch = db.batch();
+      docs.forEach(d => batch.delete(db.collection(colName).doc(d.id)));
+      if(docs.length) await batch.commit();
+    }
+    await deleteCollection(farmCol('traps'), trapSnap.docs);
+    await deleteCollection(farmCol('inspections'), inspSnap.docs);
+
+    btn.textContent = 'משחזר נתונים...';
+
+    // Step 3: write restore data in batches (max 500 per batch)
+    async function restoreCollection(colName, items){
+      for(let i=0; i<items.length; i+=400){
+        const batch = db.batch();
+        items.slice(i,i+400).forEach(item=>{
+          const {id,...data} = item;
+          batch.set(db.collection(colName).doc(id), data);
+        });
+        await batch.commit();
+      }
+    }
+    await restoreCollection(farmCol('traps'), restoreData.traps);
+    await restoreCollection(farmCol('inspections'), restoreData.inspections);
+
+    showToast('שחזור הושלם בהצלחה!');
+    cancelRestore();
+    await initApp(); // reload app data
+  } catch(err){
+    showToast('שגיאה בשחזור: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = '⚠️ שחזר נתונים';
+  }
+}
+
+
+
+// Unregister any existing service workers so cache never blocks updates
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.unregister());
+  });
+}
+</script>
+
+
+
+</body>
+</html>

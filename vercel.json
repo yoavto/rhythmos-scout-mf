@@ -2,6 +2,7 @@
   "routes": [
     { "handle": "filesystem" },
     { "src": "/inspections", "dest": "/inspections.html" },
+    { "src": "/traps", "dest": "/traps.html" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "headers": [

@@ -28,34 +28,7 @@
       flex-direction:row;align-items:center;padding:0 4px;
     }
     #gtb.visible{display:flex;}
-    .gnav{background:none;border:none;font-family:Arial,sans-serif;font-size:14px;font-weight:500;
-      color:var(--text-muted);cursor:pointer;padding:5px 14px;border-radius:8px;
-      display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s;white-space:nowrap;}
-    .gnav .gi{font-size:21px;}
-    .gnav.active{background:rgba(137,10,10,0.08);color:var(--red);font-weight:700;}
-    #gtb-nav-obs .gnav{background:rgba(88,172,249,0.14);color:var(--obs-blue);}
-    #gtb-nav-obs .gnav.active{background:var(--obs-blue);color:white;}
-    #exit-btn{background:none;border:none;cursor:pointer;padding:6px;color:rgba(69,71,74,0.5);
-      width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;}
-    #exit-btn svg{width:20px;height:20px;transform:scaleX(-1);}
-    .gtb-nav{flex:1;display:flex;justify-content:center;align-items:center;gap:0;}
-    
-    
-    
-    
-    
-    /* Bottom nav */
-    #bottom-nav.visible{display:flex;}
-    .bnav-btn{
-      flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
-      background:none;border:none;cursor:pointer;padding:6px 4px;border-radius:8px;
-      font-family:Arial;font-size:11px;font-weight:500;color:rgba(69,71,74,0.6);
-      transition:all 0.15s;
-    }
-    .bnav-btn.active{color:var(--red);font-weight:700;background:rgba(137,10,10,0.08);}
-    #bnav-obs.active{color:var(--obs-blue);background:rgba(88,172,249,0.08);}
-    
-    
+
     /* ── BOTTOM BAR ── */
     
 
@@ -301,9 +274,10 @@
     .obs-th-sub{font-weight:400;font-size:11px;color:var(--text-muted);}
     .obs-td-pest{font-weight:700;background:rgb(248,248,248);white-space:nowrap;min-width:auto;}
 
-    /* ── OBSERVATIONS MODE — nav highlighting only (see #gtb-nav-obs / #bnav-obs above). ──
+    /* ── OBSERVATIONS MODE — body.mode-obs still toggled by navTo() based on which
+       screen is active, kept for any Observations-specific styling that depends on it. ──
        Buttons, modals, and form focus states intentionally stay identical to the rest of
-       the app; only the section nav itself signals "you're in Observations." ── */
+       the app. ── */
     body.mode-obs .chk-item{background:white;}
 
 
@@ -348,248 +322,46 @@
   </div>
 </div>
 
-<!-- ── GLOBAL TOP BAR ─────────────────────────────────────────────── -->
-<div id="gtb">
-  <div class="gtb-nav" id="gtb-nav">
-    <button class="gnav active" id="gnav-survey" onclick="navTo('survey')"><span class="gi">📋</span>מדגמים</button>
-    <button class="gnav"        id="gnav-export" onclick="navTo('export')"><span class="gi">📊</span>דוחות</button>
+<!-- ── SAMPLINGS HOME ─────────────────────────────────────────────── -->
+<div class="view" id="view-sampling-home">
+  <div class="sc" style="padding-top:20px;">
+    <div style="text-align:center;font-size:18px;font-weight:700;color:var(--text-muted);margin-bottom:28px;" id="sampling-farm-name"></div>
+    <div class="card" onclick="startNewSurvey()" style="justify-content:center;text-align:center;margin-bottom:24px;">
+      <div class="card-body"><div class="card-title" style="font-size:16px;">🔬 סקר חדש</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" onclick="navTo('survey')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📋 סקרים</div></div>
+      </div>
+      <div class="card" onclick="navTo('export')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📊 דוחות</div></div>
+      </div>
+    </div>
   </div>
-  <div class="gtb-nav" id="gtb-nav-obs" style="display:none;">
-    <button class="gnav" id="obsnav-home"   onclick="startObservation()"><span class="gi">👁</span>תצפית חדשה</button>
-    <button class="gnav" id="obsnav-list"   onclick="navTo('obs-list')"><span class="gi">📋</span>תצפיות</button>
-    <button class="gnav" id="obsnav-export" onclick="navTo('obs-export')"><span class="gi">📊</span>דוחות</button>
-  </div>
-  <button id="settings-btn" onclick="navTo('settings')" title="הגדרות" style="background:none;border:none;cursor:pointer;padding:6px;color:rgba(69,71,74,0.5);width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-  <button id="exit-btn" onclick="doLogout()" title="התנתקות"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
 </div>
-<div id="bottom-nav">
-  <button class="bnav-btn active" id="bnav-samples" onclick="switchToMode('samples')"><span class="bnav-icon">🔬</span>מדגמים</button>
-  <button class="bnav-btn"        id="bnav-obs"     onclick="switchToMode('obs')"><span class="bnav-icon">👁</span>תצפיות</button>
-  <button class="bnav-btn"        id="bnav-traps"   onclick="goToTraps()"><span class="bnav-icon">📍</span>מלכודות</button>
+
+<!-- ── OBSERVATIONS HOME ──────────────────────────────────────────── -->
+<div class="view" id="view-obs-home">
+  <div class="sc" style="padding-top:20px;">
+    <div style="text-align:center;font-size:18px;font-weight:700;color:var(--text-muted);margin-bottom:28px;" id="obs-farm-name"></div>
+    <div class="card" onclick="startObservation()" style="justify-content:center;text-align:center;margin-bottom:24px;">
+      <div class="card-body"><div class="card-title" style="font-size:16px;">👁 תצפית חדשה</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" onclick="navTo('obs-list')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📋 תצפיות</div></div>
+      </div>
+      <div class="card" onclick="navTo('obs-export')" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📊 דוחות</div></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
 <!-- ══════════════════════════════════════════════════════════════════
      PANE 1: PLOTS (חלקות)
 ════════════════════════════════════════════════════════════════════ -->
-<div class="view" id="view-settings">
-  <div class="sc">
-    <div class="section">
-      <div class="sec-title">נתוני ייחוס משותפים</div>
-      <div class="card" onclick="navTo('plots')">
-        <div class="card-body"><div class="card-title">🗺️ חלקות</div><div class="card-sub">ניהול חלקות, גידולים ופוליגונים</div></div>
-      </div>
-      <div class="card" onclick="navTo('pests')">
-        <div class="card-body"><div class="card-title">🐛 סוגי מזיקים</div><div class="card-sub">משותף בין מדגמים, תצפיות ומלכודות</div></div>
-      </div>
-      <div class="card" onclick="navTo('crops')">
-        <div class="card-body"><div class="card-title">🌱 גידולים</div><div class="card-sub">רשימה כללית, זמינה בכל החוות</div></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="sec-title">תחזוקה</div>
-      <div class="card" onclick="navTo('migration')">
-        <div class="card-body"><div class="card-title">🔀 שדרוג מבנה נתונים</div><div class="card-sub">איחוד סוגי מלכודות ומזיקים למבנה משותף</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="view" id="view-migration">
-  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
-  <div class="sc">
-    <div class="section">
-      <div class="sec-title">שדרוג מבנה נתונים</div>
-      <div id="migration-body">
-        <p style="font-size:13px;color:var(--text-muted);">בודק נתונים קיימים...</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="view" id="view-plots">
-  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
-  <div class="sc" id="plots-list"></div>
-</div>
-
-<!-- Plot form -->
-<div class="view" id="view-plot-form">
-  <div class="fv">
-    <div class="section">
-      <div class="sec-title">פרטי חלקה</div>
-      <input type="hidden" id="pf-id"/>
-      <div class="fr"><label class="frl">שם החלקה</label>
-        <input class="fin" id="pf-name" type="text" placeholder="לדוגמה: נטע 1 מערב"/>
-      </div>
-      <div class="fr"><label class="frl">גידול</label>
-        <select class="fin" id="pf-crop"></select>
-      </div>
-      <div class="fr"><label class="frl">זן</label>
-        <input class="fin" id="pf-variety" type="text" placeholder="לדוגמה: וונדרפול, האס"/>
-      </div>
-      <div class="fr"><label class="frl">שנת נטיעה</label>
-        <input class="fin" id="pf-year" type="number" placeholder="2020" min="1980" max="2030"/>
-      </div>
-      <div class="fr"><label class="frl">שטח (דונם)</label>
-        <input class="fin" id="pf-area" type="number" placeholder="לדוגמה: 15" step="0.1"/>
-      </div>
-    </div>
-    <div class="section">
-      <div class="sec-title">פוליגון (אופציונלי)</div>
-      <div style="display:flex;gap:6px;margin-bottom:8px;">
-        <button type="button" class="map-tab-btn active" id="pf-tab-map" onclick="switchPlotMapTab('map')">🖊 ציור</button>
-        <button type="button" class="map-tab-btn" id="pf-tab-coords" onclick="switchPlotMapTab('coords')">🧭 קואורדינטות</button>
-      </div>
-      <div id="pf-map-panel">
-        <div class="plot-map-toolbar">
-          <button type="button" class="map-tool-btn active" id="pf-btn-draw" onclick="setPlotDrawMode(true)">✏️ ציור</button>
-          <button type="button" class="map-tool-btn" onclick="undoLastPlotPoint()">↩ בטל נקודה</button>
-          <button type="button" class="map-tool-btn danger" onclick="clearPlotPolygon()">🗑 נקה</button>
-          <button type="button" class="map-tool-btn" onclick="centerPlotMapGPS()">📍 מיקום</button>
-          <button type="button" class="map-tool-btn" id="pf-btn-maptype" onclick="togglePlotMapType()">🛰 לוויין</button>
-          <span class="plot-point-count" id="pf-point-count"></span>
-        </div>
-        <div id="plot-map-canvas" class="plot-map-container"></div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">לחץ על המפה להוספת נקודה. לחץ על נקודה קיימת למחיקתה. גרור נקודה להזזתה.</div>
-      </div>
-      <div id="pf-coords-panel" style="display:none;">
-        <textarea id="pf-polygon-coords" class="coord-textarea" rows="10" placeholder="32.192507,34.923707&#10;32.192709,34.923881&#10;..."></textarea>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">שורה אחת לכל נקודה, בפורמט lat,lng</div>
-      </div>
-    </div>
-    <div id="pf-del-wrap" style="display:none;padding:0 0 8px;">
-      <button class="btn-del" style="width:100%;" onclick="deletePlot()">מחק חלקה</button>
-    </div>
-  </div>
-  <div class="ffoot">
-    <button class="btn-sec" onclick="navTo('plots')">ביטול</button>
-    <button class="btn-sav" onclick="savePlot()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      שמור
-    </button>
-  </div>
-</div>
-
-<!-- Plot import (bulk) -->
-<div class="view" id="view-plots-import">
-  <div class="fv">
-    <div class="section">
-      <div class="sec-title">ייבוא חלקות מ-Excel</div>
-      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.6;">
-        פורמט נדרש: עמודות <strong>plot name, Latitude, Longitude, גידול, זן</strong><br/>
-        כל שורה היא נקודת פוליגון — שורות עם אותו שם חלקה נאספות לפוליגון אחד.
-      </p>
-      <input type="file" id="plots-import-file" accept=".xlsx,.xls" style="display:none" onchange="importPlotsFromExcel(event)"/>
-      <button onclick="document.getElementById('plots-import-file').click()" style="width:100%;padding:14px;background:white;border:2px dashed var(--dusty-rose);border-radius:12px;font-family:Arial,sans-serif;font-size:14px;color:var(--dusty-rose);cursor:pointer;font-weight:600;">
-        📁 בחר קובץ Excel לייבוא
-      </button>
-      <div id="import-preview" style="display:none;">
-        <div class="sec-title" style="margin-top:12px;">תצוגה מקדימה</div>
-        <div id="import-preview-list"></div>
-      </div>
-    </div>
-  </div>
-  <div class="ffoot">
-    <button class="btn-sec" onclick="navTo('plots')">ביטול</button>
-    <button class="btn-sav" id="import-confirm-btn" style="display:none;" onclick="confirmImportPlots()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      ייבא
-    </button>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════════════════════════════════
-     PANE 2: PESTS (מזיקים)
-════════════════════════════════════════════════════════════════════ -->
-<div class="view" id="view-pests">
-  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
-  <div class="sc" id="pests-list"></div>
-</div>
-
-<!-- Crops -->
-<div class="view" id="view-crops">
-  <div style="display:flex;align-items:center;gap:6px;padding:10px 14px;background:white;border-bottom:1px solid var(--border);cursor:pointer;" onclick="navTo('settings')"><span style="font-size:16px;">←</span><span style="font-size:13px;font-weight:600;color:var(--text-muted);">הגדרות</span></div>
-  <div class="sc">
-    <div class="section">
-      <div class="sec-title">הוספת גידול</div>
-      <div style="display:flex;gap:8px;">
-        <input class="fin" id="crop-new-name" type="text" placeholder="לדוגמה: רימון" style="flex:1;" onkeydown="if(event.key==='Enter')addCrop();"/>
-        <button class="btn-sav" style="width:80px;" onclick="addCrop()">הוסף</button>
-      </div>
-    </div>
-    <div class="section">
-      <div class="sec-title">גידולים קיימים</div>
-      <div id="crops-list"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Pest form -->
-<div class="view" id="view-pest-form">
-  <div class="fv">
-    <div class="section">
-      <div class="sec-title">פרטי מזיק</div>
-      <input type="hidden" id="pestf-id"/>
-      <div class="fr"><label class="frl">שם המזיק</label>
-        <input class="fin" id="pestf-name" type="text" placeholder="לדוגמה: קרית הצטרוס"/>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="sec-title">גידולים רלוונטיים</div>
-      <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">בחר את הגידולים שבהם יש לחפש מזיק זה. השאר ריק כדי לכלול את כל הגידולים.</p>
-      <div class="crop-chips" id="pestf-crops"></div>
-    </div>
-
-    <div class="section">
-      <div class="sec-title">צבע מזיק</div>
-      <p style="font-size:12px;color:var(--text-muted);margin-bottom:2px;">משמש לזיהוי המזיק על גבי סמני מפה, בדיווחי מדגם ובכפתורי תצפיות</p>
-      <input type="hidden" id="pestf-color"/>
-      <div class="pest-color-grid" id="pestf-color-grid"></div>
-    </div>
-
-    <div class="section">
-      <div class="sec-title">מדגמים</div>
-      <div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">בדיקות (מה לספור)</div>
-      <div id="pestf-checks"></div>
-      <button class="addf" onclick="addPestCheck()">+ הוסף בדיקה</button>
-      <div style="font-size:12px;color:var(--text-muted);font-weight:600;margin:16px 0 8px;">גודל מדגם</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-        <div class="fr">
-          <label class="frl">שורות</label>
-          <input class="fin" id="pestf-rows" type="number" placeholder="5" min="1"/>
-        </div>
-        <div class="fr">
-          <label class="frl">עצים/שורה</label>
-          <input class="fin" id="pestf-trees" type="number" placeholder="3" min="1"/>
-        </div>
-        <div class="fr">
-          <label class="frl">פירות/עץ</label>
-          <input class="fin" id="pestf-fruits" type="number" placeholder="10" min="1"/>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="sec-title">ממצאי מלכודות</div>
-      <div id="pestf-trapfields"></div>
-      <button class="addf" onclick="addPestTrapField()">+ הוסף שדה</button>
-    </div>
-
-    <div id="pestf-del-wrap" style="display:none;padding:0 0 8px;">
-      <button class="btn-del" style="width:100%;" onclick="deletePest()">מחק מזיק</button>
-    </div>
-  </div>
-  <div class="ffoot">
-    <button class="btn-sec" onclick="navTo('pests')">ביטול</button>
-    <button class="btn-sav" onclick="savePest()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      שמור
-    </button>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════════════════════════════════
      PANE 3: SURVEY (תצפיות) — placeholder for future development
 ════════════════════════════════════════════════════════════════════ -->
 <div class="view" id="view-survey">
@@ -740,35 +512,21 @@ function escapeHtml(s) {
 }
 
 const BACK = {
-  'plot-form'   : 'plots',
-  'plots-import': 'plots',
-  'pest-form'   : 'pests',
-  'survey-form' : 'survey',
-  'obs-form'    : 'obs-list',
+  'survey-form' : 'sampling-home',
+  'survey'      : 'sampling-home',
+  'export'      : 'sampling-home',
+  'obs-form'    : 'obs-home',
   'obs-report'  : 'obs-form',
-  'settings'    : 'survey',
-  'plots'       : 'settings',
-  'pests'       : 'settings',
-  'crops'       : 'settings',
-  'migration'   : 'settings',
+  'obs-list'    : 'obs-home',
+  'obs-export'  : 'obs-home',
 };
-const MAIN_VIEWS = ['plots','pests','survey','export','obs-list','obs-export'];
-const OBS_VIEWS  = ['obs-form','obs-report','obs-list','obs-export'];
-const OBS_MAIN_VIEWS = ['obs-list','obs-export'];
+const MAIN_VIEWS = ['sampling-home', 'obs-home'];
+const OBS_VIEWS  = ['obs-home','obs-form','obs-report','obs-list','obs-export'];
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 
 // ── APP MODE ──────────────────────────────────────────────────────────────────
 let curMode = 'samples'; // 'samples' | 'obs'
-
-function switchToMode(mode) {
-  navTo(mode === 'obs' ? 'obs-list' : 'survey');
-}
-
-function goToTraps() {
-  sessionStorage.setItem('rhythmos_just_switched','1');
-  window.location.href = '/';
-}
 
 // OS back button support
 window.addEventListener('popstate', e => {
@@ -789,7 +547,7 @@ function navTo(v) {
   if(goingToMain && !wasMain) {
     history.pushState({mainView: v}, '');
   } else if(!goingToMain) {
-    history.pushState({subView: v, parent: BACK[v]||'survey'}, '');
+    history.pushState({subView: v, parent: BACK[v]||'sampling-home'}, '');
   }
   curView = v;
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
@@ -800,49 +558,27 @@ function navTo(v) {
     if(scrollable) scrollable.scrollTop = 0;
   }
 
-  MAIN_VIEWS.forEach(t => {
-    const b = document.getElementById('gnav-'+t);
-    if(b) b.classList.toggle('active', t===v);
-  });
-  OBS_MAIN_VIEWS.forEach(t => {
-    const b = document.getElementById('obsnav-'+t.replace('obs-',''));
-    if(b) b.classList.toggle('active', t===v);
-  });
-  // "תצפית חדשה" has no dedicated landing view anymore (it jumps straight into obs-form),
-  // so treat the whole new-observation flow (form + its report screen) as "active" for it.
-  document.getElementById('obsnav-home')?.classList.toggle('active', v==='obs-form' || v==='obs-report');
-
-  // Keep bottom-nav highlight + top bar in sync with which mode's views we're in
+  // Observations-mode styling (blue accents on relevant screens) still applies
+  // based on which sub-tree the current view belongs to.
   if(OBS_VIEWS.includes(v)) {
     curMode = 'obs';
-    document.getElementById('bnav-obs')?.classList.add('active');
-    document.getElementById('bnav-samples')?.classList.remove('active');
-    document.getElementById('gtb-nav').style.display = 'none';
-    document.getElementById('gtb-nav-obs').style.display = 'flex';
     document.body.classList.add('mode-obs');
   } else {
     curMode = 'samples';
-    document.getElementById('bnav-samples')?.classList.add('active');
-    document.getElementById('bnav-obs')?.classList.remove('active');
-    document.getElementById('gtb-nav').style.display = 'flex';
-    document.getElementById('gtb-nav-obs').style.display = 'none';
     document.body.classList.remove('mode-obs');
   }
 
-  if(v==='plots')     renderPlots();
-  if(v==='pests')     renderPests();
+  if(v==='sampling-home') showFarmNameStatic('sampling-farm-name');
+  if(v==='obs-home')      showFarmNameStatic('obs-farm-name');
   if(v==='survey')    renderSurveys();
   if(v==='export')    renderExportPests();
   if(v==='obs-list')  renderObsList();
   if(v==='obs-export') renderObsExportPests();
-  if(v==='migration') scanPestTypeMigration();
-  if(v==='crops')     renderCropsSettings();
-  if(typeof showFarmBadge==='function' && currentFarmId) showFarmBadge();
 }
 
 function goBack() {
   if(curView === 'survey-form') { saveSurvey('pending'); return; }
-  navTo(BACK[curView] || 'survey');
+  confirmLeaveIfDirty(()=>navTo(BACK[curView] || 'sampling-home'));
 }
 
 
@@ -855,15 +591,11 @@ auth.onAuthStateChanged(user => {
   if(user) {
     sessionStorage.removeItem('rhythmos_just_switched');
     document.getElementById('view-login').style.display = 'none';
-    document.getElementById('gtb').classList.add('visible');
-    document.getElementById('bottom-nav').classList.add('visible');
     loadAll();
   } else {
     if(!sessionStorage.getItem('rhythmos_just_switched')) {
       document.getElementById('view-login').style.display = 'flex';
     }
-    document.getElementById('gtb').classList.remove('visible');
-    document.getElementById('bottom-nav').classList.remove('visible');
     document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
     curView = 'login';
   }
@@ -873,9 +605,8 @@ auth.onAuthStateChanged(user => {
 async function loadAll() {
   await resolveFarm();
   await Promise.all([loadPlots(), loadCrops(), loadPests(), loadObsPestOrder()]);
-  await seedCropsIfEmpty();
   const wantsObs = new URLSearchParams(location.search).get('mode') === 'obs';
-  navTo(wantsObs ? 'obs-list' : 'survey');
+  navTo(wantsObs ? 'obs-home' : 'sampling-home');
 }
 
 async function loadObsPestOrder() {
@@ -896,67 +627,6 @@ async function loadCrops() {
   crops = snap.docs.map(d => ({id:d.id,...d.data()}));
 }
 
-// Seeds the crops collection from whatever distinct crop values already exist on plots.
-// Runs once at app init (before any screen consumes crops), and again defensively when
-// the Crops settings screen renders, in case init ran before plots/crops were ready.
-// No-op once crops already has data.
-async function seedCropsIfEmpty() {
-  if(crops.length) return;
-  const existing = [...new Set(plots.map(p=>p.crop).filter(Boolean))];
-  if(!existing.length) return;
-  const batch = db.batch();
-  existing.forEach(name => {
-    const ref = db.collection('crops').doc();
-    batch.set(ref, {name, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
-  });
-  await batch.commit();
-  await loadCrops();
-}
-
-async function renderCropsSettings() {
-  const el = document.getElementById('crops-list');
-  el.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">טוען...</p>';
-  await seedCropsIfEmpty();
-
-  if(!crops.length) {
-    el.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">אין גידולים עדיין. הוסף גידול למעלה.</p>';
-    return;
-  }
-  el.innerHTML = crops.map(c => `
-    <div class="plot-row">
-      <div class="plot-row-main" style="cursor:default;"><div class="card-title">${c.name}</div></div>
-      <div class="plot-row-actions">
-        <button class="ia ia-danger" onclick="confirmDeleteCrop('${c.id}')" title="מחיקה">🗑</button>
-      </div>
-    </div>`).join('');
-}
-
-async function addCrop() {
-  const input = document.getElementById('crop-new-name');
-  const name = input.value.trim();
-  if(!name) { showToast('נא להזין שם גידול'); return; }
-  if(crops.some(c => c.name === name)) { showToast('גידול זה כבר קיים'); return; }
-  try {
-    await db.collection('crops').add({name, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
-    input.value = '';
-    await loadCrops();
-    renderCropsSettings();
-    showToast('הגידול נוסף');
-  } catch(e) { showToast('שגיאה: '+e.message); }
-}
-
-function confirmDeleteCrop(id) {
-  const c = crops.find(x=>x.id===id);
-  showConfirm('מחיקת גידול', `האם למחוק את "${c?.name||''}"? חלקות וסוגי מזיקים קיימים ששייכים לגידול זה לא ישתנו, אך הגידול לא יופיע יותר לבחירה.`, async () => {
-    try {
-      await db.collection('crops').doc(id).delete();
-      await loadCrops();
-      renderCropsSettings();
-      showToast('הגידול נמחק');
-    } catch(e) { showToast('שגיאה: '+e.message); }
-  });
-}
-
 async function loadPests() {
   const snap = await db.collection('pest_types').orderBy('name').get();
   const allPests = snap.docs.map(d => ({id:d.id,...d.data()}));
@@ -970,719 +640,8 @@ async function loadPests() {
 // that referenced the old IDs. See Settings > שדרוג מבנה נתונים.
 // ════════════════════════════════════════════════════════════════════
 let migrationPreviewData = null;
-
-async function scanPestTypeMigration() {
-  const body = document.getElementById('migration-body');
-  body.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">בודק נתונים קיימים...</p>';
-  try {
-    const [insectsSnap, pestsSnap, farmsSnap, newSnap] = await Promise.all([
-      db.collection('insects').get(),
-      db.collection('insp_pests').get(),
-      db.collection('farms').get(),
-      db.collection('pest_types').limit(1).get(),
-    ]);
-    const oldInsects = insectsSnap.docs.map(d => ({id:d.id, ...d.data()}));
-    const oldPests   = pestsSnap.docs.map(d => ({id:d.id, ...d.data()}));
-    const farmIds    = farmsSnap.docs.map(d => d.id);
-    const alreadyRan = !newSnap.empty;
-
-    const norm = s => (s||'').trim().toLowerCase();
-    const byName = new Map();
-    oldInsects.forEach(i => { const k = norm(i.name); if(k) byName.set(k, {...(byName.get(k)||{}), fromInsect:true}); });
-    oldPests.forEach(p => { const k = norm(p.name); if(k) byName.set(k, {...(byName.get(k)||{}), fromPest:true}); });
-    const merged   = [...byName.values()].filter(e => e.fromInsect && e.fromPest).length;
-    const insectOnly = [...byName.values()].filter(e => e.fromInsect && !e.fromPest).length;
-    const pestOnly    = [...byName.values()].filter(e => e.fromPest && !e.fromInsect).length;
-
-    migrationPreviewData = { oldInsects, oldPests, farmIds };
-
-    if(alreadyRan) {
-      body.innerHTML = `
-        <div style="background:#fff3cd;border:1.5px solid #e6a817;border-radius:8px;padding:12px;font-size:13px;color:#7a4f00;margin-bottom:10px;">
-          ⚠️ נראה ש-pest_types כבר מכיל נתונים. הרצה נוספת עלולה ליצור כפילויות. המשך רק אם אתה בטוח שזו הרצה ראשונה או שהריצה הקודמת נכשלה לפני כתיבה.
-        </div>
-        <button class="btn-sec" style="width:100%;" onclick="renderMigrationSummary()">הצג בכל זאת</button>`;
-      return;
-    }
-    renderMigrationSummary();
-  } catch(e) {
-    body.innerHTML = `<p style="font-size:13px;color:var(--red);">שגיאה בבדיקת הנתונים: ${e.message}</p>`;
-  }
-}
-
-function renderMigrationSummary() {
-  const { oldInsects, oldPests, farmIds } = migrationPreviewData;
-  const norm = s => (s||'').trim().toLowerCase();
-  const byName = new Map();
-  oldInsects.forEach(i => { const k = norm(i.name); if(k) byName.set(k, {...(byName.get(k)||{}), fromInsect:true}); });
-  oldPests.forEach(p => { const k = norm(p.name); if(k) byName.set(k, {...(byName.get(k)||{}), fromPest:true}); });
-  const merged     = [...byName.values()].filter(e => e.fromInsect && e.fromPest).length;
-  const insectOnly = [...byName.values()].filter(e => e.fromInsect && !e.fromPest).length;
-  const pestOnly    = [...byName.values()].filter(e => e.fromPest && !e.fromInsect).length;
-
-  document.getElementById('migration-body').innerHTML = `
-    <div style="background:var(--input-bg);border-radius:8px;padding:12px;font-size:13px;line-height:1.9;margin-bottom:12px;">
-      <div>סוגי מלכודות (Traps): <strong>${oldInsects.length}</strong></div>
-      <div>סוגי מזיקים (מדגמים/תצפיות): <strong>${oldPests.length}</strong></div>
-      <div>יתמזגו לפי שם זהה: <strong>${merged}</strong></div>
-      <div>ייכנסו כמלכודות בלבד: <strong>${insectOnly}</strong></div>
-      <div>ייכנסו כמדגמים בלבד: <strong>${pestOnly}</strong></div>
-      <div>סה"כ סוגים חדשים: <strong>${byName.size}</strong></div>
-      <div style="margin-top:6px;">חוות שיעודכנו (בכל ${farmIds.length} החוות): מלכודות, סקרי שדה, תצפיות, וסיורי מלכודות.</div>
-    </div>
-    <div style="background:#fff3cd;border:1.5px solid #e6a817;border-radius:8px;padding:12px;font-size:12px;color:#7a4f00;margin-bottom:12px;">
-      ⚠️ הפעולה כותבת נתונים בכל החוות ואינה הפיכה אוטומטית. גיבוי מלא של הנתונים הישנים יורד אוטומטית לפני הביצוע.
-    </div>
-    <button class="btn-sav" style="width:100%;" onclick="confirmPestTypeMigration()">🔀 בצע שדרוג</button>
-  `;
-}
-
-function confirmPestTypeMigration() {
-  showConfirm('שדרוג מבנה נתונים', 'הפעולה תוריד גיבוי מלא ואז תמזג ותעדכן נתונים בכל החוות. להמשיך?', executePestTypeMigration);
-}
-
-async function executePestTypeMigration() {
-  const body = document.getElementById('migration-body');
-  body.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">מכין גיבוי...</p>';
-  const { oldInsects, oldPests, farmIds } = migrationPreviewData;
-
-  try {
-    // Step 1: full backup of everything this migration could touch, across every farm
-    const farmBackups = {};
-    for(const farmId of farmIds) {
-      const [trapsSnap, inspSnap, surveysSnap, obsSnap] = await Promise.all([
-        db.collection(`farms/${farmId}/traps`).get(),
-        db.collection(`farms/${farmId}/inspections`).get(),
-        db.collection(`farms/${farmId}/insp_surveys`).get(),
-        db.collection(`farms/${farmId}/obs_records`).get(),
-      ]);
-      farmBackups[farmId] = {
-        traps: trapsSnap.docs.map(d=>({id:d.id,...d.data()})),
-        inspections: inspSnap.docs.map(d=>({id:d.id,...d.data()})),
-        insp_surveys: surveysSnap.docs.map(d=>({id:d.id,...d.data()})),
-        obs_records: obsSnap.docs.map(d=>({id:d.id,...d.data()})),
-      };
-    }
-    const backup = { exportedAt: new Date().toISOString(), note: 'גיבוי לפני שדרוג pest_types', insects: oldInsects, insp_pests: oldPests, farms: farmBackups };
-    const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = 'rhythmos-pest-types-migration-backup-'+di(new Date())+'.json'; a.click();
-
-    // Step 2: build merged pest_types docs + old-id -> new-id maps
-    body.innerHTML = '<p style="font-size:13px;color:var(--text-muted);">ממזג סוגים...</p>';
-    const norm = s => (s||'').trim().toLowerCase();
-    const byName = new Map();
-    oldInsects.forEach(i => {
-      const k = norm(i.name); if(!k) return;
-      byName.set(k, {...(byName.get(k)||{name:i.name,crops:[]}), name:i.name, color:i.color, trapFields:i.fields||[], oldInsectId:i.id});
-    });
-    oldPests.forEach(p => {
-      const k = norm(p.name); if(!k) return;
-      const ex = byName.get(k) || {name:p.name, crops:[]};
-      byName.set(k, {...ex, name:ex.name||p.name, color:ex.color||p.color,
-        crops:[...new Set([...(ex.crops||[]),...(p.crops||[])])],
-        checks:p.checks||[], sampleRows:p.sampleRows||0, sampleTrees:p.sampleTrees||0, sampleFruits:p.sampleFruits||0,
-        oldPestId:p.id});
-    });
-    const entries = [...byName.values()];
-    const insectIdMap = {}, pestIdMap = {};
-    for(let i=0;i<entries.length;i+=400){
-      const b = db.batch();
-      entries.slice(i,i+400).forEach(entry=>{
-        const ref = db.collection('pest_types').doc();
-        b.set(ref, {
-          name: entry.name, color: entry.color || PEST_COLORS[Math.floor(Math.random()*PEST_COLORS.length)],
-          crops: entry.crops||[], trapFields: entry.trapFields||[], checks: entry.checks||[],
-          sampleRows: entry.sampleRows||0, sampleTrees: entry.sampleTrees||0, sampleFruits: entry.sampleFruits||0,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-        if(entry.oldInsectId) insectIdMap[entry.oldInsectId] = ref.id;
-        if(entry.oldPestId) pestIdMap[entry.oldPestId] = ref.id;
-      });
-      await b.commit();
-    }
-
-    // Step 3: remap references across every farm
-    let stats = {traps:0, inspections:0, surveys:0, obs:0};
-    for(const farmId of farmIds) {
-      body.innerHTML = `<p style="font-size:13px;color:var(--text-muted);">מעדכן חוות... (${farmId})</p>`;
-
-      const trapsSnap = await db.collection(`farms/${farmId}/traps`).get();
-      const trapsToFix = trapsSnap.docs.filter(d => insectIdMap[d.data().insectId]);
-      for(let i=0;i<trapsToFix.length;i+=400){
-        const b = db.batch();
-        trapsToFix.slice(i,i+400).forEach(d=>b.update(d.ref, {insectId: insectIdMap[d.data().insectId]}));
-        await b.commit();
-      }
-      stats.traps += trapsToFix.length;
-
-      const inspSnap = await db.collection(`farms/${farmId}/inspections`).get();
-      const inspToFix = inspSnap.docs.filter(d => insectIdMap[d.data().insectId]);
-      for(let i=0;i<inspToFix.length;i+=400){
-        const b = db.batch();
-        inspToFix.slice(i,i+400).forEach(d=>b.update(d.ref, {insectId: insectIdMap[d.data().insectId]}));
-        await b.commit();
-      }
-      stats.inspections += inspToFix.length;
-
-      const surveysSnap = await db.collection(`farms/${farmId}/insp_surveys`).get();
-      const surveysToFix = [];
-      surveysSnap.docs.forEach(d => {
-        const findings = d.data().findings || {};
-        const keys = Object.keys(findings);
-        if(keys.some(k => pestIdMap[k])) {
-          const newFindings = {};
-          keys.forEach(k => { newFindings[pestIdMap[k] || k] = findings[k]; });
-          surveysToFix.push({ref: d.ref, findings: newFindings});
-        }
-      });
-      for(let i=0;i<surveysToFix.length;i+=400){
-        const b = db.batch();
-        surveysToFix.slice(i,i+400).forEach(item=>b.update(item.ref, {findings: item.findings}));
-        await b.commit();
-      }
-      stats.surveys += surveysToFix.length;
-
-      const obsSnap = await db.collection(`farms/${farmId}/obs_records`).get();
-      const obsToFix = obsSnap.docs.filter(d => pestIdMap[d.data().pestId]);
-      for(let i=0;i<obsToFix.length;i+=400){
-        const b = db.batch();
-        obsToFix.slice(i,i+400).forEach(d=>b.update(d.ref, {pestId: pestIdMap[d.data().pestId]}));
-        await b.commit();
-      }
-      stats.obs += obsToFix.length;
-    }
-
-    document.getElementById('migration-body').innerHTML = `
-      <div style="background:#e8f5e9;border:1.5px solid #27ae60;border-radius:8px;padding:14px;font-size:13px;color:#1e7e34;line-height:1.9;">
-        ✅ השדרוג הושלם.<br>
-        סוגים חדשים: <strong>${entries.length}</strong><br>
-        מלכודות עודכנו: <strong>${stats.traps}</strong><br>
-        רשומות ממצא (מלכודות) עודכנו: <strong>${stats.inspections}</strong><br>
-        סקרי שדה עודכנו: <strong>${stats.surveys}</strong><br>
-        תצפיות עודכנו: <strong>${stats.obs}</strong>
-      </div>`;
-    await loadPests();
-  } catch(e) {
-    document.getElementById('migration-body').innerHTML = `<p style="font-size:13px;color:var(--red);">שגיאה בשדרוג: ${e.message}. הגיבוי שהורד לפני הכתיבה תקף לשחזור ידני.</p>`;
-  }
-}
-
-// ════════════════════════════════════════════════════════════════════
 // PLOTS
 // ════════════════════════════════════════════════════════════════════
-function renderPlots() {
-  const el = document.getElementById('plots-list');
-  const fab = `<div class="fab-wrap">
-    <button onclick="openImportPlots()" style="background:white;border:1.5px solid var(--dusty-rose);color:var(--dusty-rose);border-radius:50%;width:50px;height:50px;font-size:20px;cursor:pointer;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">📥</button>
-    <button class="fab" onclick="openPlotForm(null)">+</button>
-  </div>`;
-  if(!plots.length) {
-    el.innerHTML = fab + `<div class="empty"><div class="eico">🌿</div><p>אין חלקות מוגדרות.<br/>לחץ + להוספה או 📥 לייבוא.</p></div>`;
-    return;
-  }
-  el.innerHTML = fab + plots.map(p => {
-    const isActive = p.active !== false; // existing plots predate this field; treat missing as active
-    return `
-    <div class="plot-row${isActive?'':' plot-row-inactive'}">
-      <div class="plot-row-main" onclick="openPlotForm('${p.id}')">
-        <div class="card-title">${p.name}</div>
-        <div class="card-sub">${p.crop||'—'}${p.variety?' · '+p.variety:''}${p.plantYear?' · '+p.plantYear:''}${p.area?' · '+p.area+' ד':''}${p.polygon?.length?' · 🗺️ פוליגון':''}</div>
-      </div>
-      <div class="plot-row-actions">
-        <button class="ia" onclick="event.stopPropagation();openPlotForm('${p.id}')" title="עריכה">✏️</button>
-        <button class="plot-toggle-btn${isActive?'':' plot-toggle-btn-off'}" onclick="event.stopPropagation();togglePlotActive('${p.id}',${isActive})">${isActive?'בטל':'הפעל'}</button>
-        <button class="ia ia-danger" onclick="event.stopPropagation();confirmDeletePlot('${p.id}')" title="מחיקה">🗑</button>
-      </div>
-    </div>`;
-  }).join('') + fab;
-}
-
-async function togglePlotActive(id, wasActive) {
-  try {
-    await db.collection(farmCol('insp_plots')).doc(id).update({active: !wasActive});
-    await loadPlots();
-    renderPlots();
-    showToast(wasActive ? 'החלקה הושבתה' : 'החלקה הופעלה');
-  } catch(e) { showToast('שגיאה: '+e.message); }
-}
-
-function confirmDeletePlot(id) {
-  const p = plots.find(x=>x.id===id);
-  showConfirm('מחיקת חלקה', `האם למחוק את "${p?.name||''}"? פעולה זו אינה ניתנת לביטול.`, async () => {
-    try {
-      await db.collection(farmCol('insp_plots')).doc(id).delete();
-      await loadPlots();
-      renderPlots();
-      showToast('החלקה נמחקה');
-    } catch(e) { showToast('שגיאה: '+e.message); }
-  });
-}
-
-let _plotMap = null, _plotPolygonOverlay = null, _plotMarkers = [], _plotMapTabMode = 'map';
-
-function populatePlotCropSelect(currentValue) {
-  const sel = document.getElementById('pf-crop');
-  const names = crops.map(c=>c.name);
-  let opts = '<option value="">בחר גידול</option>' + names.map(n=>`<option value="${n}">${n}</option>`).join('');
-  if(currentValue && !names.includes(currentValue)) {
-    // legacy value from before the canonical list existed; keep it selectable so saving
-    // the form again doesn't silently blank or change the plot's existing crop
-    opts += `<option value="${currentValue}">${currentValue} (לא ברשימה)</option>`;
-  }
-  sel.innerHTML = opts;
-  sel.value = currentValue || '';
-}
-
-function openPlotForm(id) {
-  document.getElementById('pf-id').value = id || '';
-  document.getElementById('pf-name').value = '';
-  document.getElementById('pf-variety').value = '';
-  document.getElementById('pf-year').value = '';
-  document.getElementById('pf-area').value = '';
-  document.getElementById('pf-del-wrap').style.display = id ? 'block' : 'none';
-  document.getElementById('pf-polygon-coords').value = '';
-  _plotMarkers = [];
-  _plotMapTabMode = 'map';
-  let existingPolygon = [];
-  let curCrop = '';
-  if(id) {
-    const p = plots.find(x => x.id===id);
-    if(p) {
-      document.getElementById('pf-name').value = p.name||'';
-      curCrop = p.crop||'';
-      document.getElementById('pf-variety').value = p.variety||'';
-      document.getElementById('pf-year').value = p.plantYear||'';
-      document.getElementById('pf-area').value = p.area||'';
-      if(p.polygon?.length) existingPolygon = p.polygon;
-    }
-  }
-  populatePlotCropSelect(curCrop);
-  if(window._importedPolygon?.length) { existingPolygon = window._importedPolygon; window._importedPolygon = null; }
-  switchPlotMapTab('map');
-  navTo('plot-form');
-  setTimeout(() => initPlotMap(existingPolygon), 150);
-}
-
-function switchPlotMapTab(tab) {
-  _plotMapTabMode = tab;
-  document.getElementById('pf-map-panel').style.display    = tab==='map'    ? '' : 'none';
-  document.getElementById('pf-coords-panel').style.display = tab==='coords' ? '' : 'none';
-  document.getElementById('pf-tab-map').className    = 'map-tab-btn' + (tab==='map'    ? ' active' : '');
-  document.getElementById('pf-tab-coords').className = 'map-tab-btn' + (tab==='coords' ? ' active' : '');
-  if(tab==='map') { setTimeout(() => { if(_plotMap) google.maps.event.trigger(_plotMap, 'resize'); }, 100); }
-  else {
-    const pts = _plotMarkers.map(m => `${m.getPosition().lat().toFixed(6)},${m.getPosition().lng().toFixed(6)}`).join('\n');
-    if(pts) document.getElementById('pf-polygon-coords').value = pts;
-  }
-}
-
-async function initPlotMap(existingPolygon) {
-  const mapEl = document.getElementById('plot-map-canvas');
-  if(!mapEl) return;
-  try { await loadGoogleMapsScript(); } catch(e) { showToast('שגיאה בטעינת המפה'); return; }
-
-  const center = existingPolygon?.[0] || {lat:31.55, lng:34.85};
-  _plotMap = new google.maps.Map(mapEl, {
-    zoom:16, center, mapTypeId:'roadmap',
-    disableDefaultUI:true, zoomControl:true, gestureHandling:'greedy',
-  });
-  _plotPolygonOverlay = new google.maps.Polygon({
-    map:_plotMap, strokeColor:'#890a0a', strokeWeight:2, fillColor:'#890a0a', fillOpacity:0.15,
-    editable:false, clickable:false,
-  });
-  _plotMarkers = [];
-  updatePlotPointCount();
-
-  if(existingPolygon?.length >= 2) {
-    existingPolygon.forEach(p => {
-      const lat = Array.isArray(p) ? p[0] : p.lat, lng = Array.isArray(p) ? p[1] : p.lng;
-      addPlotMapPoint(new google.maps.LatLng(lat, lng));
-    });
-    google.maps.event.addListenerOnce(_plotMap, 'idle', () => {
-      google.maps.event.trigger(_plotMap, 'resize');
-      const bounds = new google.maps.LatLngBounds();
-      existingPolygon.forEach(p => bounds.extend({lat:Array.isArray(p)?p[0]:p.lat, lng:Array.isArray(p)?p[1]:p.lng}));
-      _plotMap.fitBounds(bounds, 40);
-    });
-  }
-  _plotMap.addListener('click', e => {
-    const btn = document.getElementById('pf-btn-draw');
-    if(!btn || !btn.classList.contains('active')) return;
-    addPlotMapPoint(e.latLng);
-  });
-}
-
-function addPlotMapPoint(latLng) {
-  const marker = new google.maps.Marker({
-    position: latLng, map: _plotMap, draggable: true,
-    icon:{ path: google.maps.SymbolPath.CIRCLE, scale:6, fillColor:'#890a0a', fillOpacity:1, strokeColor:'#fff', strokeWeight:1.5 },
-  });
-  marker.addListener('click', () => {
-    const idx = _plotMarkers.indexOf(marker);
-    if(idx >= 0) { _plotMarkers.splice(idx,1); marker.setMap(null); redrawPlotPolygon(); }
-  });
-  marker.addListener('drag', () => redrawPlotPolygon());
-  _plotMarkers.push(marker);
-  redrawPlotPolygon();
-}
-
-function redrawPlotPolygon() {
-  _plotPolygonOverlay.setPath(_plotMarkers.map(m => m.getPosition()));
-  updatePlotPointCount();
-}
-
-function undoLastPlotPoint() {
-  const m = _plotMarkers.pop();
-  if(m) { m.setMap(null); redrawPlotPolygon(); }
-}
-
-function clearPlotPolygon() {
-  _plotMarkers.forEach(m => m.setMap(null));
-  _plotMarkers = [];
-  redrawPlotPolygon();
-}
-
-function setPlotDrawMode(active) {
-  const btn = document.getElementById('pf-btn-draw');
-  if(btn) btn.className = 'map-tool-btn' + (active ? ' active' : '');
-}
-
-function updatePlotPointCount() {
-  const el = document.getElementById('pf-point-count');
-  if(el) el.textContent = _plotMarkers.length ? `${_plotMarkers.length} נקודות` : '';
-}
-
-function centerPlotMapGPS() {
-  if(!navigator.geolocation || !_plotMap) return;
-  navigator.geolocation.getCurrentPosition(pos => {
-    _plotMap.setCenter({lat:pos.coords.latitude, lng:pos.coords.longitude});
-    _plotMap.setZoom(17);
-  }, () => showToast('לא ניתן לאתר מיקום'));
-}
-
-function togglePlotMapType() {
-  if(!_plotMap) return;
-  const isHybrid = _plotMap.getMapTypeId() === 'hybrid';
-  _plotMap.setMapTypeId(isHybrid ? 'roadmap' : 'hybrid');
-}
-
-async function savePlot() {
-  const name = document.getElementById('pf-name').value.trim();
-  if(!name) { showToast('נא להזין שם חלקה'); return; }
-  const data = {
-    name,
-    crop    : document.getElementById('pf-crop').value.trim(),
-    variety : document.getElementById('pf-variety').value.trim(),
-    plantYear: document.getElementById('pf-year').value ? parseInt(document.getElementById('pf-year').value) : null,
-    area    : document.getElementById('pf-area').value ? parseFloat(document.getElementById('pf-area').value) : null,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  };
-  if(_plotMapTabMode === 'map' && _plotMarkers.length >= 3) {
-    data.polygon = _plotMarkers.map(m => ({lat:m.getPosition().lat(), lng:m.getPosition().lng()}));
-  } else {
-    const raw = document.getElementById('pf-polygon-coords').value || '';
-    const parsed = raw.trim().split('\n').map(l=>l.trim()).filter(l=>l.includes(','))
-      .map(l => { const [a,b] = l.split(',').map(Number); return {lat:a,lng:b}; })
-      .filter(p => !isNaN(p.lat) && !isNaN(p.lng));
-    if(parsed.length) data.polygon = parsed;
-  }
-  try {
-    const id = document.getElementById('pf-id').value;
-    if(id) await db.collection(farmCol('insp_plots')).doc(id).update(data);
-    else { data.createdAt = firebase.firestore.FieldValue.serverTimestamp(); data.active = true; await db.collection(farmCol('insp_plots')).add(data); }
-    await loadPlots();
-    showToast('החלקה נשמרה');
-    navTo('plots');
-  } catch(e) { showToast('שגיאה: '+e.message); }
-}
-
-async function deletePlot() {
-  const id = document.getElementById('pf-id').value;
-  if(!id) return;
-  showConfirm('מחיקת חלקה','האם למחוק את החלקה? פעולה זו אינה ניתנת לביטול.', async () => {
-    await db.collection(farmCol('insp_plots')).doc(id).delete();
-    await loadPlots();
-    showToast('החלקה נמחקה');
-    navTo('plots');
-  });
-}
-
-// Bulk import from Excel
-function openImportPlots() {
-  importPlotsData = [];
-  document.getElementById('plots-import-file').value = '';
-  document.getElementById('import-preview').style.display = 'none';
-  document.getElementById('import-confirm-btn').style.display = 'none';
-  navTo('plots-import');
-}
-
-function importPlotsFromExcel(e) {
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const wb = XLSX.read(ev.target.result, {type:'binary'});
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
-      if(rows.length < 2) { showToast('הקובץ ריק'); return; }
-      // Group rows by plot name — each row is a polygon point
-      const plotMap = {};
-      for(let i=1; i<rows.length; i++) {
-        const r = rows[i];
-        const name = String(r[0]||'').trim();
-        if(!name) continue;
-        const lat = parseFloat(r[1]), lng = parseFloat(r[2]);
-        if(!plotMap[name]) {
-          plotMap[name] = {
-            name,
-            crop   : String(r[3]||'').trim(),
-            variety: String(r[4]||'').trim(),
-            polygon: []
-          };
-        }
-        if(!isNaN(lat) && !isNaN(lng)) plotMap[name].polygon.push({lat, lng});
-      }
-      importPlotsData = Object.values(plotMap);
-      if(!importPlotsData.length) { showToast('לא נמצאו שורות תקינות'); return; }
-      const preview = document.getElementById('import-preview-list');
-      preview.innerHTML = importPlotsData.slice(0,5).map(p =>
-        `<div class="card" style="cursor:default;margin-bottom:6px;">
-          <div class="card-body">
-            <div class="card-title">${p.name}</div>
-            <div class="card-sub">${p.crop} ${p.variety?'· '+p.variety:''} · ${p.polygon.length} נקודות פוליגון</div>
-          </div>
-        </div>`).join('') +
-        (importPlotsData.length>5 ? `<div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:4px;">ועוד ${importPlotsData.length-5} חלקות...</div>` : '');
-      document.getElementById('import-preview').style.display = 'block';
-      document.getElementById('import-confirm-btn').style.display = 'inline-flex';
-      showToast(`נמצאו ${importPlotsData.length} חלקות`);
-    } catch(err) { showToast('שגיאה בקריאת הקובץ: '+err.message); }
-  };
-  reader.readAsBinaryString(file);
-}
-
-async function confirmImportPlots() {
-  if(!importPlotsData.length) return;
-  showToast('מייבא חלקות...');
-  try {
-    for(let i=0; i<importPlotsData.length; i+=400) {
-      const batch = db.batch();
-      importPlotsData.slice(i,i+400).forEach(p => {
-        const ref = db.collection(farmCol('insp_plots')).doc();
-        batch.set(ref, {...p, active: true, createdAt: firebase.firestore.FieldValue.serverTimestamp(), updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
-      });
-      await batch.commit();
-    }
-    await loadPlots();
-    showToast(`יובאו ${importPlotsData.length} חלקות בהצלחה`);
-    navTo('plots');
-  } catch(e) { showToast('שגיאה בייבוא: '+e.message); }
-}
-
-
-// ════════════════════════════════════════════════════════════════════
-// PESTS
-// ════════════════════════════════════════════════════════════════════
-
-async function movePest(id, direction) {
-  const idx = pests.findIndex(p => p.id === id);
-  if(idx < 0) return;
-  const targetIdx = idx + direction;
-  if(targetIdx < 0 || targetIdx >= pests.length) return;
-  const p1 = pests[idx], p2 = pests[targetIdx];
-  // Assign numeric sortOrders if missing
-  const s1 = (p1.sortOrder != null) ? p1.sortOrder : idx;
-  const s2 = (p2.sortOrder != null) ? p2.sortOrder : targetIdx;
-  try {
-    const batch = db.batch();
-    batch.update(db.collection('pest_types').doc(p1.id), {sortOrder: s2});
-    batch.update(db.collection('pest_types').doc(p2.id), {sortOrder: s1});
-    await batch.commit();
-    await loadPests();
-    renderPests();
-  } catch(e) { showToast('שגיאה: ' + e.message); }
-}
-
-function renderPests() {
-  const el = document.getElementById('pests-list');
-  const fab = `<div class="fab-wrap"><button class="fab" onclick="openPestForm(null)">+</button></div>`;
-  if(!pests.length) {
-    el.innerHTML = fab + `<div class="empty"><div class="eico">🐛</div><p>אין מזיקים מוגדרים.<br/>לחץ + להוספה.</p></div>`;
-    return;
-  }
-  el.innerHTML = fab + pests.map((p,i) => `
-    <div class="card" onclick="openPestForm('${p.id}')">
-      <div class="card-body">
-        <div class="card-title">${pestDot(p)}${p.name}</div>
-        <div class="card-sub">${(p.crops||[]).join(', ')||'כל הגידולים'}</div>
-        <div class="card-sub" style="margin-top:2px;">${(p.checks||[]).join(' · ')||'—'}</div>
-        <div class="card-sub" style="margin-top:2px;">מדגם: ${p.sampleRows||0} שורות × ${p.sampleTrees||0} עצים × ${p.sampleFruits||0} פירות</div>
-      </div>
-      <div class="card-actions" style="display:flex;flex-direction:column;gap:2px;align-items:center;">
-        <button class="ia" onclick="event.stopPropagation();movePest('${p.id}',-1)" style="font-size:16px;min-width:54px;padding:4px 14px;${i===0?'opacity:0.25;pointer-events:none;':''}">⬆</button>
-        <button class="ia" onclick="event.stopPropagation();movePest('${p.id}',1)"  style="font-size:16px;min-width:54px;padding:4px 14px;${i===pests.length-1?'opacity:0.25;pointer-events:none;':''}">⬇</button>
-        <button class="ia" onclick="event.stopPropagation();openPestForm('${p.id}')">✏️</button>
-      </div>
-    </div>`).join('');
-}
-
-function openPestForm(id) {
-  document.getElementById('pestf-id').value = id || '';
-  document.getElementById('pestf-name').value = '';
-  document.getElementById('pestf-rows').value = '';
-  document.getElementById('pestf-trees').value = '';
-  document.getElementById('pestf-fruits').value = '';
-  document.getElementById('pestf-del-wrap').style.display = id ? 'block' : 'none';
-  document.getElementById('pestf-checks').innerHTML = '';
-  pestTrapFields = [];
-
-  // Populate crop chips from the canonical crops list (assignment context, not a filter,
-  // so it should offer the managed list, not whatever free text happens to exist on plots)
-  const uniqueCrops = crops.map(c=>c.name).sort();
-  let selCrops = new Set();
-  let curColor = '';
-  if(id) {
-    const pest = pests.find(x=>x.id===id);
-    if(pest) {
-      document.getElementById('pestf-name').value = pest.name||'';
-      document.getElementById('pestf-rows').value = pest.sampleRows||'';
-      document.getElementById('pestf-trees').value = pest.sampleTrees||'';
-      document.getElementById('pestf-fruits').value = pest.sampleFruits||'';
-      selCrops = new Set(pest.crops||[]);
-      curColor = pest.color || '';
-      (pest.checks||[]).forEach(c => addPestCheckRow(c));
-      pestTrapFields = (pest.trapFields||[]).map(f=>({...f}));
-    }
-  } else {
-    addPestCheckRow('');
-    pestTrapFields = [{label:''}];
-  }
-  renderPestTrapFields();
-  renderCropChips(uniqueCrops, selCrops);
-  renderPestColorSwatches(curColor);
-  navTo('pest-form');
-}
-
-function renderPestColorSwatches(selectedColor) {
-  document.getElementById('pestf-color').value = selectedColor || '';
-  const el = document.getElementById('pestf-color-grid');
-  el.innerHTML = PEST_COLORS.map(c => `
-    <button type="button" class="pest-color-swatch${c===selectedColor?' sel':''}"
-      style="background:${c};" data-color="${c}" onclick="selectPestColor('${c}')"></button>`).join('');
-}
-function selectPestColor(c) {
-  document.getElementById('pestf-color').value = c;
-  document.querySelectorAll('#pestf-color-grid .pest-color-swatch').forEach(b => {
-    b.classList.toggle('sel', b.dataset.color === c);
-  });
-}
-
-function renderCropChips(crops, selCrops) {
-  const el = document.getElementById('pestf-crops');
-  if(!crops.length) {
-    el.innerHTML = '<span style="font-size:12px;color:var(--text-muted);">הגדר חלקות תחילה כדי לבחור גידולים</span>';
-    return;
-  }
-  el.innerHTML = '';
-  crops.forEach(c => {
-    const btn = document.createElement('button');
-    btn.className = 'crop-chip' + (selCrops.has(c) ? ' sel' : '');
-    btn.textContent = c;
-    btn.type = 'button';
-    btn.onclick = () => { btn.classList.toggle('sel'); };
-    el.appendChild(btn);
-  });
-}
-
-function addPestCheck() { addPestCheckRow(''); }
-function addPestCheckRow(val) {
-  const el = document.getElementById('pestf-checks');
-  const row = document.createElement('div');
-  row.className = 'dfrow';
-  row.innerHTML = `<input type="text" placeholder="לדוגמה: ביצים, זחלים, פגיעות" value="${val}"/>
-    <button class="rmf" onclick="this.parentElement.remove()" type="button">✕</button>`;
-  el.appendChild(row);
-}
-
-// Trap-findings fields, ported from index.html's dynFields/addDynF/renderDynF/rmDynF
-// so a pest edited here shows the same trap-count fields Traps itself would show.
-let pestTrapFields = [];
-function addPestTrapField(){ pestTrapFields.push({label:''}); renderPestTrapFields(); }
-function renderPestTrapFields(){
-  document.getElementById('pestf-trapfields').innerHTML = pestTrapFields.map((f,i)=>
-    `<div class="dfrow"><input type="text" value="${f.label}" placeholder="שם שדה, למשל: זכרים" oninput="pestTrapFields[${i}].label=this.value"/><button class="rmf" onclick="rmPestTrapField(${i})">✕</button></div>`
-  ).join('');
-}
-function rmPestTrapField(i){ pestTrapFields.splice(i,1); renderPestTrapFields(); }
-
-async function savePest() {
-  const name = document.getElementById('pestf-name').value.trim();
-  if(!name) { showToast('נא להזין שם מזיק'); return; }
-  const crops = [...document.querySelectorAll('#pestf-crops .crop-chip.sel')].map(b=>b.textContent);
-  const checks = [...document.querySelectorAll('#pestf-checks input')].map(i=>i.value.trim()).filter(Boolean);
-  const rowsVal  = parseInt(document.getElementById('pestf-rows').value);
-  const treesVal = parseInt(document.getElementById('pestf-trees').value);
-  const fruitsVal= parseInt(document.getElementById('pestf-fruits').value);
-  const color = document.getElementById('pestf-color').value || '';
-  const trapFields = pestTrapFields.filter(f=>f.label.trim()).map(f=>({label:f.label.trim(),type:'number'}));
-  const data = {
-    name, crops, checks, color, trapFields,
-    sampleRows  : isNaN(rowsVal)  ? 0 : rowsVal,
-    sampleTrees : isNaN(treesVal) ? 0 : treesVal,
-    sampleFruits: isNaN(fruitsVal)? 0 : fruitsVal,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  };
-  try {
-    const id = document.getElementById('pestf-id').value;
-    if(id) {
-      await db.collection('pest_types').doc(id).update(data);
-    } else {
-      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      data.sortOrder = pests.length;
-      await db.collection('pest_types').add(data);
-    }
-    await loadPests();
-    renderPests();
-    showToast('המזיק נשמר');
-    navTo('pests');
-  } catch(e) { showToast('שגיאה: '+e.message); }
-}
-
-async function deletePest() {
-  const id = document.getElementById('pestf-id').value;
-  if(!id) return;
-  showConfirm('מחיקת מזיק','האם למחוק את המזיק? אם הסוג הזה גם משמש למלכודות, רק חלק המדגמים שלו יימחק.', async () => {
-    const ref = db.collection('pest_types').doc(id);
-    const doc = await ref.get();
-    const hasTraps = (doc.data()?.trapFields||[]).length > 0;
-    if(hasTraps) { await ref.update({checks:[], sampleRows:0, sampleTrees:0, sampleFruits:0}); }
-    else { await ref.delete(); }
-    await loadPests();
-    showToast('המזיק נמחק');
-    navTo('pests');
-  });
-}
-
-// Backfill colors for pest_types that don't have one yet (assigns a random palette color).
-// Was previously cross-referencing Traps' separate "insects" collection by name;
-// that lookup is meaningless now that Traps and Samples share the same pest_types doc.
-async function assignMissingPestColors() {
-  const missing = pests.filter(p => !p.color);
-  if(!missing.length) { showToast('לכל המזיקים כבר יש צבע'); return; }
-  try {
-    const batch = db.batch();
-    missing.forEach(p => {
-      const color = PEST_COLORS[Math.floor(Math.random()*PEST_COLORS.length)];
-      batch.update(db.collection('pest_types').doc(p.id), {color});
-    });
-    await batch.commit();
-    await loadPests();
-    renderPests();
-    showToast(`הוקצה צבע ל-${missing.length} מזיקים`);
-  } catch(e) { showToast('שגיאה בהקצאת צבעים: '+e.message); }
-}
 
 
 // ════════════════════════════════════════════════════════════════════
@@ -2982,6 +1941,7 @@ function openObsReportForm(pestId) {
   obsEditRecordId = null;
   renderObsReportBody('', '');
   navTo('obs-report');
+  markFormClean('view-obs-report');
 }
 
 async function openObsRecordEdit(id) {
@@ -2996,11 +1956,12 @@ async function openObsRecordEdit(id) {
     obsLng = (data.location && data.location.longitude != null) ? data.location.longitude : null;
     renderObsReportBody(data.note || '', data.recommendations || '');
     navTo('obs-report');
+    markFormClean('view-obs-report');
   } catch(e) { showToast('שגיאה בטעינה: '+e.message); }
 }
 
 function cancelObsReport() {
-  navTo(obsEditRecordId ? 'obs-list' : 'obs-form');
+  confirmLeaveIfDirty(()=>navTo(obsEditRecordId ? 'obs-list' : 'obs-form'));
 }
 
 async function saveObsReport() {
@@ -3020,6 +1981,7 @@ async function saveObsReport() {
       showToast('התצפית עודכנה ✓');
       obsEditRecordId = null;
       navTo('obs-list');
+      markFormClean('view-obs-report');
     } catch(e) { showToast('שגיאה בשמירה: '+e.message); }
     return;
   }
@@ -3040,6 +2002,7 @@ async function saveObsReport() {
     await db.collection(farmCol('obs_records')).add(data);
     showToast('התצפית נשמרה ✓');
     navTo('obs-form'); // back to the pest grid for the same plot, ready for the next one
+    markFormClean('view-obs-report');
   } catch(e) { showToast('שגיאה בשמירה: '+e.message); }
 }
 

@@ -163,6 +163,38 @@ function switchFarm() {
 }
 
 // ── Top-bar farm name + switch button (inline, same height as other bar buttons) ──
+// Passive farm-name display for Level-2 screens (no switch control, just text).
+// Separate from showFarmBadge (which injects the interactive switcher into #gtb),
+// since Level-2 screens shouldn't let you change farms mid-workflow.
+function showFarmNameStatic(elementId) {
+  const el = document.getElementById(elementId);
+  if (el) el.textContent = currentFarmName || 'חווה';
+}
+
+// Generic "unsaved changes" protection for full-screen forms. A form calls
+// markFormClean(containerId) once, right after it's populated (new or editing) and
+// again right after a successful save; the container's own inputs then mark it dirty
+// automatically as the user types/changes anything. Any place that navigates away from
+// the form (a cancel button, back navigation) should go through confirmLeaveIfDirty()
+// instead of calling navTo()/goBack() directly, so unsaved work isn't silently lost.
+let __formDirty = false;
+function markFormClean(containerId) {
+  __formDirty = false;
+  const el = document.getElementById(containerId);
+  if (el && !el.__dirtyListenerAttached) {
+    el.addEventListener('input', () => { __formDirty = true; });
+    el.addEventListener('change', () => { __formDirty = true; });
+    el.__dirtyListenerAttached = true;
+  }
+}
+function confirmLeaveIfDirty(proceedFn) {
+  if (!__formDirty) { proceedFn(); return; }
+  showConfirm('לצאת בלי לשמור?', 'יש שינויים שלא נשמרו. אם תצא עכשיו הם יאבדו.', () => {
+    __formDirty = false;
+    proceedFn();
+  });
+}
+
 function showFarmBadge() {
   const gtb = document.getElementById('gtb');
   if (!gtb) return;
