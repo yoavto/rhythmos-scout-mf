@@ -152,26 +152,40 @@
 <div class="view" id="view-home">
   <div class="sc" style="padding-top:20px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-      <button onclick="showFarmPicker(()=>showFarmNameStatic('home-farm-name'))" style="flex:1;display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;font-family:Arial,sans-serif;font-size:17px;font-weight:700;color:var(--text);cursor:pointer;">
-        <span style="font-size:16px;">🔀</span><span id="home-farm-name">חווה</span>
+      <div style="font-size:18px;font-weight:700;color:var(--text-muted);" id="home-farm-name-label"></div>
+      <button onclick="toggleHomeMenu()" title="תפריט" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--text);position:relative;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
       </button>
-      <button onclick="doLogout()" title="התנתקות" style="background:none;border:none;cursor:pointer;padding:8px;margin-right:8px;color:rgba(69,71,74,0.5);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+      <div id="home-menu" style="display:none;position:absolute;left:16px;top:56px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
+        <button onclick="toggleHomeMenu();showFarmPicker(()=>{showFarmNameStatic('home-farm-name');showFarmNameStatic('home-farm-name-label');})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 <span id="home-farm-name">חווה</span></button>
+        <button onclick="toggleHomeMenu();navTo('settings')" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
+        <button onclick="toggleHomeMenu();doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
+      </div>
     </div>
-    <div class="fst" style="text-align:center;margin-bottom:14px;">דיווחים</div>
     <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+      <div class="card" onclick="window.location.href='/traps?new=1'" style="justify-content:space-between;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">מעקב מלכודות</div></div>
+        <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
+      </div>
+      <div class="card" onclick="goToSamples(true)" style="justify-content:space-between;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">מדגם</div></div>
+        <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
+      </div>
+      <div class="card" onclick="goToObs(true)" style="justify-content:space-between;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">תצפית</div></div>
+        <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
       <div class="card" onclick="window.location.href='/traps'" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">📍 מעקב מלכודות</div></div>
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📍 מלכודות</div></div>
       </div>
-      <div class="card" onclick="goToSamples()" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">🔬 רישום מדגמים</div></div>
+      <div class="card" onclick="goToSamples(false)" style="justify-content:center;text-align:center;">
+        <div class="card-body"><div class="card-title" style="font-size:16px;">🔬 מדגמים</div></div>
       </div>
-      <div class="card" onclick="goToObs()" style="justify-content:center;text-align:center;">
+      <div class="card" onclick="goToObs(false)" style="justify-content:center;text-align:center;">
         <div class="card-body"><div class="card-title" style="font-size:16px;">👁 תצפיות</div></div>
       </div>
-    </div>
-    <div class="fst" style="text-align:center;margin-bottom:14px;">הגדרות</div>
-    <div class="card" onclick="navTo('settings')" style="justify-content:center;text-align:center;">
-      <div class="card-body"><div class="card-title" style="font-size:16px;">⚙️ גידולים ומזיקים</div></div>
     </div>
   </div>
 </div>
@@ -361,12 +375,12 @@ auth.onAuthStateChanged(u=>{
 });
 
 async function doLogout(){showConfirm('התנתקות','האם אתה בטוח שברצונך להתנתק?',async()=>{await auth.signOut();});}
-async function initApp(){await resolveFarm();await loadInsects();await loadPlots();await loadCropsCache();await loadCrops();await seedCropsIfEmpty();navTo('home');}
+async function initApp(){await resolveFarm();await loadInsects();await loadPlots();await loadCropsCache();await loadCrops();await seedCropsIfEmpty();navTo('home');if(new URLSearchParams(location.search).get('settings')==='1')navTo('settings');}
 async function loadCropsCache(){const s=await db.collection('crops').orderBy('name').get();cropsCache=s.docs.map(d=>({id:d.id,...d.data()}));}
 function navTo(s){
   curView=s;
   showV(s);
-  if(s==='home')showFarmNameStatic('home-farm-name');
+  if(s==='home'){showFarmNameStatic('home-farm-name');showFarmNameStatic('home-farm-name-label');}
   if(s==='insects')renderInsects();
   if(s==='plots')renderPlots();
   if(s==='crops')renderCropsSettings();
@@ -919,8 +933,8 @@ window.addEventListener('load', () => { history.pushState({pwa:true}, ''); });
 
 // ── RESTORE FUNCTIONS ─────────────────────────────────────────────
 
-function goToSamples(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections';}
-function goToObs(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections?mode=obs';}
+function goToSamples(isNew){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections'+(isNew?'?new=1':'');}
+function goToObs(isNew){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections?mode=obs'+(isNew?'&new=1':'');}
 
 // Unregister any existing service workers so cache never blocks updates
 if ('serviceWorker' in navigator) {
