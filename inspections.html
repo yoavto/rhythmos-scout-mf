@@ -323,43 +323,18 @@
 </div>
 
 <!-- ── SAMPLINGS HOME ─────────────────────────────────────────────── -->
-<div class="view" id="view-sampling-home">
-  <div class="sc" style="padding-top:20px;">
-    <div style="text-align:center;font-size:18px;font-weight:700;color:var(--text-muted);margin-bottom:28px;" id="sampling-farm-name"></div>
-    <div class="card" onclick="startNewSurvey()" style="justify-content:center;text-align:center;margin-bottom:24px;">
-      <div class="card-body"><div class="card-title" style="font-size:16px;">🔬 סקר חדש</div></div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="card" onclick="navTo('survey')" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">📋 סקרים</div></div>
-      </div>
-      <div class="card" onclick="navTo('export')" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">📊 דוחות</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── OBSERVATIONS HOME ──────────────────────────────────────────── -->
-<div class="view" id="view-obs-home">
-  <div class="sc" style="padding-top:20px;">
-    <div style="text-align:center;font-size:18px;font-weight:700;color:var(--text-muted);margin-bottom:28px;" id="obs-farm-name"></div>
-    <div class="card" onclick="startObservation()" style="justify-content:center;text-align:center;margin-bottom:24px;">
-      <div class="card-body"><div class="card-title" style="font-size:16px;">👁 תצפית חדשה</div></div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="card" onclick="navTo('obs-list')" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">📋 תצפיות</div></div>
-      </div>
-      <div class="card" onclick="navTo('obs-export')" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">📊 דוחות</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <div class="view" id="view-survey">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:white;border-bottom:1px solid var(--border);">
+    <button onclick="toggleHomeMenu()" title="תפריט" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text);position:relative;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div id="home-menu" style="display:none;position:absolute;right:14px;top:52px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
+      <button onclick="toggleHomeMenu();showFarmPicker(()=>{})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 החלף חווה</button>
+      <button onclick="toggleHomeMenu();sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/?settings=1'" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
+      <button onclick="toggleHomeMenu();doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
+    </div>
+    <button onclick="navTo('export')" title="דוחות" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text-muted);font-size:20px;">📊</button>
+  </div>
   <div class="sc" id="survey-list"></div>
 </div>
 
@@ -507,16 +482,14 @@ function escapeHtml(s) {
 }
 
 const BACK = {
-  'survey-form' : 'sampling-home',
-  'survey'      : 'sampling-home',
-  'export'      : 'sampling-home',
-  'obs-form'    : 'obs-home',
+  'survey-form' : 'survey',
+  'export'      : 'survey',
+  'obs-form'    : 'obs-list',
   'obs-report'  : 'obs-form',
-  'obs-list'    : 'obs-home',
-  'obs-export'  : 'obs-home',
+  'obs-export'  : 'obs-list',
 };
-const MAIN_VIEWS = ['sampling-home', 'obs-home'];
-const OBS_VIEWS  = ['obs-home','obs-form','obs-report','obs-list','obs-export'];
+const MAIN_VIEWS = ['survey', 'obs-list'];
+const OBS_VIEWS  = ['obs-form','obs-report','obs-list','obs-export'];
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 
@@ -542,7 +515,7 @@ function navTo(v) {
   if(goingToMain && !wasMain) {
     history.pushState({mainView: v}, '');
   } else if(!goingToMain) {
-    history.pushState({subView: v, parent: BACK[v]||'sampling-home'}, '');
+    history.pushState({subView: v, parent: BACK[v]||'survey'}, '');
   }
   curView = v;
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
@@ -563,8 +536,6 @@ function navTo(v) {
     document.body.classList.remove('mode-obs');
   }
 
-  if(v==='sampling-home') showFarmNameStatic('sampling-farm-name');
-  if(v==='obs-home')      showFarmNameStatic('obs-farm-name');
   if(v==='survey')    renderSurveys();
   if(v==='export')    renderExportPests();
   if(v==='obs-list')  renderObsList();
@@ -573,7 +544,9 @@ function navTo(v) {
 
 function goBack() {
   if(curView === 'survey-form') { saveSurvey('pending'); return; }
-  confirmLeaveIfDirty(()=>navTo(BACK[curView] || 'sampling-home'));
+  const parent = BACK[curView];
+  if(parent) { confirmLeaveIfDirty(()=>navTo(parent)); return; }
+  confirmLeaveIfDirty(()=>{ sessionStorage.setItem('rhythmos_just_switched','1'); window.location.href='/'; });
 }
 
 
@@ -600,8 +573,17 @@ auth.onAuthStateChanged(user => {
 async function loadAll() {
   await resolveFarm();
   await Promise.all([loadPlots(), loadCrops(), loadPests(), loadObsPestOrder()]);
-  const wantsObs = new URLSearchParams(location.search).get('mode') === 'obs';
-  navTo(wantsObs ? 'obs-home' : 'sampling-home');
+  const params = new URLSearchParams(location.search);
+  const wantsObs = params.get('mode') === 'obs';
+  const wantsNew = params.get('new') === '1';
+  const wantsReport = params.get('report') === '1';
+  navTo(wantsObs ? 'obs-list' : 'survey');
+  if(wantsNew) {
+    if(wantsObs) startObservation();
+    else startNewSurvey();
+  } else if(wantsReport) {
+    navTo(wantsObs ? 'obs-export' : 'export');
+  }
 }
 
 async function loadObsPestOrder() {
@@ -1565,6 +1547,17 @@ if('serviceWorker' in navigator){
 </div>
 
 <div class="view" id="view-obs-list">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:white;border-bottom:1px solid var(--border);">
+    <button onclick="toggleHomeMenu()" title="תפריט" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text);position:relative;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <div id="home-menu" style="display:none;position:absolute;right:14px;top:52px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
+      <button onclick="toggleHomeMenu();showFarmPicker(()=>{})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 החלף חווה</button>
+      <button onclick="toggleHomeMenu();sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/?settings=1'" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
+      <button onclick="toggleHomeMenu();doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
+    </div>
+    <button onclick="navTo('obs-export')" title="דוחות" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text-muted);font-size:20px;">📊</button>
+  </div>
   <div class="sc" id="obs-list-body"></div>
 </div>
 
@@ -2011,11 +2004,12 @@ function setObsListSort(mode) {
 
 async function renderObsList() {
   const el = document.getElementById('obs-list-body');
+  const fab = `<div class="fab-wrap"><button class="fab" onclick="startObservation()">+</button></div>`;
   el.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-muted);">טוען...</div>`;
   try {
     const snap = await db.collection(farmCol('obs_records')).orderBy('date','desc').limit(300).get();
     if(snap.empty) {
-      el.innerHTML = obsListSortBar() + `<div class="empty"><div class="eico">👁</div><p>אין תצפיות עדיין.<br/>לחץ על "תצפית חדשה" כדי להתחיל.</p></div>`;
+      el.innerHTML = fab + obsListSortBar() + `<div class="empty"><div class="eico">👁</div><p>אין תצפיות עדיין.<br/>לחץ + להתחיל תצפית חדשה.</p></div>`;
       return;
     }
     const records = snap.docs.map(d => ({id:d.id, ...d.data()}));
@@ -2037,7 +2031,7 @@ async function renderObsList() {
       }
     });
 
-    el.innerHTML = obsListSortBar() + groupList.map(g => {
+    el.innerHTML = fab + obsListSortBar() + groupList.map(g => {
       const dateDisp = g.date ? g.date.split('-').reverse().join('/') : '';
       const items = [...g.items].sort((a,b) => (a.time||'').localeCompare(b.time||''));
       return `
@@ -2046,7 +2040,7 @@ async function renderObsList() {
       `;
     }).join('');
   } catch(e) {
-    el.innerHTML = obsListSortBar() + `<div class="empty"><p>שגיאה בטעינה: ${e.message}</p></div>`;
+    el.innerHTML = fab + obsListSortBar() + `<div class="empty"><p>שגיאה בטעינה: ${e.message}</p></div>`;
   }
 }
 

@@ -156,9 +156,28 @@
       <button onclick="toggleHomeMenu()" title="תפריט" style="background:none;border:none;cursor:pointer;padding:8px;color:var(--text);position:relative;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
       </button>
-      <div id="home-menu" style="display:none;position:absolute;left:16px;top:56px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
+      <div id="home-menu" style="display:none;position:absolute;left:16px;top:56px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:200px;overflow:hidden;">
         <button onclick="toggleHomeMenu();showFarmPicker(()=>{showFarmNameStatic('home-farm-name');showFarmNameStatic('home-farm-name-label');})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 <span id="home-farm-name">חווה</span></button>
-        <button onclick="toggleHomeMenu();navTo('settings')" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
+
+        <button onclick="toggleMenuSubmenu('settings')" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">
+          <span>⚙️ הגדרות</span><span id="submenu-arrow-settings" style="color:var(--text-muted);">‹</span>
+        </button>
+        <div id="submenu-settings" style="display:none;background:var(--input-bg);">
+          <button onclick="toggleHomeMenu();navTo('insects')" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🐛 מזיקים</button>
+          <button onclick="toggleHomeMenu();navTo('crops')" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🌱 גידולים</button>
+          <button onclick="toggleHomeMenu();goToTrapEditList()" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🪤 מלכודות</button>
+          <button onclick="toggleHomeMenu();navTo('plots')" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;">🗺️ חלקות</button>
+        </div>
+
+        <button onclick="toggleMenuSubmenu('reports')" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">
+          <span>📊 דוחות</span><span id="submenu-arrow-reports" style="color:var(--text-muted);">‹</span>
+        </button>
+        <div id="submenu-reports" style="display:none;background:var(--input-bg);">
+          <button onclick="toggleHomeMenu();goToSamplesReport()" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔬 מדגמים</button>
+          <button onclick="toggleHomeMenu();goToObsReport()" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">👁 תצפיות</button>
+          <button onclick="toggleHomeMenu();goToTrapsReport()" style="display:flex;align-items:center;width:100%;padding:11px 16px 11px 16px;padding-right:28px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:13px;color:var(--text);text-align:right;">📍 מלכודות</button>
+        </div>
+
         <button onclick="toggleHomeMenu();doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
       </div>
     </div>
@@ -215,9 +234,10 @@
 
 <div class="view" id="view-settings"><div class="sc">
   <div class="fs"><div class="fst">נתוני ייחוס משותפים</div>
-    <div class="card" onclick="navTo('plots')"><div class="cb"><div class="ct">🗺️ חלקות</div><div class="cs">ניהול חלקות, גידולים ופוליגונים</div></div></div>
     <div class="card" onclick="navTo('insects')"><div class="cb"><div class="ct">🐛 סוגי מזיקים</div><div class="cs">משותף בין מלכודות, מדגמים ותצפיות</div></div></div>
     <div class="card" onclick="navTo('crops')"><div class="cb"><div class="ct">🌱 גידולים</div><div class="cs">רשימה כללית, זמינה בכל החוות</div></div></div>
+    <div class="card" onclick="goToTrapEditList()"><div class="cb"><div class="ct">🪤 מלכודות</div><div class="cs">עריכת מלכודות קיימות</div></div></div>
+    <div class="card" onclick="navTo('plots')"><div class="cb"><div class="ct">🗺️ חלקות</div><div class="cs">ניהול חלקות, גידולים ופוליגונים</div></div></div>
   </div>
 </div></div>
 <div class="view" id="view-plots">
@@ -428,11 +448,29 @@ async function renderCropsSettings() {
   }
   el.innerHTML = crops.map(c => `
     <div class="plot-row">
-      <div class="plot-row-main" style="cursor:default;"><div class="card-title">${c.name}</div></div>
+      <div class="plot-row-main" onclick="renameCrop('${c.id}')"><div class="card-title">${c.name}</div></div>
       <div class="plot-row-actions">
-        <button class="ia ia-danger" onclick="confirmDeleteCrop('${c.id}')" title="מחיקה">🗑</button>
+        <button class="ia" onclick="event.stopPropagation();renameCrop('${c.id}')" title="עריכה">✏️</button>
+        <button class="ia ia-danger" onclick="event.stopPropagation();confirmDeleteCrop('${c.id}')" title="מחיקה">🗑</button>
       </div>
     </div>`).join('');
+}
+
+async function renameCrop(id) {
+  const c = crops.find(x => x.id === id);
+  if(!c) return;
+  const newName = prompt('שם הגידול:', c.name);
+  if(newName === null) return; // cancelled
+  const trimmed = newName.trim();
+  if(!trimmed) { showToast('נא להזין שם גידול'); return; }
+  if(trimmed === c.name) return;
+  if(crops.some(x => x.id !== id && x.name === trimmed)) { showToast('גידול בשם זה כבר קיים'); return; }
+  try {
+    await db.collection('crops').doc(id).update({name: trimmed});
+    await loadCrops();
+    renderCropsSettings();
+    showToast('הגידול עודכן');
+  } catch(e) { showToast('שגיאה: '+e.message); }
 }
 
 async function addCrop() {
@@ -935,6 +973,25 @@ window.addEventListener('load', () => { history.pushState({pwa:true}, ''); });
 
 function goToSamples(isNew){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections'+(isNew?'?new=1':'');}
 function goToObs(isNew){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections?mode=obs'+(isNew?'&new=1':'');}
+function goToSamplesReport(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections?report=1';}
+function goToObsReport(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/inspections?mode=obs&report=1';}
+function goToTrapsReport(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/traps?report=1';}
+function goToTrapEditList(){sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/traps?editList=1';}
+
+// Only one of the two submenus (Settings / Reports) is ever open at a time,
+// opening one closes the other, matching a standard accordion-style menu.
+function toggleMenuSubmenu(which){
+  const target=document.getElementById('submenu-'+which);
+  const other=which==='settings'?'reports':'settings';
+  const otherEl=document.getElementById('submenu-'+other);
+  if(otherEl)otherEl.style.display='none';
+  const otherArrow=document.getElementById('submenu-arrow-'+other);
+  if(otherArrow)otherArrow.textContent='‹';
+  const isOpen=target.style.display==='block';
+  target.style.display=isOpen?'none':'block';
+  const arrow=document.getElementById('submenu-arrow-'+which);
+  if(arrow)arrow.textContent=isOpen?'‹':'˅';
+}
 
 // Unregister any existing service workers so cache never blocks updates
 if ('serviceWorker' in navigator) {
