@@ -1,4 +1,4 @@
-const CACHE = 'rhythmos-v2';
+const CACHE = 'rhythmos-v3';
 const SHELL = ['/', '/index.html'];
 
 self.addEventListener('install', e => {
@@ -26,7 +26,19 @@ self.addEventListener('fetch', e => {
   ) {
     return;
   }
+  // Network-first: always try to fetch the current, real file first. Only if
+  // that fails (genuinely offline) do we fall back to whatever was cached.
+  // This is the opposite of the old cache-first approach, which could keep
+  // showing an outdated screen indefinitely after an update, even after the
+  // person cleared their browser's normal cache, since a service worker's
+  // cache is a separate storage bucket that "clear cache" doesn't always reach.
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request)
+      .then(res => {
+        const resClone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, resClone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
