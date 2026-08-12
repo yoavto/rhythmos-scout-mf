@@ -325,13 +325,13 @@
 <!-- ── SAMPLINGS HOME ─────────────────────────────────────────────── -->
 <div class="view" id="view-survey">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:white;border-bottom:1px solid var(--border);">
-    <button onclick="toggleHomeMenu()" title="תפריט" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text);position:relative;">
+    <button onclick="this.nextElementSibling.style.display=(this.nextElementSibling.style.display==='block'?'none':'block')" title="תפריט" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text);position:relative;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
-    <div id="home-menu" style="display:none;position:absolute;right:14px;top:52px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
-      <button onclick="toggleHomeMenu();showFarmPicker(()=>{})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 החלף חווה</button>
-      <button onclick="toggleHomeMenu();sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/?settings=1'" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
-      <button onclick="toggleHomeMenu();doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
+    <div id="home-menu-survey" style="display:none;position:absolute;right:14px;top:52px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
+      <button onclick="this.parentElement.style.display='none';showFarmPicker(()=>{})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 החלף חווה</button>
+      <button onclick="this.parentElement.style.display='none';sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/?settings=1'" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
+      <button onclick="this.parentElement.style.display='none';doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
     </div>
   </div>
   <div class="sc" id="survey-list"></div>
@@ -1547,13 +1547,13 @@ if('serviceWorker' in navigator){
 
 <div class="view" id="view-obs-list">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:white;border-bottom:1px solid var(--border);">
-    <button onclick="toggleHomeMenu()" title="תפריט" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text);position:relative;">
+    <button onclick="this.nextElementSibling.style.display=(this.nextElementSibling.style.display==='block'?'none':'block')" title="תפריט" style="background:none;border:none;cursor:pointer;padding:6px;color:var(--text);position:relative;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
-    <div id="home-menu" style="display:none;position:absolute;right:14px;top:52px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
-      <button onclick="toggleHomeMenu();showFarmPicker(()=>{})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 החלף חווה</button>
-      <button onclick="toggleHomeMenu();sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/?settings=1'" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
-      <button onclick="toggleHomeMenu();doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
+    <div id="home-menu-obs" style="display:none;position:absolute;right:14px;top:52px;background:white;border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow);z-index:50;min-width:180px;overflow:hidden;">
+      <button onclick="this.parentElement.style.display='none';showFarmPicker(()=>{})" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">🔀 החלף חווה</button>
+      <button onclick="this.parentElement.style.display='none';sessionStorage.setItem('rhythmos_just_switched','1');window.location.href='/?settings=1'" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--text);text-align:right;border-bottom:1px solid var(--border);">⚙️ הגדרות</button>
+      <button onclick="this.parentElement.style.display='none';doLogout()" style="display:flex;align-items:center;gap:10px;width:100%;padding:13px 16px;background:none;border:none;cursor:pointer;font-family:Arial,sans-serif;font-size:14px;color:var(--red);text-align:right;">🚪 התנתקות</button>
     </div>
   </div>
   <div class="sc" id="obs-list-body"></div>
