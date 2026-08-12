@@ -136,11 +136,6 @@
     
     /* Bottom nav */
     
-    #bottom-nav.visible{display:flex;}
-    .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
-      background:none;border:none;cursor:pointer;padding:6px 4px;border-radius:8px;
-      font-family:Arial;font-size:11px;font-weight:500;color:rgba(69,71,74,0.6);}
-    .bnav-btn.active{color:var(--red);font-weight:700;background:rgba(137,10,10,0.08);}
     
 
     
@@ -182,22 +177,24 @@
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+      <div style="display:flex;gap:12px;">
+        <div class="card" onclick="goToSamples(true)" style="flex:1;justify-content:space-between;">
+          <div class="card-body"><div class="card-title" style="font-size:16px;">מדגם</div></div>
+          <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
+        </div>
+        <div class="card" onclick="goToObs(true)" style="flex:1;justify-content:space-between;">
+          <div class="card-body"><div class="card-title" style="font-size:16px;">תצפית</div></div>
+          <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
+        </div>
+      </div>
       <div class="card" onclick="window.location.href='/traps?new=1'" style="justify-content:space-between;">
         <div class="card-body"><div class="card-title" style="font-size:16px;">מעקב מלכודות</div></div>
-        <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
-      </div>
-      <div class="card" onclick="goToSamples(true)" style="justify-content:space-between;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">מדגם</div></div>
-        <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
-      </div>
-      <div class="card" onclick="goToObs(true)" style="justify-content:space-between;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">תצפית</div></div>
         <div style="font-size:22px;color:var(--red);font-weight:700;">+</div>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div class="card" onclick="window.location.href='/traps'" style="justify-content:center;text-align:center;">
-        <div class="card-body"><div class="card-title" style="font-size:16px;">📍 מלכודות</div></div>
+        <div class="card-body"><div class="card-title" style="font-size:16px;">📍 סקרי מלכודות</div></div>
       </div>
       <div class="card" onclick="goToSamples(false)" style="justify-content:center;text-align:center;">
         <div class="card-body"><div class="card-title" style="font-size:16px;">🔬 מדגמים</div></div>
@@ -1003,10 +1000,5 @@ if ('serviceWorker' in navigator) {
 
 
 
-<div id="bottom-nav">
-  <button class="bnav-btn" id="bnav-samples" onclick="goToSamples()"><span class="bnav-icon">🔬</span>מדגמים</button>
-  <button class="bnav-btn" id="bnav-obs" onclick="goToObs()"><span class="bnav-icon">👁</span>תצפיות</button>
-  <button class="bnav-btn active" id="bnav-traps"><span class="bnav-icon">📍</span>מלכודות</button>
-</div>
 </body>
 </html>

@@ -171,6 +171,21 @@ function showFarmNameStatic(elementId) {
   if (el) el.textContent = currentFarmName || 'חווה';
 }
 
+// Shared home-screen menu toggle (the hamburger in the top corner of each app's home
+// screen, holding farm switch / settings / logout). Each page keeps its own #home-menu
+// markup (since the settings target differs per page), this just standardizes the
+// open/close/outside-click behavior so it's identical everywhere.
+function toggleHomeMenu(){
+  const m=document.getElementById('home-menu');
+  if(!m)return;
+  m.style.display=(m.style.display==='none'||!m.style.display)?'block':'none';
+}
+document.addEventListener('click',(e)=>{
+  const m=document.getElementById('home-menu');
+  if(!m||m.style.display==='none'||!m.style.display)return;
+  if(!m.contains(e.target)&&!e.target.closest('button[onclick="toggleHomeMenu()"]'))m.style.display='none';
+});
+
 // Generic "unsaved changes" protection for full-screen forms. A form calls
 // markFormClean(containerId) once, right after it's populated (new or editing) and
 // again right after a successful save; the container's own inputs then mark it dirty
